@@ -7,13 +7,11 @@ issue_tracker: https://github.com/sazardev/corpo_ui/issues
 documentation: https://github.com/sazardev/corpo_ui#readme
 
 topics:
-  - ui
   - design-system
   - flutter-package
   - corporate
   - components
   - theme
-  - material-design
 
 environment:
   sdk: ^3.9.2
