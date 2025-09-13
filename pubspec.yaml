@@ -1,0 +1,19 @@
+name: corpo_ui
+description: "Corpo UI is a comprehensive Flutter package that provides a robust foundation for building design systems."
+version: 0.0.1
+homepage: https://github.com/sazardev/corpo_ui
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
