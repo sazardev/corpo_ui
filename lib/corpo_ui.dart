@@ -24,12 +24,25 @@
 /// ```
 library;
 
+// Avatar Components
+export 'src/components/avatars/corpo_avatar.dart';
+// Badge Components
+export 'src/components/badges/corpo_badge.dart';
 // Button Components
 export 'src/components/buttons/corpo_button.dart';
+// Icon Components
+export 'src/components/icons/corpo_icon.dart';
 export 'src/components/inputs/corpo_checkbox.dart';
 export 'src/components/inputs/corpo_switch.dart';
 // Input Components
 export 'src/components/inputs/corpo_text_field.dart';
+// Layout Components
+export 'src/components/layout/corpo_card.dart';
+export 'src/components/layout/corpo_divider.dart';
+export 'src/components/layout/corpo_surface.dart';
+// Progress Components
+export 'src/components/progress/corpo_progress_bar.dart';
+export 'src/components/progress/corpo_spinner.dart';
 export 'src/components/typography/corpo_code.dart';
 // Typography Components
 export 'src/components/typography/corpo_text.dart';
@@ -39,3 +52,6 @@ export 'src/constants/spacing.dart';
 export 'src/constants/typography.dart';
 // Theme System
 export 'src/theme/corpo_theme.dart';
+// Utilities
+export 'src/utils/accessibility.dart';
+export 'src/utils/responsive.dart';
