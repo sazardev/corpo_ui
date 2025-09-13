@@ -8,24 +8,93 @@
 /// feedback, professional styling, and comprehensive accessibility features
 /// including screen reader support and keyboard navigation.
 ///
-/// Example usage:
+/// ## Features
+///
+/// - **Input Variants**: Standard, password, multiline, and email types
+/// - **Validation**: Built-in and custom validation with error display
+/// - **States**: Focus, error, disabled, and readonly states
+/// - **Accessibility**: Full screen reader support and keyboard navigation
+/// - **Customization**: Configurable styling and behavior options
+/// - **Helper Text**: Support for descriptive and instructional text
+///
+/// ## Accessibility
+///
+/// - Proper labeling for screen readers
+/// - Focus management and keyboard navigation
+/// - Error announcement for validation feedback
+/// - Semantic input types for virtual keyboards
+/// - High contrast focus indicators
+///
+/// ## Usage Patterns
+///
+/// ### Basic Text Input
+/// Standard single-line text input with validation:
 /// ```dart
 /// CorpoTextField(
-///   label: 'Email Address',
-///   placeholder: 'Enter your email',
-///   validator: (value) => value?.isEmpty == true ? 'Required' : null,
-/// )
-///
-/// CorpoTextField.password(
-///   label: 'Password',
-///   onChanged: (value) => print('Password: $value'),
-/// )
-///
-/// CorpoTextField.multiline(
-///   label: 'Description',
-///   maxLines: 4,
+///   label: 'Full Name',
+///   placeholder: 'Enter your full name',
+///   validator: (value) => value?.isEmpty == true ? 'Name is required' : null,
+///   onChanged: (value) => updateUserName(value),
 /// )
 /// ```
+///
+/// ### Email Input
+/// Email input with built-in keyboard type and validation:
+/// ```dart
+/// CorpoTextField.email(
+///   label: 'Email Address',
+///   placeholder: 'user@company.com',
+///   validator: CorpoValidation.compose([
+///     CorpoValidation.required('Email is required'),
+///     CorpoValidation.email('Please enter a valid email'),
+///   ]),
+/// )
+/// ```
+///
+/// ### Password Input
+/// Password input with visibility toggle:
+/// ```dart
+/// CorpoTextField.password(
+///   label: 'Password',
+///   placeholder: 'Enter your password',
+///   helperText: 'Minimum 8 characters required',
+///   validator: CorpoValidation.minLength(8, 'Too short'),
+/// )
+/// ```
+///
+/// ### Multiline Text
+/// Multi-line text input for longer content:
+/// ```dart
+/// CorpoTextField.multiline(
+///   label: 'Description',
+///   placeholder: 'Enter description...',
+///   maxLines: 4,
+///   maxLength: 500,
+/// )
+/// ```
+///
+/// ### Form Integration
+/// Use with CorpoForm for complete form management:
+/// ```dart
+/// CorpoForm(
+///   children: [
+///     CorpoTextField(
+///       name: 'username',
+///       label: 'Username',
+///       validator: CorpoValidation.required(),
+///     ),
+///   ],
+/// )
+/// ```
+///
+/// ## Design Guidelines
+///
+/// - Use clear, descriptive labels
+/// - Provide helpful placeholder text when appropriate
+/// - Include validation messages for user guidance
+/// - Group related fields visually
+/// - Consider input constraints and formatting
+/// - Provide helper text for complex requirements
 library;
 
 import 'package:flutter/material.dart';

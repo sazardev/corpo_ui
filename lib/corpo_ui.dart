@@ -24,6 +24,10 @@
 /// ```
 library;
 
+// Accessibility System (Phase 5.3)
+export 'src/accessibility/accessibility.dart';
+// Animation System (Phase 5.1)
+export 'src/animations/animations.dart';
 // Avatar Components
 export 'src/components/avatars/corpo_avatar.dart';
 // Badge Components
@@ -33,6 +37,12 @@ export 'src/components/buttons/corpo_button.dart';
 export 'src/components/buttons/corpo_icon_button.dart';
 export 'src/components/buttons/corpo_outlined_button.dart';
 export 'src/components/buttons/corpo_text_button.dart';
+// Data Components
+export 'src/components/data/corpo_data_table.dart';
+export 'src/components/data/corpo_expansion_panel.dart';
+export 'src/components/data/corpo_list_tile.dart';
+export 'src/components/data/corpo_stepper.dart';
+export 'src/components/data/corpo_timeline.dart';
 // Feedback Components
 export 'src/components/feedback/corpo_alert.dart';
 export 'src/components/feedback/corpo_dialog.dart';
@@ -59,12 +69,19 @@ export 'src/components/layout/corpo_card.dart';
 export 'src/components/layout/corpo_divider.dart';
 export 'src/components/layout/corpo_spacer.dart';
 export 'src/components/layout/corpo_surface.dart';
+// Media Components
+export 'src/components/media/corpo_image.dart';
 // Navigation Components
 export 'src/components/navigation/corpo_app_bar.dart';
 export 'src/components/navigation/corpo_bottom_navigation.dart';
 export 'src/components/navigation/corpo_breadcrumb.dart';
 export 'src/components/navigation/corpo_drawer.dart';
 export 'src/components/navigation/corpo_tabs.dart';
+// Overlay Components
+export 'src/components/overlay/corpo_modal.dart';
+export 'src/components/overlay/corpo_popover.dart';
+export 'src/components/overlay/corpo_sheet.dart';
+export 'src/components/overlay/corpo_tooltip.dart';
 // Progress Components
 export 'src/components/progress/corpo_progress_bar.dart';
 export 'src/components/progress/corpo_spinner.dart';
@@ -77,8 +94,12 @@ export 'src/components/typography/corpo_text.dart';
 export 'src/constants/colors.dart';
 export 'src/constants/spacing.dart';
 export 'src/constants/typography.dart';
+// Responsive System (Phase 5.2)
+export 'src/responsive/adaptive_components.dart';
+export 'src/responsive/layout_grid.dart';
+export 'src/responsive/responsive_builder.dart';
+export 'src/responsive/screen_size.dart';
 // Theme System
 export 'src/theme/corpo_theme.dart';
 // Utilities
 export 'src/utils/accessibility.dart';
-export 'src/utils/responsive.dart';

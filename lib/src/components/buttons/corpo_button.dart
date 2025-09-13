@@ -8,23 +8,80 @@
 /// hierarchy, professional styling, and comprehensive interaction states
 /// including hover, focus, pressed, and disabled.
 ///
-/// Example usage:
+/// ## Features
+///
+/// - **Multiple Variants**: Primary, secondary, tertiary, and danger styles
+/// - **Size Options**: Small, medium, large, and extra-large variants
+/// - **State Management**: Disabled, loading, and pressed states
+/// - **Accessibility**: Full screen reader support with semantic labels
+/// - **Responsive**: Adapts to different screen sizes and orientations
+/// - **Theming**: Integrates with Corpo UI theme system
+///
+/// ## Accessibility
+///
+/// - Provides semantic button role for screen readers
+/// - Supports keyboard navigation (Enter/Space activation)
+/// - Includes focus indicators with proper contrast ratios
+/// - Maintains minimum touch target size (44x44 logical pixels)
+/// - Announces state changes to assistive technologies
+///
+/// ## Usage Patterns
+///
+/// ### Primary Actions
+/// Use primary buttons for the most important action on a screen:
 /// ```dart
 /// CorpoButton(
-///   onPressed: () => print('Primary action'),
-///   child: Text('Primary Button'),
-/// )
-///
-/// CorpoButton.secondary(
-///   onPressed: () => print('Secondary action'),
-///   child: Text('Secondary Button'),
-/// )
-///
-/// CorpoButton.icon(
-///   onPressed: () => print('Icon action'),
-///   icon: Icons.add,
+///   onPressed: () => saveDocument(),
+///   child: Text('Save Document'),
 /// )
 /// ```
+///
+/// ### Secondary Actions
+/// Use secondary buttons for alternative or supporting actions:
+/// ```dart
+/// CorpoButton.secondary(
+///   onPressed: () => showPreview(),
+///   child: Text('Preview'),
+/// )
+/// ```
+///
+/// ### Icon Buttons
+/// Use icon buttons for actions where the icon clearly conveys meaning:
+/// ```dart
+/// CorpoButton.icon(
+///   onPressed: () => addItem(),
+///   icon: Icons.add,
+///   tooltip: 'Add new item',
+/// )
+/// ```
+///
+/// ### Loading States
+/// Show loading state for asynchronous operations:
+/// ```dart
+/// CorpoButton(
+///   onPressed: isLoading ? null : () => performAsyncAction(),
+///   isLoading: isLoading,
+///   child: Text('Submit Form'),
+/// )
+/// ```
+///
+/// ### Danger Actions
+/// Use danger variant for destructive actions:
+/// ```dart
+/// CorpoButton.danger(
+///   onPressed: () => showDeleteConfirmation(),
+///   child: Text('Delete Account'),
+/// )
+/// ```
+///
+/// ## Design Guidelines
+///
+/// - Use only one primary button per screen or section
+/// - Place primary actions in the most prominent position
+/// - Group related actions together
+/// - Maintain consistent button sizing within groups
+/// - Provide clear, action-oriented labels
+/// - Consider loading states for network operations
 library;
 
 import 'package:flutter/material.dart';
@@ -254,22 +311,24 @@ class CorpoButton extends StatelessWidget {
   }
 
   /// Builds an icon-only button.
-  Widget _buildIconButton(BuildContext context, ButtonStyle buttonStyle) => ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      style: buttonStyle,
-      autofocus: autofocus,
-      child: isLoading
-          ? _buildLoadingIndicator(context, size: _getIconSize())
-          : Icon(icon, size: _getIconSize()),
-    );
+  Widget _buildIconButton(BuildContext context, ButtonStyle buttonStyle) =>
+      ElevatedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: buttonStyle,
+        autofocus: autofocus,
+        child: isLoading
+            ? _buildLoadingIndicator(context, size: _getIconSize())
+            : Icon(icon, size: _getIconSize()),
+      );
 
   /// Builds a text button with optional icon.
-  Widget _buildTextButton(BuildContext context, ButtonStyle buttonStyle) => ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      style: buttonStyle,
-      autofocus: autofocus,
-      child: _buildButtonContent(context),
-    );
+  Widget _buildTextButton(BuildContext context, ButtonStyle buttonStyle) =>
+      ElevatedButton(
+        onPressed: isLoading ? null : onPressed,
+        style: buttonStyle,
+        autofocus: autofocus,
+        child: _buildButtonContent(context),
+      );
 
   /// Builds the content of the button (text, icon, loading indicator).
   Widget _buildButtonContent(BuildContext context) {
