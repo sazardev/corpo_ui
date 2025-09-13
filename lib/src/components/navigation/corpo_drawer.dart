@@ -120,9 +120,7 @@ class CorpoDrawer extends StatelessWidget {
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: CorpoSpacing.small),
               itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) {
-                return items[index];
-              },
+              itemBuilder: (BuildContext context, int index) => items[index],
             ),
           ),
           if (footer != null) footer!,
@@ -134,11 +132,11 @@ class CorpoDrawer extends StatelessWidget {
   double _getDrawerWidth() {
     switch (width) {
       case CorpoDrawerWidth.narrow:
-        return 240.0;
+        return 240;
       case CorpoDrawerWidth.standard:
-        return 280.0;
+        return 280;
       case CorpoDrawerWidth.wide:
-        return 320.0;
+        return 320;
     }
   }
 }
@@ -187,8 +185,8 @@ class CorpoDrawerHeader extends StatelessWidget {
             backgroundColor ??
             (isDark ? CorpoColors.primary700 : CorpoColors.primary500),
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(8.0),
-          bottomRight: Radius.circular(8.0),
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
         ),
       ),
       child: InkWell(
@@ -240,8 +238,7 @@ class CorpoDrawerItem extends StatelessWidget {
 
   /// Creates a section header.
   const CorpoDrawerItem.section({
-    super.key,
-    required this.title,
+    required this.title, super.key,
     this.children = const <CorpoDrawerItem>[],
   }) : icon = null,
        subtitle = null,
@@ -312,7 +309,7 @@ class CorpoDrawerItem extends StatelessWidget {
         vertical: CorpoSpacing.extraSmall,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(8),
         color: selected
             ? (isDark ? CorpoColors.primary800 : CorpoColors.primary100)
             : null,
@@ -326,7 +323,7 @@ class CorpoDrawerItem extends StatelessWidget {
                     : (isDark
                           ? CorpoColors.neutral400
                           : CorpoColors.neutral600),
-                size: 20.0,
+                size: 20,
               )
             : null,
         title: title != null
@@ -397,7 +394,7 @@ class CorpoDrawerItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: CorpoSpacing.small),
       child: Divider(
         color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
-        thickness: 1.0,
+        thickness: 1,
         indent: CorpoSpacing.medium,
         endIndent: CorpoSpacing.medium,
       ),

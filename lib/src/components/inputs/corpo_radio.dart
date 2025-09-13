@@ -102,7 +102,7 @@ class CorpoRadio<T> extends StatelessWidget {
     final double radioSize = _getRadioSize(size);
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Widget radioWidget = SizedBox(
+    final Widget radioWidget = SizedBox(
       width: radioSize,
       height: radioSize,
       child: Radio<T>(
@@ -170,11 +170,11 @@ class CorpoRadio<T> extends StatelessWidget {
   double _getRadioSize(CorpoRadioSize size) {
     switch (size) {
       case CorpoRadioSize.small:
-        return 16.0;
+        return 16;
       case CorpoRadioSize.medium:
-        return 20.0;
+        return 20;
       case CorpoRadioSize.large:
-        return 24.0;
+        return 24;
     }
   }
 
@@ -218,7 +218,5 @@ class CorpoRadio<T> extends StatelessWidget {
   }
 
   /// Gets the disabled color for the radio button.
-  Color _getDisabledColor(bool isDark) {
-    return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
-  }
+  Color _getDisabledColor(bool isDark) => isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
 }

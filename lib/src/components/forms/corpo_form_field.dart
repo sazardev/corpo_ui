@@ -39,7 +39,7 @@ import '../../constants/typography.dart';
 class CorpoFormField<T> extends FormField<T> {
   /// Creates a Corpo UI form field.
   CorpoFormField({
-    super.key,
+    required this.fieldBuilder, super.key,
     super.onSaved,
     super.validator,
     super.initialValue,
@@ -48,7 +48,6 @@ class CorpoFormField<T> extends FormField<T> {
     this.label,
     this.helpText,
     this.required = false,
-    required this.fieldBuilder,
   }) : super(
          builder: (FormFieldState<T> field) {
            final CorpoFormFieldState<T> state = field as CorpoFormFieldState<T>;

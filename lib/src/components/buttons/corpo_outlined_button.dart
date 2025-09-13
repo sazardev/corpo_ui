@@ -209,7 +209,6 @@ class CorpoOutlinedButton extends StatelessWidget {
     if (!isEnabled) {
       return BorderSide(
         color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral300,
-        width: 1.0,
       );
     }
 
@@ -226,7 +225,7 @@ class CorpoOutlinedButton extends StatelessWidget {
         break;
     }
 
-    return BorderSide(color: borderColor, width: 1.0);
+    return BorderSide(color: borderColor);
   }
 
   /// Gets the padding for the size variant.

@@ -86,11 +86,11 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize {
     switch (variant) {
       case CorpoAppBarVariant.compact:
-        return const Size.fromHeight(48.0);
+        return const Size.fromHeight(48);
       case CorpoAppBarVariant.standard:
-        return const Size.fromHeight(56.0);
+        return const Size.fromHeight(56);
       case CorpoAppBarVariant.large:
-        return const Size.fromHeight(96.0);
+        return const Size.fromHeight(96);
     }
   }
 
@@ -131,8 +131,7 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
     BuildContext context,
     Color backgroundColor,
     Color foregroundColor,
-  ) {
-    return Container(
+  ) => Container(
       height: preferredSize.height,
       color: backgroundColor,
       child: SafeArea(
@@ -145,7 +144,7 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               // Top row with leading and actions
               SizedBox(
-                height: 56.0,
+                height: 56,
                 child: Row(
                   children: <Widget>[
                     if (leading != null) ...<Widget>[
@@ -194,7 +193,6 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
     );
-  }
 
   /// Gets the title text style based on variant.
   TextStyle _getTitleStyle(CorpoAppBarVariant variant) {

@@ -193,8 +193,7 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
     bool isEnabled,
     bool hasError,
     bool isDark,
-  ) {
-    return Container(
+  ) => Container(
       height: _getFieldHeight(),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
@@ -231,17 +230,16 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
         ),
       ),
     );
-  }
 
   /// Gets the field height based on size variant.
   double _getFieldHeight() {
     switch (widget.size) {
       case CorpoDropdownSize.small:
-        return 32.0;
+        return 32;
       case CorpoDropdownSize.medium:
-        return 40.0;
+        return 40;
       case CorpoDropdownSize.large:
-        return 48.0;
+        return 48;
     }
   }
 
@@ -282,16 +280,12 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
   }
 
   /// Gets the helper text style.
-  TextStyle _getHelperStyle() {
-    return CorpoTypography.caption;
-  }
+  TextStyle _getHelperStyle() => CorpoTypography.caption;
 
   /// Gets the placeholder text style.
-  TextStyle _getPlaceholderStyle(bool isDark) {
-    return _getTextStyle().copyWith(
+  TextStyle _getPlaceholderStyle(bool isDark) => _getTextStyle().copyWith(
       color: isDark ? CorpoColors.neutral500 : CorpoColors.neutral400,
     );
-  }
 
   /// Gets the label color based on state.
   Color _getLabelColor(bool isDark, bool isEnabled, bool hasError) {

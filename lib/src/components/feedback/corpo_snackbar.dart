@@ -94,7 +94,7 @@ class CorpoSnackbar {
       behavior: SnackBarBehavior.floating,
       margin: margin ?? _getDefaultMargin(position),
       elevation: elevation ?? 6.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       action: action != null
           ? SnackBarAction(
               label: action.label,
@@ -115,15 +115,12 @@ class CorpoSnackbar {
     required String message,
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
-  }) {
-    return show(
+  }) => show(
       context,
       message: message,
-      type: CorpoSnackbarType.info,
       action: action,
       duration: duration,
     );
-  }
 
   /// Shows a success snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> success(
@@ -131,15 +128,13 @@ class CorpoSnackbar {
     required String message,
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
-  }) {
-    return show(
+  }) => show(
       context,
       message: message,
       type: CorpoSnackbarType.success,
       action: action,
       duration: duration,
     );
-  }
 
   /// Shows a warning snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> warning(
@@ -147,15 +142,13 @@ class CorpoSnackbar {
     required String message,
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
-  }) {
-    return show(
+  }) => show(
       context,
       message: message,
       type: CorpoSnackbarType.warning,
       action: action,
       duration: duration,
     );
-  }
 
   /// Shows an error snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> error(
@@ -163,24 +156,21 @@ class CorpoSnackbar {
     required String message,
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 6),
-  }) {
-    return show(
+  }) => show(
       context,
       message: message,
       type: CorpoSnackbarType.error,
       action: action,
       duration: duration,
     );
-  }
 
   static Widget _buildContent(
     String message,
     CorpoSnackbarType type,
     bool isDark,
-  ) {
-    return Row(
+  ) => Row(
       children: <Widget>[
-        Icon(_getIcon(type), color: _getIconColor(type, isDark), size: 20.0),
+        Icon(_getIcon(type), color: _getIconColor(type, isDark), size: 20),
         const SizedBox(width: CorpoSpacing.small),
         Expanded(
           child: Text(
@@ -192,7 +182,6 @@ class CorpoSnackbar {
         ),
       ],
     );
-  }
 
   static IconData _getIcon(CorpoSnackbarType type) {
     switch (type) {
@@ -233,9 +222,7 @@ class CorpoSnackbar {
     }
   }
 
-  static Color _getIconColor(CorpoSnackbarType type, bool isDark) {
-    return _getTextColor(type, isDark);
-  }
+  static Color _getIconColor(CorpoSnackbarType type, bool isDark) => _getTextColor(type, isDark);
 
   static Color _getActionColor(CorpoSnackbarType type, bool isDark) {
     switch (type) {

@@ -34,7 +34,5 @@ class _HasRichTextContent extends Matcher {
   }
 
   @override
-  Description describe(Description description) {
-    return description.add('RichText containing "$expectedText"');
-  }
+  Description describe(Description description) => description.add('RichText containing "$expectedText"');
 }

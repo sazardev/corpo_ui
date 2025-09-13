@@ -155,7 +155,7 @@ class _CorpoSearchFieldState extends State<CorpoSearchField> {
               borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
               borderSide: const BorderSide(
                 color: CorpoColors.primary500,
-                width: 2.0,
+                width: 2,
               ),
             ),
             filled: true,

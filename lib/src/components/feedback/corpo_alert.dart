@@ -141,7 +141,7 @@ class CorpoAlert extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(effectiveIcon, color: iconColor, size: 20.0),
+          Icon(effectiveIcon, color: iconColor, size: 20),
           const SizedBox(width: CorpoSpacing.small),
           Expanded(
             child: Column(
@@ -174,12 +174,12 @@ class CorpoAlert extends StatelessWidget {
             IconButton(
               onPressed: onDismiss,
               icon: const Icon(Icons.close),
-              iconSize: 16.0,
+              iconSize: 16,
               color: textColor.withOpacity(0.7),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(
-                minWidth: 24.0,
-                minHeight: 24.0,
+                minWidth: 24,
+                minHeight: 24,
               ),
             ),
           ],

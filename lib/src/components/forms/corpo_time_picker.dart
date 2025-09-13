@@ -89,7 +89,7 @@ class CorpoTimePicker extends StatefulWidget {
        onRangeSelected = null;
 
   /// Creates a range time picker.
-  CorpoTimePicker.range({
+  const CorpoTimePicker.range({
     super.key,
     this.startTime,
     this.endTime,
@@ -187,7 +187,7 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
         ],
         InkWell(
           onTap: widget.enabled ? _showTimePicker : null,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8),
           child: Container(
             height: _getHeight(),
             padding: EdgeInsets.symmetric(
@@ -195,8 +195,8 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
               vertical: _getVerticalPadding(),
             ),
             decoration: BoxDecoration(
-              border: Border.all(color: _getBorderColor(isDark), width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: _getBorderColor(isDark)),
+              borderRadius: BorderRadius.circular(8),
               color: widget.enabled
                   ? (isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite)
                   : (isDark ? CorpoColors.neutral700 : CorpoColors.neutral100),
@@ -251,11 +251,11 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
   double _getHeight() {
     switch (widget.size) {
       case CorpoTimePickerSize.small:
-        return 32.0;
+        return 32;
       case CorpoTimePickerSize.medium:
-        return 40.0;
+        return 40;
       case CorpoTimePickerSize.large:
-        return 48.0;
+        return 48;
     }
   }
 
@@ -284,11 +284,11 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
   double _getIconSize() {
     switch (widget.size) {
       case CorpoTimePickerSize.small:
-        return 16.0;
+        return 16;
       case CorpoTimePickerSize.medium:
-        return 20.0;
+        return 20;
       case CorpoTimePickerSize.large:
-        return 24.0;
+        return 24;
     }
   }
 
@@ -353,16 +353,14 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
         final TimeOfDay? selectedTime = await showTimePicker(
           context: context,
           initialTime: widget.selectedTime ?? now,
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
+          builder: (BuildContext context, Widget? child) => Theme(
               data: Theme.of(context).copyWith(
                 colorScheme: Theme.of(
                   context,
                 ).colorScheme.copyWith(primary: CorpoColors.primary500),
               ),
               child: child!,
-            );
-          },
+            ),
         );
 
         if (selectedTime != null) {
@@ -377,16 +375,14 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
           context: context,
           initialTime: widget.startTime ?? now,
           helpText: 'Select start time',
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
+          builder: (BuildContext context, Widget? child) => Theme(
               data: Theme.of(context).copyWith(
                 colorScheme: Theme.of(
                   context,
                 ).colorScheme.copyWith(primary: CorpoColors.primary500),
               ),
               child: child!,
-            );
-          },
+            ),
         );
 
         if (startTime != null) {
@@ -397,16 +393,14 @@ class _CorpoTimePickerState extends State<CorpoTimePicker> {
                 widget.endTime ??
                 TimeOfDay(hour: startTime.hour + 1, minute: startTime.minute),
             helpText: 'Select end time',
-            builder: (BuildContext context, Widget? child) {
-              return Theme(
+            builder: (BuildContext context, Widget? child) => Theme(
                 data: Theme.of(context).copyWith(
                   colorScheme: Theme.of(
                     context,
                   ).colorScheme.copyWith(primary: CorpoColors.primary500),
                 ),
                 child: child!,
-              );
-            },
+              ),
           );
 
           if (endTime != null) {

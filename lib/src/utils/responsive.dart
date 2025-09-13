@@ -60,19 +60,19 @@ enum CorpoScreenSize {
 abstract final class CorpoBreakpoints {
   /// Mobile breakpoint (480px)
   /// Below this width, consider as mobile device
-  static const double mobile = 480.0;
+  static const double mobile = 480;
 
   /// Tablet breakpoint (768px)
   /// Between mobile and tablet breakpoints
-  static const double tablet = 768.0;
+  static const double tablet = 768;
 
   /// Small desktop breakpoint (1024px)
   /// Between tablet and desktop breakpoints
-  static const double smallDesktop = 1024.0;
+  static const double smallDesktop = 1024;
 
   /// Desktop breakpoint (1200px)
   /// Above this width, consider as large desktop
-  static const double desktop = 1200.0;
+  static const double desktop = 1200;
 }
 
 /// A comprehensive responsive design utility class.
@@ -199,15 +199,13 @@ abstract final class CorpoResponsive {
     int tabletColumns = 2,
     int smallDesktopColumns = 3,
     int desktopColumns = 4,
-  }) {
-    return value<int>(
+  }) => value<int>(
       context: context,
       mobile: mobileColumns,
       tablet: tabletColumns,
       smallDesktop: smallDesktopColumns,
       desktop: desktopColumns,
     );
-  }
 
   /// Gets responsive padding based on screen size.
   static EdgeInsets getResponsivePadding(
@@ -216,15 +214,13 @@ abstract final class CorpoResponsive {
     EdgeInsets? tablet,
     EdgeInsets? smallDesktop,
     EdgeInsets? desktop,
-  }) {
-    return value<EdgeInsets>(
+  }) => value<EdgeInsets>(
       context: context,
       mobile: mobile ?? const EdgeInsets.all(16),
       tablet: tablet ?? const EdgeInsets.all(24),
       smallDesktop: smallDesktop ?? const EdgeInsets.all(32),
       desktop: desktop ?? const EdgeInsets.all(40),
     );
-  }
 
   /// Gets responsive margin based on screen size.
   static EdgeInsets getResponsiveMargin(
@@ -233,15 +229,13 @@ abstract final class CorpoResponsive {
     EdgeInsets? tablet,
     EdgeInsets? smallDesktop,
     EdgeInsets? desktop,
-  }) {
-    return value<EdgeInsets>(
+  }) => value<EdgeInsets>(
       context: context,
       mobile: mobile ?? const EdgeInsets.all(8),
       tablet: tablet ?? const EdgeInsets.all(12),
       smallDesktop: smallDesktop ?? const EdgeInsets.all(16),
       desktop: desktop ?? const EdgeInsets.all(20),
     );
-  }
 
   /// Gets responsive font size based on screen size.
   static double getResponsiveFontSize(
@@ -250,15 +244,13 @@ abstract final class CorpoResponsive {
     double? tablet,
     double? smallDesktop,
     double? desktop,
-  }) {
-    return value<double>(
+  }) => value<double>(
       context: context,
       mobile: mobile ?? 14,
       tablet: tablet ?? 16,
       smallDesktop: smallDesktop ?? 16,
       desktop: desktop ?? 18,
     );
-  }
 
   /// Creates a responsive container with adaptive constraints.
   static Widget container({

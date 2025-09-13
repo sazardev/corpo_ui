@@ -245,7 +245,7 @@ void main() {
             child: CorpoTextField(
               controller: controller,
               label: 'Email Field',
-              validator: CorpoValidation.compose([
+              validator: CorpoValidation.compose(<String? Function(String? p1)>[
                 CorpoValidation.required('Email is required'),
                 CorpoValidation.email('Invalid email format'),
                 CorpoValidation.maxLength(50, 'Email too long'),
@@ -387,7 +387,7 @@ void main() {
               controller: controller,
               label: 'Special Field',
               validator: CorpoValidation.required(
-                'Field is required! @#\$%^&*()[]{}|;:,.<>?~`',
+                r'Field is required! @#$%^&*()[]{}|;:,.<>?~`',
               ),
             ),
           ),
@@ -397,7 +397,7 @@ void main() {
         expect(formKey.currentState!.validate(), isFalse);
         await tester.pump();
         expect(
-          find.text('Field is required! @#\$%^&*()[]{}|;:,.<>?~`'),
+          find.text(r'Field is required! @#$%^&*()[]{}|;:,.<>?~`'),
           findsOneWidget,
         );
 

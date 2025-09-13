@@ -52,8 +52,7 @@ class CorpoBottomNavigationItem {
   /// Creates a bottom navigation item.
   const CorpoBottomNavigationItem({
     required this.icon,
-    this.activeIcon,
-    required this.label,
+    required this.label, this.activeIcon,
     this.badge,
     this.tooltip,
     this.enabled = true,
@@ -85,8 +84,7 @@ class CorpoBottomNavigationItem {
 class CorpoBottomNavigation extends StatelessWidget {
   /// Creates a Corpo UI bottom navigation.
   const CorpoBottomNavigation({
-    super.key,
-    required this.items,
+    required this.items, super.key,
     this.currentIndex = 0,
     this.onTap,
     this.type = CorpoBottomNavigationType.fixed,
@@ -155,7 +153,6 @@ class CorpoBottomNavigation extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
-            width: 1.0,
           ),
         ),
       ),
@@ -189,7 +186,7 @@ class CorpoBottomNavigation extends StatelessWidget {
 
     Widget child = InkWell(
       onTap: item.enabled ? () => onTap?.call(index) : null,
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(8),
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: CorpoSpacing.small,
@@ -211,7 +208,7 @@ class CorpoBottomNavigation extends StatelessWidget {
                       : (isDark
                             ? CorpoColors.neutral600
                             : CorpoColors.neutral400),
-                  size: 24.0,
+                  size: 24,
                 ),
                 if (showBadges && item.badge != null)
                   Positioned(
@@ -243,7 +240,7 @@ class CorpoBottomNavigation extends StatelessWidget {
     );
 
     if (item.tooltip != null) {
-      child = Tooltip(message: item.tooltip!, child: child);
+      child = Tooltip(message: item.tooltip, child: child);
     }
 
     return Expanded(child: child);
@@ -259,18 +256,18 @@ class CorpoBottomNavigation extends StatelessWidget {
         horizontal: isNumeric && count > 99
             ? CorpoSpacing.extraSmall
             : CorpoSpacing.extraSmall,
-        vertical: 2.0,
+        vertical: 2,
       ),
-      constraints: const BoxConstraints(minWidth: 16.0, minHeight: 16.0),
+      constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
       decoration: BoxDecoration(
         color: isDark ? CorpoColors.error : CorpoColors.error,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         isNumeric && count > 99 ? '99+' : badge,
         style: CorpoTypography.labelSmall.copyWith(
           color: CorpoColors.neutralWhite,
-          fontSize: 10.0,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
         ),
         textAlign: TextAlign.center,

@@ -107,8 +107,7 @@ class CorpoDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildTitleSection(bool isDark) {
-    return Padding(
+  Widget _buildTitleSection(bool isDark) => Padding(
       padding: const EdgeInsets.fromLTRB(
         CorpoSpacing.large,
         CorpoSpacing.large,
@@ -122,10 +121,8 @@ class CorpoDialog extends StatelessWidget {
         child: title!,
       ),
     );
-  }
 
-  Widget _buildContentSection(bool isDark) {
-    return Flexible(
+  Widget _buildContentSection(bool isDark) => Flexible(
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           CorpoSpacing.large,
@@ -141,10 +138,8 @@ class CorpoDialog extends StatelessWidget {
         ),
       ),
     );
-  }
 
-  Widget _buildActionsSection() {
-    return Padding(
+  Widget _buildActionsSection() => Padding(
       padding: const EdgeInsets.fromLTRB(
         CorpoSpacing.large,
         CorpoSpacing.medium,
@@ -161,7 +156,6 @@ class CorpoDialog extends StatelessWidget {
         ],
       ),
     );
-  }
 
   /// Gets the maximum width based on size variant and screen size.
   double _getMaxWidth(BuildContext context, CorpoDialogSize size) {
@@ -186,13 +180,11 @@ class CorpoDialog extends StatelessWidget {
     bool barrierDismissible = true,
     Color? barrierColor,
     String? barrierLabel,
-  }) {
-    return showDialog<T>(
+  }) => showDialog<T>(
       context: context,
       builder: builder,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       barrierLabel: barrierLabel,
     );
-  }
 }

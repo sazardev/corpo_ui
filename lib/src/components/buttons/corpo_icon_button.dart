@@ -192,11 +192,11 @@ class CorpoIconButton extends StatelessWidget {
   double _getButtonSize(CorpoIconButtonSize size) {
     switch (size) {
       case CorpoIconButtonSize.small:
-        return 32.0;
+        return 32;
       case CorpoIconButtonSize.medium:
-        return 40.0;
+        return 40;
       case CorpoIconButtonSize.large:
-        return 48.0;
+        return 48;
     }
   }
 
@@ -204,11 +204,11 @@ class CorpoIconButton extends StatelessWidget {
   double _getIconSize(CorpoIconButtonSize size) {
     switch (size) {
       case CorpoIconButtonSize.small:
-        return 16.0;
+        return 16;
       case CorpoIconButtonSize.medium:
-        return 20.0;
+        return 20;
       case CorpoIconButtonSize.large:
-        return 24.0;
+        return 24;
     }
   }
 
@@ -256,7 +256,7 @@ class CorpoIconButton extends StatelessWidget {
       disabledBackgroundColor: isDark
           ? CorpoColors.neutral800
           : CorpoColors.neutral100,
-      padding: EdgeInsets.all(CorpoSpacing.extraSmall),
+      padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
         side: _getBorderSide(variant, isEnabled, isDark),
@@ -295,7 +295,6 @@ class CorpoIconButton extends StatelessWidget {
     if (variant == CorpoIconButtonVariant.secondary && isEnabled) {
       return BorderSide(
         color: isDark ? CorpoColors.neutral600 : CorpoColors.neutral300,
-        width: 1.0,
       );
     }
     return BorderSide.none;

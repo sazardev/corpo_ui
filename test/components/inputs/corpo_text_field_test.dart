@@ -7,8 +7,9 @@ library;
 import 'package:corpo_ui/corpo_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../../helpers/test_utils.dart';
+
 import '../../helpers/corpo_matchers.dart';
+import '../../helpers/test_utils.dart';
 
 void main() {
   group('CorpoTextField Tests', () {
@@ -43,7 +44,7 @@ void main() {
         expect(find.byType(RichText), findsWidgets);
         expect(
           find.byWidgetPredicate(
-            (widget) => hasRichTextContent('Email Address').matches(widget, {}),
+            (Widget widget) => hasRichTextContent('Email Address').matches(widget, <dynamic, dynamic>{}),
           ),
           findsOneWidget,
         );
@@ -76,7 +77,7 @@ void main() {
           CorpoTextField(
             controller: controller,
             label: 'Test Field',
-            onChanged: (value) => lastChangedValue = value,
+            onChanged: (String value) => lastChangedValue = value,
           ),
         );
 
@@ -99,7 +100,7 @@ void main() {
           CorpoTextField(
             controller: controller,
             label: 'Email Field',
-            validator: (value) {
+            validator: (String? value) {
               validationCalled = true;
               if (value?.isEmpty == true) return 'Email is required';
               if (!value!.contains('@')) return 'Invalid email format';
@@ -131,7 +132,7 @@ void main() {
           CorpoTextField(
             controller: controller,
             label: 'Email Field',
-            validator: (value) {
+            validator: (String? value) {
               if (value?.isEmpty == true) return 'Email is required';
               if (!value!.contains('@')) return 'Invalid email format';
               return null;
@@ -274,8 +275,8 @@ void main() {
         // Verify the label exists in RichText widget
         expect(
           find.byWidgetPredicate(
-            (widget) =>
-                hasRichTextContent('Accessible Field').matches(widget, {}),
+            (Widget widget) =>
+                hasRichTextContent('Accessible Field').matches(widget, <dynamic, dynamic>{}),
           ),
           findsOneWidget,
         );
@@ -284,7 +285,7 @@ void main() {
         expect(find.text('This is helper text'), findsOneWidget);
 
         // Verify TextFormField is present and enabled
-        final textFieldFinder = find.byType(TextFormField);
+        final Finder textFieldFinder = find.byType(TextFormField);
         expect(textFieldFinder, findsOneWidget);
 
         // Verify accessibility properties
@@ -303,7 +304,7 @@ void main() {
           CorpoTextField(
             controller: controller,
             label: 'Validation Field',
-            validator: (value) =>
+            validator: (String? value) =>
                 value?.isEmpty == true ? 'This field is required' : null,
           ),
         );
@@ -324,7 +325,6 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoTextField(controller: controller, label: 'Light Theme Field'),
-          darkMode: false,
         );
 
         expect(find.byType(TextFormField), findsOneWidget);
@@ -360,7 +360,7 @@ void main() {
       });
 
       testWidgets('handles special characters', (WidgetTester tester) async {
-        const String specialChars = '!@#\$%^&*()[]{}|;:,.<>?~`';
+        const String specialChars = r'!@#$%^&*()[]{}|;:,.<>?~`';
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
@@ -401,7 +401,7 @@ void main() {
           CorpoTextField(
             controller: controller,
             label: 'Rapid Change Field',
-            onChanged: (value) => changeCount++,
+            onChanged: (String value) => changeCount++,
           ),
         );
 

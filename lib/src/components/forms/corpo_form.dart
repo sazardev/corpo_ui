@@ -72,7 +72,7 @@ enum CorpoFormValidationMode {
 class CorpoForm extends StatefulWidget {
   /// Creates a Corpo UI form.
   const CorpoForm({
-    super.key,
+    required this.children, super.key,
     this.onSubmit,
     this.onChanged,
     this.validationMode = CorpoFormValidationMode.onSubmitThenChange,
@@ -82,7 +82,6 @@ class CorpoForm extends StatefulWidget {
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.enabled = true,
     this.autovalidateMode,
-    required this.children,
   });
 
   /// Called when the form is submitted.
@@ -119,9 +118,7 @@ class CorpoForm extends StatefulWidget {
   State<CorpoForm> createState() => CorpoFormState();
 
   /// Gets the nearest CorpoForm instance from the widget tree.
-  static CorpoFormState? of(BuildContext context) {
-    return context.findAncestorStateOfType<CorpoFormState>();
-  }
+  static CorpoFormState? of(BuildContext context) => context.findAncestorStateOfType<CorpoFormState>();
 }
 
 /// State for CorpoForm.
@@ -144,7 +141,7 @@ class CorpoFormState extends State<CorpoForm> {
     return Container(
       decoration: BoxDecoration(
         color: isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Form(
         key: _formKey,
@@ -166,34 +163,26 @@ class CorpoFormState extends State<CorpoForm> {
     }
   }
 
-  Widget _buildVerticalLayout() {
-    return Column(
+  Widget _buildVerticalLayout() => Column(
       crossAxisAlignment: widget.crossAxisAlignment,
       mainAxisAlignment: widget.mainAxisAlignment,
       children: _addSpacing(widget.children),
     );
-  }
 
-  Widget _buildHorizontalLayout() {
-    return Row(
+  Widget _buildHorizontalLayout() => Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: widget.mainAxisAlignment,
       children: _addSpacing(
-        widget.children.map((Widget child) {
-          return Expanded(child: child);
-        }).toList(),
+        widget.children.map((Widget child) => Expanded(child: child)).toList(),
       ),
     );
-  }
 
   Widget _buildGridLayout() {
     // For grid layout, wrap in a responsive grid
     return Wrap(
       spacing: widget.spacing,
       runSpacing: widget.spacing,
-      children: widget.children.map((Widget child) {
-        return SizedBox(width: _getGridItemWidth(), child: child);
-      }).toList(),
+      children: widget.children.map((Widget child) => SizedBox(width: _getGridItemWidth(), child: child)).toList(),
     );
   }
 
@@ -237,9 +226,7 @@ class CorpoFormState extends State<CorpoForm> {
   }
 
   /// Validates the form and returns whether it's valid.
-  bool validate() {
-    return _formKey.currentState?.validate() ?? false;
-  }
+  bool validate() => _formKey.currentState?.validate() ?? false;
 
   /// Saves all form fields.
   void save() {
@@ -282,9 +269,7 @@ class CorpoFormState extends State<CorpoForm> {
   }
 
   /// Gets a field value from the form data.
-  T? getField<T>(String name) {
-    return _formData[name] as T?;
-  }
+  T? getField<T>(String name) => _formData[name] as T?;
 
   /// Sets multiple field values at once.
   void setFormData(Map<String, dynamic> data) {

@@ -65,8 +65,7 @@ class CorpoBreadcrumbItem {
 class CorpoBreadcrumb extends StatelessWidget {
   /// Creates a Corpo UI breadcrumb navigation.
   const CorpoBreadcrumb({
-    super.key,
-    required this.items,
+    required this.items, super.key,
     this.separator = '/',
     this.maxItems,
     this.overflowText = '...',
@@ -175,11 +174,11 @@ class CorpoBreadcrumb extends StatelessWidget {
           (isDark ? CorpoColors.primary400 : CorpoColors.primary500);
     }
 
-    Widget child = Row(
+    final Widget child = Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         if (item.icon != null) ...<Widget>[
-          Icon(item.icon, size: 16.0, color: textColor),
+          Icon(item.icon, size: 16, color: textColor),
           const SizedBox(width: CorpoSpacing.extraSmall),
         ],
         Text(
@@ -199,11 +198,11 @@ class CorpoBreadcrumb extends StatelessWidget {
     if (item.enabled && !item.isCurrentPage && item.onTap != null) {
       return InkWell(
         onTap: item.onTap,
-        borderRadius: BorderRadius.circular(4.0),
+        borderRadius: BorderRadius.circular(4),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: CorpoSpacing.extraSmall,
-            vertical: 2.0,
+            vertical: 2,
           ),
           child: child,
         ),
@@ -213,14 +212,13 @@ class CorpoBreadcrumb extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: CorpoSpacing.extraSmall,
-        vertical: 2.0,
+        vertical: 2,
       ),
       child: child,
     );
   }
 
-  Widget _buildSeparator(bool isDark) {
-    return Padding(
+  Widget _buildSeparator(bool isDark) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: CorpoSpacing.extraSmall),
       child: Text(
         separator,
@@ -231,5 +229,4 @@ class CorpoBreadcrumb extends StatelessWidget {
         ),
       ),
     );
-  }
 }

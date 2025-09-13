@@ -70,8 +70,7 @@ class CorpoSkeleton extends StatefulWidget {
 
   /// Creates a circular skeleton loader.
   const CorpoSkeleton.circular({
-    super.key,
-    required double diameter,
+    required double diameter, super.key,
     this.animation = CorpoSkeletonAnimation.shimmer,
     this.baseColor,
     this.highlightColor,
@@ -158,7 +157,7 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: -1.0, end: 1.0).animate(
+    _animation = Tween<double>(begin: -1, end: 1).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
 
@@ -185,8 +184,7 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
     return _buildSkeleton(isDark);
   }
 
-  Widget _buildTextSkeleton(bool isDark) {
-    return Column(
+  Widget _buildTextSkeleton(bool isDark) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List<Widget>.generate(widget.lines!, (int index) {
         final bool isLastLine = index == widget.lines! - 1;
@@ -200,12 +198,11 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
               height: widget.lineHeight ?? 16.0,
             ),
             if (!isLastLine && widget.spacing != null)
-              SizedBox(height: widget.spacing!),
+              SizedBox(height: widget.spacing),
           ],
         );
       }),
     );
-  }
 
   Widget _buildSkeleton(bool isDark, {double? width, double? height}) {
     final Color baseColor =
@@ -227,28 +224,23 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
     if (widget.animation == CorpoSkeletonAnimation.shimmer) {
       skeleton = AnimatedBuilder(
         animation: _animation,
-        builder: (BuildContext context, Widget? child) {
-          return Container(
+        builder: (BuildContext context, Widget? child) => Container(
             width: width ?? widget.width,
             height: height ?? widget.height,
             decoration: BoxDecoration(
               borderRadius: _getBorderRadius(),
               gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
                 colors: <Color>[baseColor, highlightColor, baseColor],
-                stops: <double>[0.0, 0.5, 1.0],
+                stops: const <double>[0, 0.5, 1],
                 transform: _SlideGradientTransform(_animation.value),
               ),
             ),
-          );
-        },
+          ),
       );
     } else if (widget.animation == CorpoSkeletonAnimation.pulse) {
       skeleton = AnimatedBuilder(
         animation: _animationController,
-        builder: (BuildContext context, Widget? child) {
-          return Opacity(
+        builder: (BuildContext context, Widget? child) => Opacity(
             opacity: 0.5 + (_animationController.value * 0.5),
             child: Container(
               width: width ?? widget.width,
@@ -258,8 +250,7 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
                 borderRadius: _getBorderRadius(),
               ),
             ),
-          );
-        },
+          ),
       );
     }
 
@@ -277,7 +268,7 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
       case CorpoSkeletonShape.circle:
         return BorderRadius.circular(widget.width / 2);
       case CorpoSkeletonShape.rounded:
-        return BorderRadius.circular(8.0);
+        return BorderRadius.circular(8);
     }
   }
 }
@@ -289,7 +280,5 @@ class _SlideGradientTransform extends GradientTransform {
   final double slidePercent;
 
   @override
-  Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
-    return Matrix4.translationValues(bounds.width * slidePercent, 0.0, 0.0);
-  }
+  Matrix4? transform(Rect bounds, {TextDirection? textDirection}) => Matrix4.translationValues(bounds.width * slidePercent, 0, 0);
 }

@@ -61,9 +61,7 @@ class CorpoTab {
 class CorpoTabs extends StatefulWidget {
   /// Creates a Corpo UI tabs component.
   const CorpoTabs({
-    super.key,
-    required this.tabs,
-    required this.children,
+    required this.tabs, required this.children, super.key,
     this.initialIndex = 0,
     this.onTap,
     this.style = CorpoTabStyle.underlined,
@@ -164,8 +162,7 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
     }
   }
 
-  Widget _buildUnderlinedTabBar(bool isDark) {
-    return Container(
+  Widget _buildUnderlinedTabBar(bool isDark) => Container(
       decoration: BoxDecoration(
         color:
             widget.backgroundColor ??
@@ -173,7 +170,6 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
         border: Border(
           bottom: BorderSide(
             color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
-            width: 1.0,
           ),
         ),
       ),
@@ -194,18 +190,15 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
           fontWeight: FontWeight.w600,
         ),
         unselectedLabelStyle: CorpoTypography.labelMedium,
-        indicatorWeight: 2.0,
         splashFactory: NoSplash.splashFactory,
       ),
     );
-  }
 
-  Widget _buildFilledTabBar(bool isDark) {
-    return Container(
+  Widget _buildFilledTabBar(bool isDark) => Container(
       padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
       decoration: BoxDecoration(
         color: isDark ? CorpoColors.neutral800 : CorpoColors.neutral100,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: TabBar(
         controller: _tabController,
@@ -213,7 +206,7 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
         isScrollable: widget.isScrollable,
         indicator: BoxDecoration(
           color: isDark ? CorpoColors.primary600 : CorpoColors.primary500,
-          borderRadius: BorderRadius.circular(6.0),
+          borderRadius: BorderRadius.circular(6),
         ),
         labelColor: CorpoColors.neutralWhite,
         unselectedLabelColor: isDark
@@ -226,10 +219,8 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
         splashFactory: NoSplash.splashFactory,
       ),
     );
-  }
 
-  Widget _buildOutlinedTabBar(bool isDark) {
-    return Container(
+  Widget _buildOutlinedTabBar(bool isDark) => Container(
       padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
       child: TabBar(
         controller: _tabController,
@@ -238,9 +229,9 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
         indicator: BoxDecoration(
           border: Border.all(
             color: isDark ? CorpoColors.primary400 : CorpoColors.primary500,
-            width: 2.0,
+            width: 2,
           ),
-          borderRadius: BorderRadius.circular(6.0),
+          borderRadius: BorderRadius.circular(6),
         ),
         labelColor: isDark ? CorpoColors.primary400 : CorpoColors.primary500,
         unselectedLabelColor: isDark
@@ -253,7 +244,6 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
         splashFactory: NoSplash.splashFactory,
       ),
     );
-  }
 
   Widget _buildTab(CorpoTab tab) {
     if (tab.child != null) {
@@ -261,11 +251,11 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
     }
 
     if (tab.icon != null && tab.text != null) {
-      return Tab(icon: Icon(tab.icon, size: 20.0), text: tab.text);
+      return Tab(icon: Icon(tab.icon, size: 20), text: tab.text);
     }
 
     if (tab.icon != null) {
-      return Tab(icon: Icon(tab.icon, size: 20.0));
+      return Tab(icon: Icon(tab.icon, size: 20));
     }
 
     return Tab(text: tab.text ?? '');

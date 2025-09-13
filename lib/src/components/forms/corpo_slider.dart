@@ -225,11 +225,11 @@ class CorpoSlider extends StatelessWidget {
   double _getTrackHeight() {
     switch (size) {
       case CorpoSliderSize.small:
-        return 2.0;
+        return 2;
       case CorpoSliderSize.medium:
-        return 4.0;
+        return 4;
       case CorpoSliderSize.large:
-        return 6.0;
+        return 6;
     }
   }
 
@@ -237,18 +237,16 @@ class CorpoSlider extends StatelessWidget {
   double _getThumbRadius() {
     switch (size) {
       case CorpoSliderSize.small:
-        return 8.0;
+        return 8;
       case CorpoSliderSize.medium:
-        return 10.0;
+        return 10;
       case CorpoSliderSize.large:
-        return 12.0;
+        return 12;
     }
   }
 
   /// Gets the label text style.
-  TextStyle _getLabelStyle() {
-    return CorpoTypography.labelMedium;
-  }
+  TextStyle _getLabelStyle() => CorpoTypography.labelMedium;
 
   /// Gets the label color based on state.
   Color _getLabelColor(bool isDark, bool isEnabled) {
@@ -259,7 +257,5 @@ class CorpoSlider extends StatelessWidget {
   }
 
   /// Gets the disabled color.
-  Color _getDisabledColor(bool isDark) {
-    return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
-  }
+  Color _getDisabledColor(bool isDark) => isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
 }

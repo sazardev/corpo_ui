@@ -87,7 +87,7 @@ class CorpoDatePicker extends StatefulWidget {
        onRangeSelected = null;
 
   /// Creates a range date picker.
-  CorpoDatePicker.range({
+  const CorpoDatePicker.range({
     super.key,
     this.startDate,
     this.endDate,
@@ -189,7 +189,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
         ],
         InkWell(
           onTap: widget.enabled ? _showDatePicker : null,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8),
           child: Container(
             height: _getHeight(),
             padding: EdgeInsets.symmetric(
@@ -197,8 +197,8 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
               vertical: _getVerticalPadding(),
             ),
             decoration: BoxDecoration(
-              border: Border.all(color: _getBorderColor(isDark), width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: _getBorderColor(isDark)),
+              borderRadius: BorderRadius.circular(8),
               color: widget.enabled
                   ? (isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite)
                   : (isDark ? CorpoColors.neutral700 : CorpoColors.neutral100),
@@ -253,11 +253,11 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
   double _getHeight() {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return 32.0;
+        return 32;
       case CorpoDatePickerSize.medium:
-        return 40.0;
+        return 40;
       case CorpoDatePickerSize.large:
-        return 48.0;
+        return 48;
     }
   }
 
@@ -286,11 +286,11 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
   double _getIconSize() {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return 16.0;
+        return 16;
       case CorpoDatePickerSize.medium:
-        return 20.0;
+        return 20;
       case CorpoDatePickerSize.large:
-        return 24.0;
+        return 24;
     }
   }
 
@@ -340,9 +340,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
     return widget.placeholder;
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
-  }
+  String _formatDate(DateTime date) => '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
 
   Future<void> _showDatePicker() async {
     final DateTime now = DateTime.now();
@@ -356,16 +354,14 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
           initialDate: widget.selectedDate ?? now,
           firstDate: firstDate,
           lastDate: lastDate,
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
+          builder: (BuildContext context, Widget? child) => Theme(
               data: Theme.of(context).copyWith(
                 colorScheme: Theme.of(
                   context,
                 ).colorScheme.copyWith(primary: CorpoColors.primary500),
               ),
               child: child!,
-            );
-          },
+            ),
         );
 
         if (selectedDate != null) {
@@ -382,16 +378,14 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
           initialDateRange: widget.startDate != null && widget.endDate != null
               ? DateTimeRange(start: widget.startDate!, end: widget.endDate!)
               : null,
-          builder: (BuildContext context, Widget? child) {
-            return Theme(
+          builder: (BuildContext context, Widget? child) => Theme(
               data: Theme.of(context).copyWith(
                 colorScheme: Theme.of(
                   context,
                 ).colorScheme.copyWith(primary: CorpoColors.primary500),
               ),
               child: child!,
-            );
-          },
+            ),
         );
 
         if (selectedRange != null) {

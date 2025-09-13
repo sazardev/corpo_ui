@@ -53,9 +53,9 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoButton(
+          const CorpoButton(
             onPressed: null, // Disabled button
-            child: const Text('Disabled Button'),
+            child: Text('Disabled Button'),
           ),
         );
 
@@ -88,7 +88,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoButton(onPressed: null, child: const Text('Disabled Button')),
+          const CorpoButton(onPressed: null, child: Text('Disabled Button')),
         );
 
         final ElevatedButton elevatedButton = tester.widget(
@@ -260,7 +260,6 @@ void main() {
             onPressed: onPressedCallback,
             child: const Text('Light Theme Button'),
           ),
-          darkMode: false,
         );
 
         expect(find.byType(CorpoButton), findsOneWidget);

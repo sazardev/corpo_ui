@@ -187,15 +187,13 @@ abstract final class CorpoAccessibility {
     String? semanticLabel,
     String? tooltip,
     bool enabled = true,
-  }) {
-    return Semantics(
+  }) => Semantics(
       button: true,
       enabled: enabled,
       label: semanticLabel,
       onTap: enabled ? onPressed : null,
       child: Tooltip(message: tooltip ?? '', child: child),
     );
-  }
 
   /// Creates an accessible text input with proper semantics.
   ///
@@ -209,15 +207,13 @@ abstract final class CorpoAccessibility {
     bool required = false,
     bool multiline = false,
     TextInputType? keyboardType,
-  }) {
-    return Semantics(
+  }) => Semantics(
       textField: true,
       label: label,
       hint: hint,
       multiline: multiline,
       child: child,
     );
-  }
 
   /// Creates a live region for dynamic content updates.
   ///
@@ -227,9 +223,7 @@ abstract final class CorpoAccessibility {
     required Widget child,
     required String announcement,
     AnnouncementPriority priority = AnnouncementPriority.polite,
-  }) {
-    return Semantics(liveRegion: true, label: announcement, child: child);
-  }
+  }) => Semantics(liveRegion: true, label: announcement, child: child);
 
   /// Wraps content with skip link functionality.
   ///
@@ -239,20 +233,16 @@ abstract final class CorpoAccessibility {
     required Widget child,
     required String skipText,
     required VoidCallback onSkip,
-  }) {
-    return Focus(
+  }) => Focus(
       child: Builder(
-        builder: (BuildContext context) {
-          return Semantics(
+        builder: (BuildContext context) => Semantics(
             label: skipText,
             button: true,
             onTap: onSkip,
             child: child,
-          );
-        },
+          ),
       ),
     );
-  }
 
   /// Creates an accessible heading with proper semantics.
   ///
@@ -262,14 +252,12 @@ abstract final class CorpoAccessibility {
     required Widget child,
     required int level,
     String? semanticLabel,
-  }) {
-    return Semantics(
+  }) => Semantics(
       header: true,
       sortKey: OrdinalSortKey(level.toDouble()),
       label: semanticLabel,
       child: child,
     );
-  }
 
   /// Provides haptic feedback for accessibility.
   ///
@@ -293,30 +281,22 @@ abstract final class CorpoAccessibility {
   /// Checks if high contrast mode is enabled.
   ///
   /// Useful for adjusting UI for users who need high contrast visuals.
-  static bool isHighContrastEnabled(BuildContext context) {
-    return MediaQuery.of(context).highContrast;
-  }
+  static bool isHighContrastEnabled(BuildContext context) => MediaQuery.of(context).highContrast;
 
   /// Checks if animations should be reduced for accessibility.
   ///
   /// Returns true if the user has requested reduced motion.
-  static bool shouldReduceAnimations(BuildContext context) {
-    return MediaQuery.of(context).disableAnimations;
-  }
+  static bool shouldReduceAnimations(BuildContext context) => MediaQuery.of(context).disableAnimations;
 
   /// Gets the current text scale factor for accessibility.
   ///
   /// Returns the user's preferred text scaling for vision accessibility.
-  static double getTextScaleFactor(BuildContext context) {
-    return MediaQuery.of(context).textScaler.scale(1.0);
-  }
+  static double getTextScaleFactor(BuildContext context) => MediaQuery.of(context).textScaler.scale(1);
 
   /// Checks if the app is being used with a screen reader.
   ///
   /// Useful for providing alternative interfaces for screen reader users.
-  static bool isScreenReaderEnabled(BuildContext context) {
-    return MediaQuery.of(context).accessibleNavigation;
-  }
+  static bool isScreenReaderEnabled(BuildContext context) => MediaQuery.of(context).accessibleNavigation;
 
   // Private helper methods
 
@@ -333,7 +313,7 @@ abstract final class CorpoAccessibility {
   static double _getRequiredContrastRatio(WcagLevel level, bool isLargeText) {
     switch (level) {
       case WcagLevel.a:
-        return 3.0; // Minimum for Level A
+        return 3; // Minimum for Level A
       case WcagLevel.aa:
         return isLargeText ? 3.0 : 4.5; // Standard for Level AA
       case WcagLevel.aaa:
@@ -384,7 +364,7 @@ enum HapticFeedbackType {
 /// Extension for missing pow function.
 extension DoubleExtensions on double {
   double pow(double exponent) {
-    double result = 1.0;
+    double result = 1;
     for (int i = 0; i < exponent.round(); i++) {
       result *= this;
     }
