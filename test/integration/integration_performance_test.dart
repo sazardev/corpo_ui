@@ -30,7 +30,8 @@ void main() {
               children: <Widget>[
                 CorpoTextField(
                   label: 'Name',
-                  onChanged: (String value) => setState(() => textFieldValue = value),
+                  onChanged: (String value) =>
+                      setState(() => textFieldValue = value),
                   validator: (String? value) =>
                       value?.isEmpty == true ? 'Required' : null,
                 ),
@@ -46,19 +47,22 @@ void main() {
                     CorpoDropdownItem(value: 'mx', child: Text('Mexico')),
                   ],
                   value: dropdownValue,
-                  onChanged: (String? value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => dropdownValue = value),
                 ),
                 const SizedBox(height: 16),
                 CorpoRadio<String>(
                   value: 'option1',
                   groupValue: radioValue,
-                  onChanged: (String? value) => setState(() => radioValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => radioValue = value),
                   label: 'Option 1',
                 ),
                 CorpoRadio<String>(
                   value: 'option2',
                   groupValue: radioValue,
-                  onChanged: (String? value) => setState(() => radioValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => radioValue = value),
                   label: 'Option 2',
                 ),
                 const SizedBox(height: 16),
@@ -71,7 +75,8 @@ void main() {
                 const SizedBox(height: 16),
                 CorpoSwitch(
                   value: switchValue,
-                  onChanged: (bool value) => setState(() => switchValue = value),
+                  onChanged: (bool value) =>
+                      setState(() => switchValue = value),
                   label: 'Enable notifications',
                 ),
                 const SizedBox(height: 24),
@@ -133,7 +138,7 @@ void main() {
                     ],
                     initialIndex: selectedTab,
                     onTap: (int index) => setState(() => selectedTab = index),
-                    children: <Widget>const <CorpoCard>[
+                    children: const <Widget>[
                       CorpoCard(
                         child: Padding(
                           padding: EdgeInsets.all(16),
@@ -492,7 +497,9 @@ void main() {
         expect(find.byType(CorpoCheckbox), findsNWidgets(2));
 
         // Verify separate state
-        final Iterable<Checkbox> checkboxes = tester.widgetList<Checkbox>(find.byType(Checkbox));
+        final Iterable<Checkbox> checkboxes = tester.widgetList<Checkbox>(
+          find.byType(Checkbox),
+        );
         final Checkbox checkbox1 = checkboxes.first;
         final Checkbox checkbox2 = checkboxes.last;
 
@@ -555,41 +562,39 @@ void main() {
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          SingleChildScrollView(
-            child: Column(
-              children: List.generate(
-                5,
-                (int index) => Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: CorpoCard(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        CorpoTextField(label: 'Field $index'),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            CorpoCheckbox(
-                              value: false,
-                              onChanged: (bool? value) {},
-                              label: 'Option A',
-                            ),
-                            const SizedBox(width: 16),
-                            CorpoCheckbox(
-                              value: true,
-                              onChanged: (bool? value) {},
-                              label: 'Option B',
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        CorpoButton(
-                          onPressed: () {},
-                          child: Text('Submit $index'),
-                        ),
-                      ],
-                    ),
+          Column(
+            children: List.generate(
+              5,
+              (int index) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: CorpoCard(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      CorpoTextField(label: 'Field $index'),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          CorpoCheckbox(
+                            value: false,
+                            onChanged: (bool? value) {},
+                            label: 'Option A',
+                          ),
+                          const SizedBox(width: 16),
+                          CorpoCheckbox(
+                            value: true,
+                            onChanged: (bool? value) {},
+                            label: 'Option B',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      CorpoButton(
+                        onPressed: () {},
+                        child: Text('Submit $index'),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -599,11 +604,11 @@ void main() {
 
         stopwatch.stop();
 
-        // Verify complex structure renders
-        expect(find.byType(CorpoCard), findsNWidgets(20));
-        expect(find.byType(CorpoTextField), findsNWidgets(20));
-        expect(find.byType(CorpoCheckbox), findsNWidgets(40));
-        expect(find.byType(CorpoButton), findsNWidgets(20));
+        // Verify complex structure renders (5 cards, each with 1 field, 2 checkboxes, 1 button)
+        expect(find.byType(CorpoCard), findsNWidgets(5));
+        expect(find.byType(CorpoTextField), findsNWidgets(5));
+        expect(find.byType(CorpoCheckbox), findsNWidgets(10));
+        expect(find.byType(CorpoButton), findsNWidgets(5));
 
         // Performance check
         expect(stopwatch.elapsedMilliseconds, lessThan(3000));
@@ -727,14 +732,18 @@ void main() {
         WidgetTester tester,
       ) async {
         // Simulate large dataset
-        final List<String> items = List.generate(1000, (int index) => 'Item $index');
+        final List<String> items = List.generate(
+          1000,
+          (int index) => 'Item $index',
+        );
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoDropdown<String>(
             items: items
                 .map(
-                  (String item) => CorpoDropdownItem(value: item, child: Text(item)),
+                  (String item) =>
+                      CorpoDropdownItem(value: item, child: Text(item)),
                 )
                 .toList(),
             onChanged: (String? value) {},
@@ -813,7 +822,8 @@ void main() {
               children: <Widget>[
                 CorpoTextField(
                   label: 'Responsive Input',
-                  onChanged: (String value) => setState(() => textValue = value),
+                  onChanged: (String value) =>
+                      setState(() => textValue = value),
                 ),
                 CorpoCheckbox(
                   value: checkboxValue,
@@ -833,7 +843,8 @@ void main() {
                     ),
                   ],
                   value: dropdownValue,
-                  onChanged: (String? value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => dropdownValue = value),
                   label: 'Responsive Dropdown',
                 ),
                 Text('State: $textValue, $checkboxValue, $dropdownValue'),
@@ -877,11 +888,7 @@ void main() {
               items: const <CorpoDropdownItem<String>>[],
               onChanged: (String? value) {},
             ),
-            const CorpoCheckbox(
-              value: null,
-              tristate: true,
-              onChanged: null,
-            ),
+            const CorpoCheckbox(value: null, tristate: true, onChanged: null),
             const CorpoCard(child: SizedBox.shrink()),
           ],
         ),

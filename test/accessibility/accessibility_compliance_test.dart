@@ -41,8 +41,15 @@ void main() {
       );
 
       expect(textFieldNode.hasFlag(SemanticsFlag.isTextField), isTrue);
-      // Note: Label might be handled differently by the component
-      expect(find.text('Email Address'), findsOneWidget);
+      // Check for RichText containing the label since CorpoTextField uses RichText for labels
+      expect(
+        find.byWidgetPredicate(
+          (Widget widget) =>
+              widget is RichText &&
+              widget.text.toPlainText().contains('Email Address'),
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('CorpoCheckbox has proper accessibility semantics', (
@@ -92,8 +99,12 @@ void main() {
         ),
       );
 
-      final SemanticsNode firstRadio = tester.getSemantics(find.byType(Radio<String>).first);
-      final SemanticsNode secondRadio = tester.getSemantics(find.byType(Radio<String>).last);
+      final SemanticsNode firstRadio = tester.getSemantics(
+        find.byType(Radio<String>).first,
+      );
+      final SemanticsNode secondRadio = tester.getSemantics(
+        find.byType(Radio<String>).last,
+      );
 
       expect(firstRadio.hasFlag(SemanticsFlag.hasCheckedState), isTrue);
       expect(firstRadio.hasFlag(SemanticsFlag.isChecked), isTrue);
@@ -141,7 +152,9 @@ void main() {
 
       // Verify card content is accessible
       expect(find.text('Card content'), findsOneWidget);
-      final SemanticsNode textNode = tester.getSemantics(find.text('Card content'));
+      final SemanticsNode textNode = tester.getSemantics(
+        find.text('Card content'),
+      );
       expect(textNode.label, 'Card content');
     });
 
@@ -169,7 +182,9 @@ void main() {
       expect(find.text('Test Title'), findsOneWidget);
 
       // Verify action button is accessible
-      final SemanticsNode actionNode = tester.getSemantics(find.byIcon(Icons.search));
+      final SemanticsNode actionNode = tester.getSemantics(
+        find.byIcon(Icons.search),
+      );
       expect(actionNode.hasFlag(SemanticsFlag.isButton), isTrue);
       expect(actionNode.tooltip, 'Search');
     });
@@ -296,11 +311,15 @@ void main() {
         ),
       );
 
-      final SemanticsNode disabledButtonNode = tester.getSemantics(find.byType(CorpoButton));
+      final SemanticsNode disabledButtonNode = tester.getSemantics(
+        find.byType(CorpoButton),
+      );
       expect(disabledButtonNode.hasFlag(SemanticsFlag.hasEnabledState), isTrue);
       expect(disabledButtonNode.hasFlag(SemanticsFlag.isEnabled), isFalse);
 
-      final SemanticsNode disabledCheckboxNode = tester.getSemantics(find.byType(Checkbox));
+      final SemanticsNode disabledCheckboxNode = tester.getSemantics(
+        find.byType(Checkbox),
+      );
       expect(
         disabledCheckboxNode.hasFlag(SemanticsFlag.hasEnabledState),
         isTrue,
@@ -328,7 +347,8 @@ void main() {
               ),
               CorpoCheckbox(
                 value: checkboxValue,
-                onChanged: (bool? value) => setState(() => checkboxValue = value),
+                onChanged: (bool? value) =>
+                    setState(() => checkboxValue = value),
                 label: 'Test Checkbox',
               ),
               CorpoSwitch(
