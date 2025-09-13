@@ -26,18 +26,18 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoForm(
-              children: [
+            builder: (BuildContext context, setState) => CorpoForm(
+              children: <Widget>[
                 CorpoTextField(
                   label: 'Name',
-                  onChanged: (value) => setState(() => textFieldValue = value),
-                  validator: (value) =>
+                  onChanged: (String value) => setState(() => textFieldValue = value),
+                  validator: (String? value) =>
                       value?.isEmpty == true ? 'Required' : null,
                 ),
                 const SizedBox(height: 16),
                 CorpoDropdown<String>(
                   label: 'Country',
-                  items: const [
+                  items: const <CorpoDropdownItem<String>>[
                     CorpoDropdownItem(
                       value: 'us',
                       child: Text('United States'),
@@ -46,32 +46,32 @@ void main() {
                     CorpoDropdownItem(value: 'mx', child: Text('Mexico')),
                   ],
                   value: dropdownValue,
-                  onChanged: (value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) => setState(() => dropdownValue = value),
                 ),
                 const SizedBox(height: 16),
                 CorpoRadio<String>(
                   value: 'option1',
                   groupValue: radioValue,
-                  onChanged: (value) => setState(() => radioValue = value),
+                  onChanged: (String? value) => setState(() => radioValue = value),
                   label: 'Option 1',
                 ),
                 CorpoRadio<String>(
                   value: 'option2',
                   groupValue: radioValue,
-                  onChanged: (value) => setState(() => radioValue = value),
+                  onChanged: (String? value) => setState(() => radioValue = value),
                   label: 'Option 2',
                 ),
                 const SizedBox(height: 16),
                 CorpoCheckbox(
                   value: checkboxValue,
-                  onChanged: (value) =>
+                  onChanged: (bool? value) =>
                       setState(() => checkboxValue = value ?? false),
                   label: 'I agree to terms',
                 ),
                 const SizedBox(height: 16),
                 CorpoSwitch(
                   value: switchValue,
-                  onChanged: (value) => setState(() => switchValue = value),
+                  onChanged: (bool value) => setState(() => switchValue = value),
                   label: 'Enable notifications',
                 ),
                 const SizedBox(height: 24),
@@ -118,38 +118,38 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Scaffold(
-              appBar: CorpoAppBar(
-                title: const Text('Integration Test'),
+            builder: (BuildContext context, setState) => Scaffold(
+              appBar: const CorpoAppBar(
+                title: Text('Integration Test'),
                 variant: CorpoAppBarVariant.large,
               ),
               body: Column(
-                children: [
+                children: <Widget>[
                   CorpoTabs(
-                    tabs: const [
+                    tabs: const <CorpoTab>[
                       CorpoTab(text: 'Home'),
                       CorpoTab(text: 'Settings'),
                       CorpoTab(text: 'Profile'),
                     ],
                     initialIndex: selectedTab,
-                    onTap: (index) => setState(() => selectedTab = index),
-                    children: [
+                    onTap: (int index) => setState(() => selectedTab = index),
+                    children: <Widget>const <CorpoCard>[
                       CorpoCard(
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.all(16),
                           child: Text('Home Content'),
                         ),
                       ),
                       CorpoCard(
                         variant: CorpoCardVariant.elevated,
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.all(16),
                           child: Text('Settings Content'),
                         ),
                       ),
                       CorpoCard(
                         variant: CorpoCardVariant.outlined,
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.all(16),
                           child: Text('Profile Content'),
                         ),
@@ -184,9 +184,9 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => Column(
-              children: [
-                CorpoAlert(
+            builder: (BuildContext context) => Column(
+              children: <Widget>[
+                const CorpoAlert(
                   type: CorpoAlertType.info,
                   title: 'Information',
                   message: 'Please fill all required fields',
@@ -196,12 +196,12 @@ void main() {
                   onPressed: () {
                     showDialog<void>(
                       context: context,
-                      builder: (context) => CorpoDialog(
+                      builder: (BuildContext context) => CorpoDialog(
                         title: const Text('Confirmation'),
                         content: const Text(
                           'Are you sure you want to proceed?',
                         ),
-                        actions: [
+                        actions: <Widget>[
                           CorpoTextButton(
                             onPressed: () => Navigator.pop(context),
                             child: const Text('Cancel'),
@@ -255,14 +255,14 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Scaffold(
-            appBar: CorpoAppBar(title: const Text('Complex Layout')),
+            appBar: const CorpoAppBar(title: Text('Complex Layout')),
             body: Column(
-              children: [
-                CorpoCard(
+              children: <Widget>[
+                const CorpoCard(
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       CorpoTextField(label: 'Search', prefixIcon: Icons.search),
-                      const Divider(),
+                      Divider(),
                       CorpoProgressBar(value: 0.7),
                     ],
                   ),
@@ -270,12 +270,12 @@ void main() {
                 Expanded(
                   child: ListView.builder(
                     itemCount: 5,
-                    itemBuilder: (context, index) => CorpoCard(
+                    itemBuilder: (BuildContext context, int index) => CorpoCard(
                       margin: const EdgeInsets.all(8),
                       child: ListTile(
                         leading: CorpoCheckbox(
                           value: false,
-                          onChanged: (value) {},
+                          onChanged: (bool? value) {},
                         ),
                         title: Text('Item $index'),
                         trailing: CorpoIconButton(
@@ -321,13 +321,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Column(
-            children: [
+            children: <Widget>[
               CorpoButton(onPressed: () {}, child: const Text('Light Button')),
-              CorpoCard(child: const Text('Light Card')),
-              CorpoTextField(label: 'Light Input'),
+              const CorpoCard(child: Text('Light Card')),
+              const CorpoTextField(label: 'Light Input'),
             ],
           ),
-          darkMode: false,
         );
 
         expect(find.byType(CorpoButton), findsOneWidget);
@@ -341,10 +340,10 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Column(
-            children: [
+            children: <Widget>[
               CorpoButton(onPressed: () {}, child: const Text('Dark Button')),
-              CorpoCard(child: const Text('Dark Card')),
-              CorpoTextField(label: 'Dark Input'),
+              const CorpoCard(child: Text('Dark Card')),
+              const CorpoTextField(label: 'Dark Input'),
             ],
           ),
           darkMode: true,
@@ -362,11 +361,11 @@ void main() {
 
         await tester.pumpWidget(
           StatefulBuilder(
-            builder: (context, setState) => MaterialApp(
+            builder: (BuildContext context, setState) => MaterialApp(
               theme: isDark ? CorpoTheme.dark() : CorpoTheme.light(),
               home: Scaffold(
                 body: Column(
-                  children: [
+                  children: <Widget>[
                     CorpoButton(
                       onPressed: () => setState(() => isDark = !isDark),
                       child: Text(
@@ -407,19 +406,19 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) {
+            builder: (BuildContext context, setState) {
               rebuildCount++;
               return Column(
-                children: [
+                children: <Widget>[
                   Text('Rebuild count: $rebuildCount'),
                   CorpoTextField(
                     initialValue: textValue,
-                    onChanged: (value) => textValue = value,
+                    onChanged: (String value) => textValue = value,
                     label: 'Persistent Input',
                   ),
                   CorpoCheckbox(
                     value: checkboxValue,
-                    onChanged: (value) =>
+                    onChanged: (bool? value) =>
                         setState(() => checkboxValue = value ?? false),
                     label: 'Persistent Checkbox',
                   ),
@@ -455,10 +454,10 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           const Row(
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Text('Form 1'),
                     CorpoTextField(label: 'Input 1'),
                     CorpoCheckbox(
@@ -471,7 +470,7 @@ void main() {
               ),
               Expanded(
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Text('Form 2'),
                     CorpoTextField(label: 'Input 2'),
                     CorpoCheckbox(
@@ -493,9 +492,9 @@ void main() {
         expect(find.byType(CorpoCheckbox), findsNWidgets(2));
 
         // Verify separate state
-        final checkboxes = tester.widgetList<Checkbox>(find.byType(Checkbox));
-        final checkbox1 = checkboxes.first;
-        final checkbox2 = checkboxes.last;
+        final Iterable<Checkbox> checkboxes = tester.widgetList<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox1 = checkboxes.first;
+        final Checkbox checkbox2 = checkboxes.last;
 
         expect(checkbox1.value, isFalse);
         expect(checkbox2.value, isTrue);
@@ -508,9 +507,9 @@ void main() {
       testWidgets('renders large list efficiently', (
         WidgetTester tester,
       ) async {
-        const itemCount = 100;
+        const int itemCount = 100;
 
-        final stopwatch = Stopwatch()..start();
+        final Stopwatch stopwatch = Stopwatch()..start();
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
@@ -518,12 +517,12 @@ void main() {
             height: 400,
             child: ListView.builder(
               itemCount: itemCount,
-              itemBuilder: (context, index) => CorpoCard(
+              itemBuilder: (BuildContext context, int index) => CorpoCard(
                 margin: const EdgeInsets.all(4),
                 child: ListTile(
                   leading: CorpoCheckbox(
                     value: index % 2 == 0,
-                    onChanged: (value) {},
+                    onChanged: (bool? value) {},
                   ),
                   title: Text('Item $index'),
                   subtitle: Text('Description for item $index'),
@@ -552,7 +551,7 @@ void main() {
       testWidgets('complex nested structure performs well', (
         WidgetTester tester,
       ) async {
-        final stopwatch = Stopwatch()..start();
+        final Stopwatch stopwatch = Stopwatch()..start();
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
@@ -560,26 +559,26 @@ void main() {
             child: Column(
               children: List.generate(
                 5,
-                (index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
+                (int index) => Padding(
+                  padding: const EdgeInsets.all(8),
                   child: CorpoCard(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         CorpoTextField(label: 'Field $index'),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             CorpoCheckbox(
                               value: false,
-                              onChanged: (value) {},
+                              onChanged: (bool? value) {},
                               label: 'Option A',
                             ),
                             const SizedBox(width: 16),
                             CorpoCheckbox(
                               value: true,
-                              onChanged: (value) {},
+                              onChanged: (bool? value) {},
                               label: 'Option B',
                             ),
                           ],
@@ -619,12 +618,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
+            builder: (BuildContext context, setState) => Column(
+              children: <Widget>[
                 Text('Toggle count: $toggleCount'),
                 CorpoSwitch(
                   value: toggleValue,
-                  onChanged: (value) {
+                  onChanged: (bool value) {
                     setState(() {
                       toggleValue = value;
                       toggleCount++;
@@ -649,7 +648,7 @@ void main() {
           ),
         );
 
-        final stopwatch = Stopwatch()..start();
+        final Stopwatch stopwatch = Stopwatch()..start();
 
         // Perform rapid toggles
         await tester.tap(find.text('Rapid Toggle'));
@@ -674,8 +673,8 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
+            builder: (BuildContext context, setState) => Column(
+              children: <Widget>[
                 CorpoButton(
                   onPressed: () =>
                       setState(() => showComponents = !showComponents),
@@ -683,19 +682,18 @@ void main() {
                     showComponents ? 'Hide Components' : 'Show Components',
                   ),
                 ),
-                if (showComponents) ...[
+                if (showComponents) ...<Widget>[
                   CorpoTextField(
                     label: 'Test Input',
                     controller: TextEditingController(),
                   ),
                   CorpoDropdown<String>(
-                    items: const [
+                    items: const <CorpoDropdownItem<String>>[
                       CorpoDropdownItem(value: 'test', child: Text('Test')),
                     ],
-                    value: null,
-                    onChanged: (value) {},
+                    onChanged: (String? value) {},
                   ),
-                  CorpoCard(child: const Text('Test Card')),
+                  const CorpoCard(child: Text('Test Card')),
                 ],
               ],
             ),
@@ -729,18 +727,17 @@ void main() {
         WidgetTester tester,
       ) async {
         // Simulate large dataset
-        final items = List.generate(1000, (index) => 'Item $index');
+        final List<String> items = List.generate(1000, (int index) => 'Item $index');
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoDropdown<String>(
             items: items
                 .map(
-                  (item) => CorpoDropdownItem(value: item, child: Text(item)),
+                  (String item) => CorpoDropdownItem(value: item, child: Text(item)),
                 )
                 .toList(),
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Large Dataset',
           ),
         );
@@ -760,17 +757,17 @@ void main() {
     group('Interaction Performance', () {
       testWidgets('button taps respond quickly', (WidgetTester tester) async {
         int tapCount = 0;
-        final List<int> tapTimes = [];
+        final List<int> tapTimes = <int>[];
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
+            builder: (BuildContext context, setState) => Column(
+              children: <Widget>[
                 Text('Taps: $tapCount'),
                 CorpoButton(
                   onPressed: () {
-                    final now = DateTime.now().millisecondsSinceEpoch;
+                    final int now = DateTime.now().millisecondsSinceEpoch;
                     setState(() {
                       tapCount++;
                       tapTimes.add(now);
@@ -783,7 +780,7 @@ void main() {
           ),
         );
 
-        final stopwatch = Stopwatch()..start();
+        final Stopwatch stopwatch = Stopwatch()..start();
 
         // Perform multiple rapid taps
         for (int i = 0; i < 5; i++) {
@@ -812,20 +809,20 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
+            builder: (BuildContext context, setState) => Column(
+              children: <Widget>[
                 CorpoTextField(
                   label: 'Responsive Input',
-                  onChanged: (value) => setState(() => textValue = value),
+                  onChanged: (String value) => setState(() => textValue = value),
                 ),
                 CorpoCheckbox(
                   value: checkboxValue,
-                  onChanged: (value) =>
+                  onChanged: (bool? value) =>
                       setState(() => checkboxValue = value ?? false),
                   label: 'Responsive Checkbox',
                 ),
                 CorpoDropdown<String>(
-                  items: const [
+                  items: const <CorpoDropdownItem<String>>[
                     CorpoDropdownItem(
                       value: 'option1',
                       child: Text('Option 1'),
@@ -836,7 +833,7 @@ void main() {
                     ),
                   ],
                   value: dropdownValue,
-                  onChanged: (value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) => setState(() => dropdownValue = value),
                   label: 'Responsive Dropdown',
                 ),
                 Text('State: $textValue, $checkboxValue, $dropdownValue'),
@@ -845,7 +842,7 @@ void main() {
           ),
         );
 
-        final stopwatch = Stopwatch()..start();
+        final Stopwatch stopwatch = Stopwatch()..start();
 
         // Rapid interactions
         await tester.enterText(find.byType(TextField), 'Quick typing test');
@@ -874,19 +871,16 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         Column(
-          children: [
-            CorpoTextField(label: null, helperText: null, errorText: null),
+          children: <Widget>[
+            const CorpoTextField(),
             CorpoDropdown<String>(
-              items: const [],
-              value: null,
-              onChanged: (value) {},
-              label: null,
+              items: const <CorpoDropdownItem<String>>[],
+              onChanged: (String? value) {},
             ),
             const CorpoCheckbox(
               value: null,
               tristate: true,
               onChanged: null,
-              label: null,
             ),
             const CorpoCard(child: SizedBox.shrink()),
           ],
@@ -909,8 +903,8 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         StatefulBuilder(
-          builder: (context, setState) => Column(
-            children: [
+          builder: (BuildContext context, setState) => Column(
+            children: <Widget>[
               Text('Cycle: $cycleCount'),
               CorpoButton(
                 onPressed: () {
@@ -921,8 +915,8 @@ void main() {
                 },
                 child: const Text('Toggle Components'),
               ),
-              if (showComponents) ...[
-                CorpoTextField(label: 'Dynamic Input'),
+              if (showComponents) ...<Widget>[
+                const CorpoTextField(label: 'Dynamic Input'),
                 CorpoCard(child: Text('Dynamic Card $cycleCount')),
                 CorpoButton(
                   onPressed: () {},
@@ -953,12 +947,12 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         StatefulBuilder(
-          builder: (context, setState) => Column(
-            children: [
+          builder: (BuildContext context, setState) => Column(
+            children: <Widget>[
               Text('Updates: $updateCount'),
               Text('Status: $status'),
               Row(
-                children: [
+                children: <Widget>[
                   CorpoButton(
                     onPressed: () async {
                       setState(() => status = 'Updating...');

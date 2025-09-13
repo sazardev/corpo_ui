@@ -1,7 +1,8 @@
+import 'package:corpo_ui/corpo_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:corpo_ui/corpo_ui.dart';
+
 import '../helpers/test_utils.dart';
 
 void main() {
@@ -52,7 +53,7 @@ void main() {
         tester,
         CorpoCheckbox(
           value: value,
-          onChanged: (newValue) => value = newValue,
+          onChanged: (bool? newValue) => value = newValue,
           label: 'Accept terms',
         ),
       );
@@ -74,25 +75,25 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         Column(
-          children: [
+          children: <Widget>[
             CorpoRadio<String>(
               value: 'option1',
               groupValue: selectedValue,
-              onChanged: (value) => selectedValue = value,
+              onChanged: (String? value) => selectedValue = value,
               label: 'Option 1',
             ),
             CorpoRadio<String>(
               value: 'option2',
               groupValue: selectedValue,
-              onChanged: (value) => selectedValue = value,
+              onChanged: (String? value) => selectedValue = value,
               label: 'Option 2',
             ),
           ],
         ),
       );
 
-      final firstRadio = tester.getSemantics(find.byType(Radio<String>).first);
-      final secondRadio = tester.getSemantics(find.byType(Radio<String>).last);
+      final SemanticsNode firstRadio = tester.getSemantics(find.byType(Radio<String>).first);
+      final SemanticsNode secondRadio = tester.getSemantics(find.byType(Radio<String>).last);
 
       expect(firstRadio.hasFlag(SemanticsFlag.hasCheckedState), isTrue);
       expect(firstRadio.hasFlag(SemanticsFlag.isChecked), isTrue);
@@ -117,7 +118,7 @@ void main() {
         tester,
         CorpoSwitch(
           value: value,
-          onChanged: (newValue) => value = newValue,
+          onChanged: (bool newValue) => value = newValue,
           label: 'Enable notifications',
         ),
       );
@@ -140,7 +141,7 @@ void main() {
 
       // Verify card content is accessible
       expect(find.text('Card content'), findsOneWidget);
-      final textNode = tester.getSemantics(find.text('Card content'));
+      final SemanticsNode textNode = tester.getSemantics(find.text('Card content'));
       expect(textNode.label, 'Card content');
     });
 
@@ -152,7 +153,7 @@ void main() {
         Scaffold(
           appBar: CorpoAppBar(
             title: const Text('Test Title'),
-            actions: [
+            actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {},
@@ -168,7 +169,7 @@ void main() {
       expect(find.text('Test Title'), findsOneWidget);
 
       // Verify action button is accessible
-      final actionNode = tester.getSemantics(find.byIcon(Icons.search));
+      final SemanticsNode actionNode = tester.getSemantics(find.byIcon(Icons.search));
       expect(actionNode.hasFlag(SemanticsFlag.isButton), isTrue);
       expect(actionNode.tooltip, 'Search');
     });
@@ -179,7 +180,7 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         Column(
-          children: [
+          children: <Widget>[
             CorpoButton(
               onPressed: () {},
               child: const Text('High Contrast Button'),
@@ -187,7 +188,7 @@ void main() {
             const CorpoTextField(label: 'High Contrast Field'),
             CorpoCheckbox(
               value: true,
-              onChanged: (value) {},
+              onChanged: (bool? value) {},
               label: 'High Contrast Checkbox',
             ),
           ],
@@ -235,9 +236,9 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         MediaQuery(
-          data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
+          data: const MediaQueryData(textScaler: TextScaler.linear(2)),
           child: Column(
-            children: [
+            children: <Widget>[
               CorpoButton(
                 onPressed: () {},
                 child: const Text('Large Text Button'),
@@ -261,7 +262,6 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         CorpoButton(onPressed: () {}, child: const Text('Contrast Test')),
-        darkMode: false,
       );
 
       expect(find.byType(CorpoButton), findsOneWidget);
@@ -281,11 +281,11 @@ void main() {
     ) async {
       await CorpoTestUtils.pumpWithTheme(
         tester,
-        Column(
-          children: [
+        const Column(
+          children: <Widget>[
             CorpoButton(
               onPressed: null, // Disabled
-              child: const Text('Disabled Button'),
+              child: Text('Disabled Button'),
             ),
             CorpoCheckbox(
               value: false,
@@ -296,11 +296,11 @@ void main() {
         ),
       );
 
-      final disabledButtonNode = tester.getSemantics(find.byType(CorpoButton));
+      final SemanticsNode disabledButtonNode = tester.getSemantics(find.byType(CorpoButton));
       expect(disabledButtonNode.hasFlag(SemanticsFlag.hasEnabledState), isTrue);
       expect(disabledButtonNode.hasFlag(SemanticsFlag.isEnabled), isFalse);
 
-      final disabledCheckboxNode = tester.getSemantics(find.byType(Checkbox));
+      final SemanticsNode disabledCheckboxNode = tester.getSemantics(find.byType(Checkbox));
       expect(
         disabledCheckboxNode.hasFlag(SemanticsFlag.hasEnabledState),
         isTrue,
@@ -320,20 +320,20 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         StatefulBuilder(
-          builder: (context, setState) => Column(
-            children: [
+          builder: (BuildContext context, setState) => Column(
+            children: <Widget>[
               CorpoButton(
                 onPressed: () => setState(() => buttonPressed = true),
                 child: const Text('Test Button'),
               ),
               CorpoCheckbox(
                 value: checkboxValue,
-                onChanged: (value) => setState(() => checkboxValue = value),
+                onChanged: (bool? value) => setState(() => checkboxValue = value),
                 label: 'Test Checkbox',
               ),
               CorpoSwitch(
                 value: switchValue,
-                onChanged: (value) => setState(() => switchValue = value),
+                onChanged: (bool value) => setState(() => switchValue = value),
                 label: 'Test Switch',
               ),
             ],
@@ -363,17 +363,17 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         Column(
-          children: [
+          children: <Widget>[
             CorpoButton(onPressed: () {}, child: const Text('Touch Button')),
             const CorpoTextField(label: 'Touch Field'),
             CorpoCheckbox(
               value: false,
-              onChanged: (value) {},
+              onChanged: (bool? value) {},
               label: 'Touch Checkbox',
             ),
             CorpoSwitch(
               value: false,
-              onChanged: (value) {},
+              onChanged: (bool value) {},
               label: 'Touch Switch',
             ),
           ],

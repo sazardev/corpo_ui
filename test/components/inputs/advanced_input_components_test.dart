@@ -23,7 +23,7 @@ void main() {
           tester,
           CorpoCheckbox(
             value: value,
-            onChanged: (newValue) => value = newValue,
+            onChanged: (bool? newValue) => value = newValue,
             label: 'Test Checkbox',
           ),
         );
@@ -32,7 +32,7 @@ void main() {
         expect(find.text('Test Checkbox'), findsOneWidget);
         expect(find.byType(Checkbox), findsOneWidget);
 
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, isFalse);
       });
 
@@ -42,9 +42,9 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoCheckbox(
+            builder: (BuildContext context, setState) => CorpoCheckbox(
               value: value,
-              onChanged: (newValue) => setState(() => value = newValue),
+              onChanged: (bool? newValue) => setState(() => value = newValue),
               label: 'Toggle Checkbox',
             ),
           ),
@@ -53,7 +53,7 @@ void main() {
         await tester.tap(find.byType(CorpoCheckbox));
         await tester.pumpAndSettle();
 
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, isTrue);
       });
 
@@ -63,17 +63,17 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoCheckbox(
+            builder: (BuildContext context, setState) => CorpoCheckbox(
               value: value,
               tristate: true,
-              onChanged: (newValue) => setState(() => value = newValue),
+              onChanged: (bool? newValue) => setState(() => value = newValue),
               label: 'Tristate Checkbox',
             ),
           ),
         );
 
         // Initial state: null (indeterminate)
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, isNull);
         expect(checkbox.tristate, isTrue);
 
@@ -81,7 +81,7 @@ void main() {
         await tester.tap(find.byType(CorpoCheckbox));
         await tester.pumpAndSettle();
 
-        final checkbox2 = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox2 = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox2.value, isTrue);
       });
 
@@ -92,7 +92,7 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Checkbox with Description',
             description: 'This is a detailed description',
           ),
@@ -114,7 +114,7 @@ void main() {
           ),
         );
 
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.onChanged, isNull);
       });
     });
@@ -125,7 +125,7 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Small Checkbox',
             size: CorpoCheckboxSize.small,
           ),
@@ -142,9 +142,8 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Medium Checkbox',
-            size: CorpoCheckboxSize.medium,
           ),
         );
 
@@ -156,7 +155,7 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Large Checkbox',
             size: CorpoCheckboxSize.large,
           ),
@@ -174,12 +173,12 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Accessible Checkbox',
           ),
         );
 
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.autofocus, isFalse);
       });
 
@@ -188,13 +187,13 @@ void main() {
           tester,
           CorpoCheckbox(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Autofocus Checkbox',
             autofocus: true,
           ),
         );
 
-        final checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.autofocus, isTrue);
       });
     });
@@ -205,7 +204,7 @@ void main() {
           tester,
           CorpoCheckbox(
             value: true,
-            onChanged: (value) {},
+            onChanged: (bool? value) {},
             label: 'Label Only',
           ),
         );
@@ -219,7 +218,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCheckbox(value: true, onChanged: (value) {}),
+          CorpoCheckbox(value: true, onChanged: (bool? value) {}),
         );
 
         expect(find.byType(Checkbox), findsOneWidget);
@@ -233,14 +232,14 @@ void main() {
       testWidgets('renders with correct initial state', (
         WidgetTester tester,
       ) async {
-        String? groupValue = 'option1';
+        const String groupValue = 'option1';
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoRadio<String>(
             value: 'option1',
             groupValue: groupValue,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Radio Option 1',
           ),
         );
@@ -249,7 +248,7 @@ void main() {
         expect(find.text('Radio Option 1'), findsOneWidget);
         expect(find.byType(Radio<String>), findsOneWidget);
 
-        final radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
+        final Radio<String> radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
         expect(radio.value, equals('option1'));
         expect(radio.groupValue, equals('option1'));
       });
@@ -260,18 +259,18 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
+            builder: (BuildContext context, setState) => Column(
+              children: <Widget>[
                 CorpoRadio<String>(
                   value: 'option1',
                   groupValue: groupValue,
-                  onChanged: (value) => setState(() => groupValue = value),
+                  onChanged: (String? value) => setState(() => groupValue = value),
                   label: 'Option 1',
                 ),
                 CorpoRadio<String>(
                   value: 'option2',
                   groupValue: groupValue,
-                  onChanged: (value) => setState(() => groupValue = value),
+                  onChanged: (String? value) => setState(() => groupValue = value),
                   label: 'Option 2',
                 ),
               ],
@@ -280,7 +279,7 @@ void main() {
         );
 
         // Initially option1 is selected
-        final radio1 = tester.widget<Radio<String>>(
+        final Radio<String> radio1 = tester.widget<Radio<String>>(
           find.byType(Radio<String>).first,
         );
         expect(radio1.groupValue, equals('option1'));
@@ -290,7 +289,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Now option2 should be selected
-        final radio2 = tester.widget<Radio<String>>(
+        final Radio<String> radio2 = tester.widget<Radio<String>>(
           find.byType(Radio<String>).last,
         );
         expect(radio2.groupValue, equals('option2'));
@@ -304,7 +303,7 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Radio with Description',
             description: 'This is additional information',
           ),
@@ -327,7 +326,7 @@ void main() {
           ),
         );
 
-        final radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
+        final Radio<String> radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
         expect(radio.onChanged, isNull);
       });
     });
@@ -339,7 +338,7 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Small Radio',
             size: CorpoRadioSize.small,
           ),
@@ -357,9 +356,8 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Medium Radio',
-            size: CorpoRadioSize.medium,
           ),
         );
 
@@ -372,7 +370,7 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Large Radio',
             size: CorpoRadioSize.large,
           ),
@@ -389,7 +387,7 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Radio Option',
             semanticLabel: 'Custom semantic label',
           ),
@@ -403,19 +401,19 @@ void main() {
       testWidgets('works with different value types', (
         WidgetTester tester,
       ) async {
-        int? groupValue = 1;
+        const int groupValue = 1;
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoRadio<int>(
             value: 1,
             groupValue: groupValue,
-            onChanged: (value) {},
+            onChanged: (int? value) {},
             label: 'Integer Radio',
           ),
         );
 
-        final radio = tester.widget<Radio<int>>(find.byType(Radio<int>));
+        final Radio<int> radio = tester.widget<Radio<int>>(find.byType(Radio<int>));
         expect(radio.value, equals(1));
         expect(radio.groupValue, equals(1));
       });
@@ -426,7 +424,7 @@ void main() {
           CorpoRadio<String>(
             value: 'option1',
             groupValue: 'option1',
-            onChanged: (value) {},
+            onChanged: (String? value) {},
           ),
         );
 
@@ -447,7 +445,7 @@ void main() {
           tester,
           CorpoSwitch(
             value: value,
-            onChanged: (newValue) => value = newValue,
+            onChanged: (bool newValue) => value = newValue,
             label: 'Test Switch',
           ),
         );
@@ -456,7 +454,7 @@ void main() {
         expect(find.text('Test Switch'), findsOneWidget);
         expect(find.byType(Switch), findsOneWidget);
 
-        final switchWidget = tester.widget<Switch>(find.byType(Switch));
+        final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
         expect(switchWidget.value, isFalse);
       });
 
@@ -466,9 +464,9 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoSwitch(
+            builder: (BuildContext context, setState) => CorpoSwitch(
               value: value,
-              onChanged: (newValue) => setState(() => value = newValue),
+              onChanged: (bool newValue) => setState(() => value = newValue),
               label: 'Toggle Switch',
             ),
           ),
@@ -477,7 +475,7 @@ void main() {
         await tester.tap(find.byType(Switch));
         await tester.pumpAndSettle();
 
-        final switchWidget = tester.widget<Switch>(find.byType(Switch));
+        final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
         expect(switchWidget.value, isTrue);
       });
 
@@ -488,7 +486,7 @@ void main() {
           tester,
           CorpoSwitch(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool value) {},
             label: 'Switch with Description',
             description: 'This explains what the switch does',
           ),
@@ -510,7 +508,7 @@ void main() {
           ),
         );
 
-        final switchWidget = tester.widget<Switch>(find.byType(Switch));
+        final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
         expect(switchWidget.onChanged, isNull);
       });
     });
@@ -521,7 +519,7 @@ void main() {
           tester,
           CorpoSwitch(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool value) {},
             label: 'Small Switch',
             size: CorpoSwitchSize.small,
           ),
@@ -538,9 +536,8 @@ void main() {
           tester,
           CorpoSwitch(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool value) {},
             label: 'Medium Switch',
-            size: CorpoSwitchSize.medium,
           ),
         );
 
@@ -552,7 +549,7 @@ void main() {
           tester,
           CorpoSwitch(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool value) {},
             label: 'Large Switch',
             size: CorpoSwitchSize.large,
           ),
@@ -568,13 +565,13 @@ void main() {
           tester,
           CorpoSwitch(
             value: false,
-            onChanged: (value) {},
+            onChanged: (bool value) {},
             label: 'Autofocus Switch',
             autofocus: true,
           ),
         );
 
-        final switchWidget = tester.widget<Switch>(find.byType(Switch));
+        final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
         expect(switchWidget.autofocus, isTrue);
       });
     });
@@ -583,7 +580,7 @@ void main() {
       testWidgets('handles switch without labels', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoSwitch(value: true, onChanged: (value) {}),
+          CorpoSwitch(value: true, onChanged: (bool value) {}),
         );
 
         expect(find.byType(Switch), findsOneWidget);
@@ -596,9 +593,9 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoSwitch(
+            builder: (BuildContext context, setState) => CorpoSwitch(
               value: value,
-              onChanged: (newValue) => setState(() => value = newValue),
+              onChanged: (bool newValue) => setState(() => value = newValue),
               label: 'State Switch',
             ),
           ),
@@ -612,7 +609,7 @@ void main() {
         await tester.tap(find.byType(Switch));
         await tester.pumpAndSettle();
 
-        final switchWidget = tester.widget<Switch>(find.byType(Switch));
+        final Switch switchWidget = tester.widget<Switch>(find.byType(Switch));
         expect(switchWidget.value, isTrue);
       });
     });
@@ -622,7 +619,7 @@ void main() {
     late List<CorpoDropdownItem<String>> items;
 
     setUp(() {
-      items = [
+      items = <CorpoDropdownItem<String>>[
         const CorpoDropdownItem(value: 'option1', child: Text('Option 1')),
         const CorpoDropdownItem(value: 'option2', child: Text('Option 2')),
         const CorpoDropdownItem(value: 'option3', child: Text('Option 3')),
@@ -638,7 +635,7 @@ void main() {
           CorpoDropdown<String>(
             items: items,
             value: value,
-            onChanged: (newValue) => value = newValue,
+            onChanged: (String? newValue) => value = newValue,
             label: 'Test Dropdown',
           ),
         );
@@ -656,7 +653,7 @@ void main() {
           CorpoDropdown<String>(
             items: items,
             value: value,
-            onChanged: (newValue) => value = newValue,
+            onChanged: (String? newValue) => value = newValue,
             label: 'Selected Dropdown',
           ),
         );
@@ -674,7 +671,7 @@ void main() {
           CorpoDropdown<String>(
             items: items,
             value: value,
-            onChanged: (newValue) => value = newValue,
+            onChanged: (String? newValue) => value = newValue,
             label: 'Dropdown Menu',
           ),
         );
@@ -694,10 +691,10 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           StatefulBuilder(
-            builder: (context, setState) => CorpoDropdown<String>(
+            builder: (BuildContext context, setState) => CorpoDropdown<String>(
               items: items,
               value: value,
-              onChanged: (newValue) => setState(() => value = newValue),
+              onChanged: (String? newValue) => setState(() => value = newValue),
               label: 'Selectable Dropdown',
             ),
           ),
@@ -719,8 +716,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Dropdown',
             placeholder: 'Choose an option',
           ),
@@ -736,8 +732,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Dropdown with Helper',
             helperText: 'This is helper text',
           ),
@@ -753,8 +748,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Dropdown with Error',
             errorText: 'This field is required',
           ),
@@ -770,13 +764,12 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
             onChanged: null,
             label: 'Disabled Dropdown',
           ),
         );
 
-        final dropdown = tester.widget<DropdownButton<String>>(
+        final DropdownButton<String> dropdown = tester.widget<DropdownButton<String>>(
           find.byType(DropdownButton<String>),
         );
         expect(dropdown.onChanged, isNull);
@@ -789,8 +782,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Small Dropdown',
             size: CorpoDropdownSize.small,
           ),
@@ -806,10 +798,8 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Medium Dropdown',
-            size: CorpoDropdownSize.medium,
           ),
         );
 
@@ -821,8 +811,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Large Dropdown',
             size: CorpoDropdownSize.large,
           ),
@@ -838,10 +827,9 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Validated Dropdown',
-            validator: (value) =>
+            validator: (String? value) =>
                 value == null ? 'Please select an option' : null,
           ),
         );
@@ -856,8 +844,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
             label: 'Accessible Dropdown',
             semanticLabel: 'Custom semantic label',
           ),
@@ -872,9 +859,8 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           CorpoDropdown<String>(
-            items: const [],
-            value: null,
-            onChanged: (value) {},
+            items: const <CorpoDropdownItem<String>>[],
+            onChanged: (String? value) {},
             label: 'Empty Dropdown',
           ),
         );
@@ -889,8 +875,7 @@ void main() {
           tester,
           CorpoDropdown<String>(
             items: items,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (String? value) {},
           ),
         );
 
@@ -900,7 +885,7 @@ void main() {
       testWidgets('works with different value types', (
         WidgetTester tester,
       ) async {
-        final intItems = [
+        final List<CorpoDropdownItem<int>> intItems = <CorpoDropdownItem<int>>[
           const CorpoDropdownItem(value: 1, child: Text('One')),
           const CorpoDropdownItem(value: 2, child: Text('Two')),
         ];
@@ -909,8 +894,7 @@ void main() {
           tester,
           CorpoDropdown<int>(
             items: intItems,
-            value: null,
-            onChanged: (value) {},
+            onChanged: (int? value) {},
             label: 'Integer Dropdown',
           ),
         );
@@ -929,7 +913,7 @@ void main() {
       bool switchValue = false;
       String? dropdownValue;
 
-      final dropdownItems = [
+      final List<CorpoDropdownItem<String>> dropdownItems = <CorpoDropdownItem<String>>[
         const CorpoDropdownItem(value: 'choice1', child: Text('Choice 1')),
         const CorpoDropdownItem(value: 'choice2', child: Text('Choice 2')),
       ];
@@ -937,35 +921,35 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         StatefulBuilder(
-          builder: (context, setState) => Column(
-            children: [
+          builder: (BuildContext context, setState) => Column(
+            children: <Widget>[
               CorpoCheckbox(
                 value: checkboxValue,
-                onChanged: (value) =>
+                onChanged: (bool? value) =>
                     setState(() => checkboxValue = value ?? false),
                 label: 'Agreement Checkbox',
               ),
               CorpoRadio<String>(
                 value: 'option1',
                 groupValue: radioValue,
-                onChanged: (value) => setState(() => radioValue = value),
+                onChanged: (String? value) => setState(() => radioValue = value),
                 label: 'Radio Option 1',
               ),
               CorpoRadio<String>(
                 value: 'option2',
                 groupValue: radioValue,
-                onChanged: (value) => setState(() => radioValue = value),
+                onChanged: (String? value) => setState(() => radioValue = value),
                 label: 'Radio Option 2',
               ),
               CorpoSwitch(
                 value: switchValue,
-                onChanged: (value) => setState(() => switchValue = value),
+                onChanged: (bool value) => setState(() => switchValue = value),
                 label: 'Feature Toggle',
               ),
               CorpoDropdown<String>(
                 items: dropdownItems,
                 value: dropdownValue,
-                onChanged: (value) => setState(() => dropdownValue = value),
+                onChanged: (String? value) => setState(() => dropdownValue = value),
                 label: 'Dropdown Selection',
               ),
             ],
@@ -1007,26 +991,26 @@ void main() {
       await CorpoTestUtils.pumpWithTheme(
         tester,
         StatefulBuilder(
-          builder: (context, setState) => Form(
+          builder: (BuildContext context, setState) => Form(
             child: Column(
-              children: [
+              children: <Widget>[
                 CorpoCheckbox(
                   value: checkboxValue,
-                  onChanged: (value) =>
+                  onChanged: (bool? value) =>
                       setState(() => checkboxValue = value ?? false),
                   label: 'Required Agreement',
                 ),
                 CorpoDropdown<String>(
-                  items: const [
+                  items: const <CorpoDropdownItem<String>>[
                     CorpoDropdownItem(
                       value: 'choice1',
                       child: Text('Choice 1'),
                     ),
                   ],
                   value: dropdownValue,
-                  onChanged: (value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) => setState(() => dropdownValue = value),
                   label: 'Required Selection',
-                  validator: (value) => value == null ? 'Required' : null,
+                  validator: (String? value) => value == null ? 'Required' : null,
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ library;
 
 import 'package:corpo_ui/corpo_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/semantics/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_utils.dart';
@@ -16,7 +17,7 @@ void main() {
       testWidgets('renders with child content', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const Text('Card Content')),
+          const CorpoCard(child: Text('Card Content')),
         );
 
         expect(find.text('Card Content'), findsOneWidget);
@@ -26,9 +27,9 @@ void main() {
       testWidgets('renders with complex child', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             child: Column(
-              children: const [
+              children: <Widget>[
                 Text('Title'),
                 Text('Subtitle'),
                 Icon(Icons.star),
@@ -47,10 +48,10 @@ void main() {
       testWidgets('applies default styling', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const Text('Default Card')),
+          const CorpoCard(child: Text('Default Card')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.variant, equals(CorpoCardVariant.filled));
         expect(card.elevation, equals(CorpoCardElevation.medium));
         expect(card.padding, equals(CorpoCardPadding.medium));
@@ -59,13 +60,12 @@ void main() {
       testWidgets('applies elevated variant', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard.elevated(
-            elevation: CorpoCardElevation.high,
-            child: const Text('Elevated Card'),
+          const CorpoCard.elevated(
+            child: Text('Elevated Card'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.variant, equals(CorpoCardVariant.elevated));
         expect(card.elevation, equals(CorpoCardElevation.high));
       });
@@ -73,10 +73,10 @@ void main() {
       testWidgets('applies outlined variant', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard.outlined(child: const Text('Outlined Card')),
+          const CorpoCard.outlined(child: Text('Outlined Card')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.variant, equals(CorpoCardVariant.outlined));
         expect(card.elevation, equals(CorpoCardElevation.none));
       });
@@ -84,10 +84,10 @@ void main() {
       testWidgets('applies tinted variant', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard.tinted(child: const Text('Tinted Card')),
+          const CorpoCard.tinted(child: Text('Tinted Card')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.variant, equals(CorpoCardVariant.tinted));
         expect(card.elevation, equals(CorpoCardElevation.low));
       });
@@ -95,38 +95,38 @@ void main() {
       testWidgets('respects custom padding', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             padding: CorpoCardPadding.large,
-            child: const Text('Custom Padding'),
+            child: Text('Custom Padding'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.padding, equals(CorpoCardPadding.large));
       });
 
       testWidgets('respects custom margin', (WidgetTester tester) async {
-        const customMargin = EdgeInsets.symmetric(horizontal: 16.0);
+        const EdgeInsets customMargin = EdgeInsets.symmetric(horizontal: 16);
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(margin: customMargin, child: const Text('Custom Margin')),
+          const CorpoCard(margin: customMargin, child: Text('Custom Margin')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.margin, equals(customMargin));
       });
 
       testWidgets('applies custom color', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             color: CorpoColors.primary50,
-            child: const Text('Colored Card'),
+            child: Text('Colored Card'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.color, equals(CorpoColors.primary50));
       });
     });
@@ -185,13 +185,13 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             elevation: CorpoCardElevation.none,
-            child: const Text('No Elevation'),
+            child: Text('No Elevation'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.elevation, equals(CorpoCardElevation.none));
       });
 
@@ -200,13 +200,13 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             elevation: CorpoCardElevation.low,
-            child: const Text('Low Elevation'),
+            child: Text('Low Elevation'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.elevation, equals(CorpoCardElevation.low));
       });
 
@@ -215,13 +215,12 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
-            elevation: CorpoCardElevation.medium,
-            child: const Text('Medium Elevation'),
+          const CorpoCard(
+            child: Text('Medium Elevation'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.elevation, equals(CorpoCardElevation.medium));
       });
 
@@ -230,13 +229,13 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             elevation: CorpoCardElevation.high,
-            child: const Text('High Elevation'),
+            child: Text('High Elevation'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.elevation, equals(CorpoCardElevation.high));
       });
 
@@ -245,13 +244,13 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             elevation: CorpoCardElevation.maximum,
-            child: const Text('Maximum Elevation'),
+            child: Text('Maximum Elevation'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.elevation, equals(CorpoCardElevation.maximum));
       });
     });
@@ -260,52 +259,52 @@ void main() {
       testWidgets('applies none padding', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             padding: CorpoCardPadding.none,
-            child: const Text('No Padding'),
+            child: Text('No Padding'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.padding, equals(CorpoCardPadding.none));
       });
 
       testWidgets('applies small padding', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             padding: CorpoCardPadding.small,
-            child: const Text('Small Padding'),
+            child: Text('Small Padding'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.padding, equals(CorpoCardPadding.small));
       });
 
       testWidgets('applies large padding', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             padding: CorpoCardPadding.large,
-            child: const Text('Large Padding'),
+            child: Text('Large Padding'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.padding, equals(CorpoCardPadding.large));
       });
 
       testWidgets('applies extra large padding', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             padding: CorpoCardPadding.extraLarge,
-            child: const Text('Extra Large Padding'),
+            child: Text('Extra Large Padding'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.padding, equals(CorpoCardPadding.extraLarge));
       });
     });
@@ -314,48 +313,48 @@ void main() {
       testWidgets('respects custom width', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(width: 200, child: const Text('Fixed Width Card')),
+          const CorpoCard(width: 200, child: Text('Fixed Width Card')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.width, equals(200));
       });
 
       testWidgets('respects custom height', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(height: 150, child: const Text('Fixed Height Card')),
+          const CorpoCard(height: 150, child: Text('Fixed Height Card')),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.height, equals(150));
       });
 
       testWidgets('respects custom border radius', (WidgetTester tester) async {
-        const customRadius = BorderRadius.all(Radius.circular(16));
+        const BorderRadius customRadius = BorderRadius.all(Radius.circular(16));
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             borderRadius: customRadius,
-            child: const Text('Custom Radius'),
+            child: Text('Custom Radius'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.borderRadius, equals(customRadius));
       });
 
       testWidgets('respects clip behavior', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(
+          const CorpoCard(
             clipBehavior: Clip.hardEdge,
-            child: const Text('Hard Edge Clip'),
+            child: Text('Hard Edge Clip'),
           ),
         );
 
-        final card = tester.widget<CorpoCard>(find.byType(CorpoCard));
+        final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
         expect(card.clipBehavior, equals(Clip.hardEdge));
       });
     });
@@ -369,7 +368,7 @@ void main() {
           CorpoCard(
             child: ListView(
               shrinkWrap: true,
-              children: const [
+              children: const <Widget>[
                 ListTile(title: Text('Item 1')),
                 ListTile(title: Text('Item 2')),
                 ListTile(title: Text('Item 3')),
@@ -384,12 +383,12 @@ void main() {
       });
 
       testWidgets('handles very long content', (WidgetTester tester) async {
-        const longText =
+        const String longText =
             'This is a very long text content that might wrap to multiple lines and test how the card handles overflow and text wrapping behavior in various scenarios';
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const Text(longText)),
+          const CorpoCard(child: Text(longText)),
         );
 
         expect(find.textContaining('This is a very long text'), findsOneWidget);
@@ -398,7 +397,7 @@ void main() {
       testWidgets('handles empty child content', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const SizedBox.shrink()),
+          const CorpoCard(child: SizedBox.shrink()),
         );
 
         expect(find.byType(CorpoCard), findsOneWidget);
@@ -409,12 +408,12 @@ void main() {
       testWidgets('content is accessible', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const Text('Accessible Card Content')),
+          const CorpoCard(child: Text('Accessible Card Content')),
         );
 
         expect(find.text('Accessible Card Content'), findsOneWidget);
         // Verify semantics structure exists
-        final semantics =
+        final SemanticsNode? semantics =
             tester.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode;
         expect(semantics, isNotNull);
       });
@@ -437,7 +436,7 @@ void main() {
       testWidgets('adapts to theme', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoCard(child: const Text('Themed Card')),
+          const CorpoCard(child: Text('Themed Card')),
         );
 
         expect(find.text('Themed Card'), findsOneWidget);

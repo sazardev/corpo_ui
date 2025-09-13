@@ -6,6 +6,7 @@ library;
 
 import 'package:corpo_ui/corpo_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/semantics/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_utils.dart';
@@ -16,7 +17,7 @@ void main() {
       testWidgets('renders with title', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(appBar: CorpoAppBar(title: const Text('Test Title'))),
+          const Scaffold(appBar: CorpoAppBar(title: Text('Test Title'))),
         );
 
         expect(find.text('Test Title'), findsOneWidget);
@@ -26,11 +27,11 @@ void main() {
       testWidgets('renders with custom title widget', (
         WidgetTester tester,
       ) async {
-        const titleWidget = Text('Custom Widget Title');
+        const Text titleWidget = Text('Custom Widget Title');
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(appBar: CorpoAppBar(title: titleWidget)),
+          const Scaffold(appBar: CorpoAppBar(title: titleWidget)),
         );
 
         expect(find.text('Custom Widget Title'), findsOneWidget);
@@ -42,11 +43,10 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Main Title'),
-              subtitle: const Text('Subtitle text'),
-              variant: CorpoAppBarVariant.standard,
+              title: Text('Main Title'),
+              subtitle: Text('Subtitle text'),
             ),
           ),
         );
@@ -66,7 +66,7 @@ void main() {
           Scaffold(
             appBar: CorpoAppBar(
               title: const Text('Test'),
-              actions: [
+              actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () => actionPressed = true,
@@ -114,12 +114,12 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: Builder(
-                builder: (context) => ElevatedButton(
+                builder: (BuildContext context) => ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => Scaffold(
-                        appBar: CorpoAppBar(title: const Text('Second Page')),
+                      builder: (BuildContext context) => const Scaffold(
+                        appBar: CorpoAppBar(title: Text('Second Page')),
                       ),
                     ),
                   ),
@@ -146,15 +146,14 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Standard'),
-              variant: CorpoAppBarVariant.standard,
+              title: Text('Standard'),
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.variant, equals(CorpoAppBarVariant.standard));
         expect(appBar.preferredSize.height, equals(56));
       });
@@ -162,15 +161,15 @@ void main() {
       testWidgets('applies large variant styling', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Large'),
+              title: Text('Large'),
               variant: CorpoAppBarVariant.large,
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.variant, equals(CorpoAppBarVariant.large));
         expect(appBar.preferredSize.height, equals(96));
       });
@@ -180,15 +179,15 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Compact'),
+              title: Text('Compact'),
               variant: CorpoAppBarVariant.compact,
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.variant, equals(CorpoAppBarVariant.compact));
         expect(appBar.preferredSize.height, equals(48));
       });
@@ -196,31 +195,31 @@ void main() {
       testWidgets('respects custom elevation', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Custom Elevation'),
-              elevation: 8.0,
+              title: Text('Custom Elevation'),
+              elevation: 8,
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.elevation, equals(8.0));
       });
 
       testWidgets('respects custom colors', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Custom Colors'),
+              title: Text('Custom Colors'),
               backgroundColor: CorpoColors.primary500,
               foregroundColor: CorpoColors.neutralWhite,
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.backgroundColor, equals(CorpoColors.primary500));
         expect(appBar.foregroundColor, equals(CorpoColors.neutralWhite));
       });
@@ -232,8 +231,8 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
-            appBar: CorpoAppBar(title: const Text('Accessible App Bar')),
+          const Scaffold(
+            appBar: CorpoAppBar(title: Text('Accessible App Bar')),
           ),
         );
 
@@ -242,7 +241,7 @@ void main() {
         expect(find.text('Accessible App Bar'), findsOneWidget);
 
         // Verify semantics exist
-        final semantics =
+        final SemanticsNode? semantics =
             tester.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode;
         expect(semantics, isNotNull);
       });
@@ -252,15 +251,15 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
-            appBar: CorpoAppBar(title: const Text('Screen Reader Title')),
+          const Scaffold(
+            appBar: CorpoAppBar(title: Text('Screen Reader Title')),
           ),
         );
 
         expect(find.text('Screen Reader Title'), findsOneWidget);
 
         // Verify semantics
-        final semantics =
+        final SemanticsNode? semantics =
             tester.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode;
         expect(semantics, isNotNull);
       });
@@ -271,7 +270,7 @@ void main() {
           Scaffold(
             appBar: CorpoAppBar(
               title: const Text('Test'),
-              actions: [
+              actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {},
@@ -282,7 +281,7 @@ void main() {
           ),
         );
 
-        final iconButton = tester.widget<IconButton>(find.byType(IconButton));
+        final IconButton iconButton = tester.widget<IconButton>(find.byType(IconButton));
         expect(iconButton.tooltip, equals('Search'));
       });
     });
@@ -291,9 +290,9 @@ void main() {
       testWidgets('works with Scaffold drawer', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
-            appBar: CorpoAppBar(title: const Text('With Drawer')),
-            drawer: const Drawer(child: ListTile(title: Text('Drawer Item'))),
+          const Scaffold(
+            appBar: CorpoAppBar(title: Text('With Drawer')),
+            drawer: Drawer(child: ListTile(title: Text('Drawer Item'))),
           ),
         );
 
@@ -311,12 +310,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Scaffold(
-            appBar: CorpoAppBar(title: const Text('With Bottom Sheet')),
+            appBar: const CorpoAppBar(title: Text('With Bottom Sheet')),
             body: Builder(
-              builder: (context) => ElevatedButton(
+              builder: (BuildContext context) => ElevatedButton(
                 onPressed: () => showBottomSheet(
                   context: context,
-                  builder: (context) => const SizedBox(
+                  builder: (BuildContext context) => const SizedBox(
                     height: 200,
                     child: Center(child: Text('Bottom Sheet')),
                   ),
@@ -339,7 +338,7 @@ void main() {
       testWidgets('handles null title gracefully', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(appBar: CorpoAppBar()),
+          const Scaffold(appBar: CorpoAppBar()),
         );
 
         expect(find.byType(AppBar), findsOneWidget);
@@ -348,8 +347,8 @@ void main() {
       testWidgets('handles empty actions list', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
-            appBar: CorpoAppBar(title: const Text('Test'), actions: const []),
+          const Scaffold(
+            appBar: CorpoAppBar(title: Text('Test'), actions: <Widget>[]),
           ),
         );
 
@@ -358,13 +357,13 @@ void main() {
       });
 
       testWidgets('handles very long title', (WidgetTester tester) async {
-        const longTitle = Text(
+        const Text longTitle = Text(
           'This is a very long title that might overflow the available space in the app bar',
         );
 
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(appBar: CorpoAppBar(title: longTitle)),
+          const Scaffold(appBar: CorpoAppBar(title: longTitle)),
         );
 
         expect(
@@ -376,15 +375,15 @@ void main() {
       testWidgets('centerTitle works correctly', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          Scaffold(
+          const Scaffold(
             appBar: CorpoAppBar(
-              title: const Text('Centered Title'),
+              title: Text('Centered Title'),
               centerTitle: true,
             ),
           ),
         );
 
-        final appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
         expect(appBar.centerTitle, isTrue);
       });
     });

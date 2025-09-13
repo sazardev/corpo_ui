@@ -6,6 +6,7 @@ library;
 
 import 'package:corpo_ui/corpo_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/semantics/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_utils.dart';
@@ -19,12 +20,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
-                  title: const Text('Test Dialog'),
-                  content: const Text('Dialog content'),
+                builder: (BuildContext context) => const CorpoDialog(
+                  title: Text('Test Dialog'),
+                  content: Text('Dialog content'),
                 ),
               ),
               child: const Text('Show Dialog'),
@@ -44,13 +45,13 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
+                builder: (BuildContext context) => CorpoDialog(
                   title: const Text('Confirm Action'),
                   content: const Text('Dialog content'),
-                  actions: [
+                  actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel'),
@@ -80,13 +81,13 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
+                builder: (BuildContext context) => CorpoDialog(
                   title: const Text('Test Dialog'),
                   content: const Text('Content'),
-                  actions: [
+                  actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Close'),
@@ -116,12 +117,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
-                  title: const Text('Small Dialog'),
-                  content: const Text('Small content'),
+                builder: (BuildContext context) => const CorpoDialog(
+                  title: Text('Small Dialog'),
+                  content: Text('Small content'),
                   size: CorpoDialogSize.small,
                 ),
               ),
@@ -140,12 +141,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
-                  title: const Text('Large Dialog'),
-                  content: const Text('Large content'),
+                builder: (BuildContext context) => const CorpoDialog(
+                  title: Text('Large Dialog'),
+                  content: Text('Large content'),
                   size: CorpoDialogSize.large,
                 ),
               ),
@@ -166,13 +167,13 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
+                builder: (BuildContext context) => CorpoDialog(
                   title: const Text('Confirm Action'),
                   content: const Text('Are you sure you want to continue?'),
-                  actions: [
+                  actions: <Widget>[
                     CorpoTextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel'),
@@ -212,12 +213,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                builder: (context) => CorpoDialog(
-                  title: const Text('Accessible Dialog'),
-                  content: const Text('Accessible content'),
+                builder: (BuildContext context) => const CorpoDialog(
+                  title: Text('Accessible Dialog'),
+                  content: Text('Accessible content'),
                 ),
               ),
               child: const Text('Show Dialog'),
@@ -230,7 +231,7 @@ void main() {
 
         expect(find.text('Accessible Dialog'), findsOneWidget);
         // Verify semantics
-        final semantics =
+        final SemanticsNode? semantics =
             tester.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode;
         expect(semantics, isNotNull);
       });
@@ -239,13 +240,12 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => showDialog<void>(
                 context: context,
-                barrierDismissible: true,
-                builder: (context) => CorpoDialog(
-                  title: const Text('Dismissible Dialog'),
-                  content: const Text('Tap outside to close'),
+                builder: (BuildContext context) => const CorpoDialog(
+                  title: Text('Dismissible Dialog'),
+                  content: Text('Tap outside to close'),
                 ),
               ),
               child: const Text('Show Dialog'),
@@ -272,7 +272,7 @@ void main() {
       testWidgets('renders success alert', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert(
+          const CorpoAlert(
             type: CorpoAlertType.success,
             title: 'Success',
             message: 'Operation completed successfully',
@@ -287,7 +287,7 @@ void main() {
       testWidgets('renders error alert', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert.error(title: 'Error', message: 'Something went wrong'),
+          const CorpoAlert.error(title: 'Error', message: 'Something went wrong'),
         );
 
         expect(find.text('Error'), findsOneWidget);
@@ -297,7 +297,7 @@ void main() {
       testWidgets('renders warning alert', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert.warning(
+          const CorpoAlert.warning(
             title: 'Warning',
             message: 'Please check your input',
           ),
@@ -310,7 +310,7 @@ void main() {
       testWidgets('renders info alert', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert.info(
+          const CorpoAlert.info(
             title: 'Information',
             message: 'Here is some helpful information',
           ),
@@ -348,7 +348,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert(
+          const CorpoAlert(
             type: CorpoAlertType.info,
             title: 'Non-dismissible Alert',
             message: 'This alert cannot be dismissed',
@@ -369,7 +369,7 @@ void main() {
             type: CorpoAlertType.warning,
             title: 'Alert with Action',
             message: 'This alert has a custom action',
-            actions: [
+            actions: <Widget>[
               TextButton(
                 onPressed: () => actionPressed = true,
                 child: const Text('Custom Action'),
@@ -391,7 +391,7 @@ void main() {
             type: CorpoAlertType.error,
             title: 'Multiple Actions',
             message: 'This alert has multiple actions',
-            actions: [
+            actions: <Widget>[
               TextButton(onPressed: () {}, child: const Text('Action 1')),
               TextButton(onPressed: () {}, child: const Text('Action 2')),
             ],
@@ -409,7 +409,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoAlert(
+          const CorpoAlert(
             type: CorpoAlertType.success,
             title: 'Accessible Alert',
             message: 'This alert is accessible',
@@ -418,7 +418,7 @@ void main() {
 
         expect(find.text('Accessible Alert'), findsOneWidget);
         // Verify semantics
-        final semantics =
+        final SemanticsNode? semantics =
             tester.binding.pipelineOwner.semanticsOwner?.rootSemanticsNode;
         expect(semantics, isNotNull);
       });
@@ -434,7 +434,7 @@ void main() {
           ),
         );
 
-        final dismissButton = find.byIcon(Icons.close);
+        final Finder dismissButton = find.byIcon(Icons.close);
         expect(dismissButton, findsOneWidget);
       });
     });
@@ -446,7 +446,7 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () =>
                   CorpoSnackbar.show(context, message: 'Test snackbar message'),
               child: const Text('Show Snackbar'),
@@ -464,7 +464,7 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () =>
                   CorpoSnackbar.success(context, message: 'Success message'),
               child: const Text('Show Success'),
@@ -482,7 +482,7 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () =>
                   CorpoSnackbar.error(context, message: 'Error message'),
               child: const Text('Show Error'),
@@ -504,7 +504,7 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => CorpoSnackbar.show(
                 context,
                 message: 'Message with action',
@@ -535,7 +535,7 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           Builder(
-            builder: (context) => ElevatedButton(
+            builder: (BuildContext context) => ElevatedButton(
               onPressed: () => CorpoSnackbar.show(
                 context,
                 message: 'Auto dismiss message',
@@ -567,13 +567,13 @@ void main() {
         tester,
         Scaffold(
           body: Column(
-            children: [
+            children: <Widget>[
               Builder(
-                builder: (context) => ElevatedButton(
+                builder: (BuildContext context) => ElevatedButton(
                   onPressed: () => showDialog<void>(
                     context: context,
-                    builder: (context) => CorpoDialog(
-                      title: const Text('Dialog'),
+                    builder: (BuildContext context) => const CorpoDialog(
+                      title: Text('Dialog'),
                       content: CorpoAlert(
                         type: CorpoAlertType.warning,
                         title: 'Warning',
