@@ -1,3 +1,32 @@
+# CHANGELOG
+
+## 0.1.0
+
+* Initial release of Corpo UI design system
+* Complete Phase 6: Developer Experience implementation
+* Comprehensive component library with:
+  - Typography (headings, text, labels, code)
+  - Buttons (primary, outlined, text, icon buttons)
+  - Layout components (cards, surfaces, dividers, spacers)
+  - Input components (text fields, checkboxes, radio buttons, switches)
+  - Form components (dropdowns, date/time pickers, sliders, validation)
+  - Navigation components (app bar, bottom navigation, breadcrumbs, tabs, drawer)
+  - Feedback components (alerts, dialogs, skeletons, snackbars)
+  - Data display (data tables, list tiles, expansion panels, timeline, stepper)
+  - Media components (responsive images, avatars)
+  - Overlay components (modals, popovers, sheets, tooltips)
+  - Progress indicators (progress bars, spinners)
+  - Badge and icon components
+* Complete theme system with light/dark mode support
+* Responsive design utilities and breakpoint system
+* Accessibility features and WCAG compliance tools
+* Animation and transition components
+* Comprehensive documentation and API references
+* Example applications demonstrating real-world usage
+* Migration guide from Material Design components
+* Theming and customization guide
+* Extensive test coverage with unit and integration tests
+
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Initial project setup and package structure

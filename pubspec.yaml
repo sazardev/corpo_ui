@@ -1,7 +1,19 @@
 name: corpo_ui
-description: "Corpo UI is a comprehensive Flutter package that provides a robust foundation for building design systems."
-version: 0.0.1
+description: "A comprehensive Flutter design system with corporate-focused UI components, themes, and utilities inspired by Shadcn UI principles."
+version: 0.1.0
 homepage: https://github.com/sazardev/corpo_ui
+repository: https://github.com/sazardev/corpo_ui
+issue_tracker: https://github.com/sazardev/corpo_ui/issues
+documentation: https://github.com/sazardev/corpo_ui#readme
+
+topics:
+  - ui
+  - design-system
+  - flutter-package
+  - corporate
+  - components
+  - theme
+  - material-design
 
 environment:
   sdk: ^3.9.2
