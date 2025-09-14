@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 0.1.1
+
+Refactor widget build methods for consistency and readability
+
+- Simplified build methods in FormApplicationExample and ResponsiveDesignShowcase classes to use arrow syntax.
+- Updated padding values from 16.0 to 16 for consistency.
+- Changed anonymous function parameters to explicit types for clarity.
+- Replaced list initializations with type-specific lists for better type safety.
+- Improved code readability by using const constructors where applicable.
+
 ## 0.1.0
 
 * Initial release of Corpo UI design system
