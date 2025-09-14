@@ -86,8 +86,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/spacing.dart';
-import 'button_style.dart';
+import '../../design_tokens.dart';
 
 /// Button variants for different use cases.
 ///
@@ -332,13 +331,15 @@ class CorpoButton extends StatelessWidget {
 
   /// Builds the content of the button (text, icon, loading indicator).
   Widget _buildButtonContent(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     if (isLoading) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _buildLoadingIndicator(context),
           if (child != null) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             child!,
           ],
         ],
@@ -354,9 +355,11 @@ class CorpoButton extends StatelessWidget {
 
   /// Builds content with both icon and text.
   Widget _buildIconTextContent() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     final List<Widget> children = <Widget>[
       Icon(icon, size: _getIconSize()),
-      const SizedBox(width: CorpoSpacing.small),
+      SizedBox(width: tokens.spacing2x),
       child!,
     ];
 
@@ -386,65 +389,207 @@ class CorpoButton extends StatelessWidget {
 
   /// Gets the appropriate button style for the variant and theme.
   ButtonStyle _getButtonStyle(bool isDark, bool isEnabled) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     if (_isIconOnly) {
-      return CorpoButtonStyle.icon(
-        isDark: isDark,
-        isEnabled: isEnabled,
-        size: _getIconButtonSize(),
-      );
+      return _getIconButtonStyle(tokens, isDark, isEnabled);
     }
 
     switch (variant) {
       case CorpoButtonVariant.primary:
-        return CorpoButtonStyle.primary(isDark: isDark, isEnabled: isEnabled);
+        return _getPrimaryButtonStyle(tokens, isDark, isEnabled);
       case CorpoButtonVariant.secondary:
-        return CorpoButtonStyle.secondary(isDark: isDark, isEnabled: isEnabled);
+        return _getSecondaryButtonStyle(tokens, isDark, isEnabled);
       case CorpoButtonVariant.tertiary:
-        return CorpoButtonStyle.tertiary(isDark: isDark, isEnabled: isEnabled);
+        return _getTertiaryButtonStyle(tokens, isDark, isEnabled);
       case CorpoButtonVariant.danger:
-        return CorpoButtonStyle.danger(isDark: isDark, isEnabled: isEnabled);
+        return _getDangerButtonStyle(tokens, isDark, isEnabled);
+    }
+  }
+
+  /// Gets the primary button style using design tokens.
+  ButtonStyle _getPrimaryButtonStyle(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: isEnabled
+          ? tokens.primaryColor
+          : tokens.secondaryColor.withValues(alpha: 0.3),
+      foregroundColor: isEnabled
+          ? tokens.getTextColorFor(tokens.primaryColor)
+          : tokens.textSecondary,
+      disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
+      disabledForegroundColor: tokens.textSecondary,
+      elevation: isEnabled ? 2 : 0,
+      shadowColor: tokens.primaryColor.withValues(alpha: 0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+      ),
+      textStyle: TextStyle(
+        fontFamily: tokens.fontFamily,
+        fontSize: _getFontSize(tokens),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  /// Gets the secondary button style using design tokens.
+  ButtonStyle _getSecondaryButtonStyle(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
+    return OutlinedButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+      disabledForegroundColor: tokens.textSecondary,
+      side: BorderSide(
+        color: isEnabled
+            ? tokens.primaryColor
+            : tokens.secondaryColor.withValues(alpha: 0.3),
+        width: 1.5,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+      ),
+      textStyle: TextStyle(
+        fontFamily: tokens.fontFamily,
+        fontSize: _getFontSize(tokens),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  /// Gets the tertiary button style using design tokens.
+  ButtonStyle _getTertiaryButtonStyle(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
+    return TextButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+      disabledForegroundColor: tokens.textSecondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+      ),
+      textStyle: TextStyle(
+        fontFamily: tokens.fontFamily,
+        fontSize: _getFontSize(tokens),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  /// Gets the danger button style using design tokens.
+  ButtonStyle _getDangerButtonStyle(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: isEnabled
+          ? tokens.errorColor
+          : tokens.secondaryColor.withValues(alpha: 0.3),
+      foregroundColor: isEnabled
+          ? tokens.getTextColorFor(tokens.errorColor)
+          : tokens.textSecondary,
+      disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
+      disabledForegroundColor: tokens.textSecondary,
+      elevation: isEnabled ? 2 : 0,
+      shadowColor: tokens.errorColor.withValues(alpha: 0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+      ),
+      textStyle: TextStyle(
+        fontFamily: tokens.fontFamily,
+        fontSize: _getFontSize(tokens),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+
+  /// Gets the icon button style using design tokens.
+  ButtonStyle _getIconButtonStyle(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
+    return IconButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+      disabledForegroundColor: tokens.textSecondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
+      ),
+    );
+  }
+
+  /// Gets the font size based on button size and design tokens.
+  double _getFontSize(CorpoDesignTokens tokens) {
+    switch (size) {
+      case CorpoButtonSize.small:
+        return tokens.fontSizeSmall;
+      case CorpoButtonSize.medium:
+        return tokens.baseFontSize;
+      case CorpoButtonSize.large:
+        return tokens.fontSizeLarge;
     }
   }
 
   /// Gets the appropriate padding for the button size.
   EdgeInsetsGeometry _getPadding() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     switch (size) {
       case CorpoButtonSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.medium,
-          vertical: CorpoSpacing.small,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing3x,
+          vertical: tokens.spacing2x,
         );
       case CorpoButtonSize.medium:
-        return CorpoPadding.medium;
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing3x,
+        );
       case CorpoButtonSize.large:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.large,
-          vertical: CorpoSpacing.medium,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing6x,
+          vertical: tokens.spacing4x,
         );
     }
   }
 
   /// Gets the minimum size for the button.
   Size _getMinimumSize() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     switch (size) {
       case CorpoButtonSize.small:
-        return const Size(64, 32);
+        return Size(tokens.spacing16x, tokens.spacing8x); // 64x32 with base 4px
       case CorpoButtonSize.medium:
-        return const Size(88, 40);
+        return Size(
+          tokens.spacing16x * 1.375,
+          tokens.spacing8x * 1.25,
+        ); // 88x40
       case CorpoButtonSize.large:
-        return const Size(112, 48);
+        return Size(tokens.spacing16x * 1.75, tokens.spacing8x * 1.5); // 112x48
     }
   }
 
   /// Gets the icon size based on button size.
   double _getIconSize() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     switch (size) {
       case CorpoButtonSize.small:
-        return 16;
+        return tokens.spacing4x; // 16px
       case CorpoButtonSize.medium:
-        return 18;
+        return tokens.spacing4x * 1.125; // 18px
       case CorpoButtonSize.large:
-        return 20;
+        return tokens.spacing4x * 1.25; // 20px
     }
   }
 
@@ -457,18 +602,6 @@ class CorpoButton extends StatelessWidget {
         return 16;
       case CorpoButtonSize.large:
         return 18;
-    }
-  }
-
-  /// Gets the icon button size for icon-only buttons.
-  double _getIconButtonSize() {
-    switch (size) {
-      case CorpoButtonSize.small:
-        return 32;
-      case CorpoButtonSize.medium:
-        return 40;
-      case CorpoButtonSize.large:
-        return 48;
     }
   }
 }

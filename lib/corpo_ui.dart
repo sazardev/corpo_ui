@@ -90,6 +90,8 @@ export 'src/components/typography/corpo_code.dart';
 export 'src/components/typography/corpo_heading.dart';
 export 'src/components/typography/corpo_label.dart';
 export 'src/components/typography/corpo_text.dart';
+// Design Tokens - ShadCN-style configuration system
+export 'src/design_tokens.dart';
 // Design Tokens
 export 'src/constants/colors.dart';
 export 'src/constants/spacing.dart';

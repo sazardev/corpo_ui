@@ -1,33 +1,300 @@
-# Corpo UI - The foundation for your design system
+# Corpo UI - The ShadCN of Flutter 🎨
 
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)](https://flutter.dev/)
 [![Pub Version](https://img.shields.io/pub/v/corpo_ui?style=flat)](https://pub.dev/packages/corpo_ui)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+**¡Por fin! El poder de ShadCN UI, pero para Flutter.** 
 
-Corpo UI is a comprehensive Flutter package that provides a robust foundation for building design systems. It offers a wide range of customizable UI components, themes, and utilities to help developers create consistent and visually appealing applications with ease. Whether you're starting a new project or enhancing an existing one, Corpo UI simplifies the process of implementing design principles and ensures a cohesive user experience across your app.
+Corpo UI es el primer paquete de Flutter que implementa la filosofía revolucionaria de ShadCN: **cambia un archivo, transforma toda tu app**. Ya no más hardcodear colores en 50 lugares diferentes. Ya no más inconsistencias. Una sola línea de código cambia todo tu diseño.
 
-> Corpo UI is inspired by the design principles of corporate applications, focusing on clarity, usability, and professionalism.
+> **"¿Recuerdas la primera vez que usaste ShadCN en React? Esa misma sensación, pero en Flutter."**
 
-> It is designed to be flexible and adaptable, allowing developers to tailor the components to fit their specific design needs.
+## 🚀 La Magia de ShadCN en Flutter
 
-> With Corpo UI, you can accelerate your development process and maintain a high standard of design quality in your Flutter applications.
+```dart
+// ¿Quieres cambiar TODA tu app a tema púrpura?
+CorpoDesignTokens.configure(primaryColor: Colors.purple);
 
-> Also, this package is open-source and welcomes contributions from the community to help improve and expand its offerings.
+// ¿Prefieres bordes más redondeados en TODOS los componentes?
+CorpoDesignTokens.configure(borderRadius: 16.0);
 
-> Corpo UI is highly inspired by [Shadcn UI](https://ui.shadcn.com/).
+// ¿Cambiar la fuente de TODA la aplicación?
+CorpoDesignTokens.configure(fontFamily: 'Poppins');
+```
 
-## Motivation
+**¡Y TODOS los componentes se actualizan automáticamente!** Botones, cards, inputs, modales... todo.
 
-Building a design system from scratch can be time-consuming and challenging. Corpo UI aims to alleviate these challenges by providing a ready-to-use set of components and design guidelines that adhere to best practices in UI/UX design. This allows developers to focus on building features and functionality rather than worrying about the intricacies of design implementation.
+## ⚡ Quick Start - 30 segundos para el wow factor
 
-# The problem
+1. **Instala:**
+```bash
+flutter pub add corpo_ui
+```
 
-Creating a consistent and visually appealing design system can be a daunting task for developers, especially when starting from scratch. It often involves significant time and effort to design, implement, and maintain UI components that adhere to best practices in design principles. This can lead to inconsistencies in the user interface, increased development time, and challenges in scaling the application as new features are added.
+2. **Importa y configura:**
+```dart
+import 'package:corpo_ui/corpo_ui.dart';
 
-# The solution
+void main() {
+  // 🎨 Elige tu tema (o crea uno personalizado)
+  CorpoDesignTokens.applyModernTheme(); // Púrpura elegante
+  // CorpoDesignTokens.applyFriendlyTheme(); // Naranja amigable  
+  // CorpoDesignTokens.applyMinimalTheme(); // Minimalista B&W
+  
+  runApp(MyApp());
+}
+```
 
-Corpo UI addresses these challenges by providing a comprehensive Flutter package that offers a wide range of pre-designed and customizable UI components, themes, and utilities. By leveraging Corpo UI, developers can quickly implement a cohesive design system that ensures consistency across their applications. The package is designed to be flexible and adaptable, allowing developers to tailor the components to fit their specific design needs. This not only accelerates the development process but also helps maintain a high standard of design quality in Flutter applications.
+3. **Usa los componentes:**
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Column(
+          children: [
+            CorpoButton(
+              onPressed: () {},
+              child: Text('Este botón usa el tema automáticamente'),
+            ),
+            CorpoCard(
+              child: CorpoText('Esta card también se adapta'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+**¡Ya está!** Tu app tiene un diseño consistente y profesional.
+
+## 🎨 Temas Pre-configurados
+
+```dart
+// Corporativo profesional (azul)
+CorpoDesignTokens.applyCorporateTheme();
+
+// Moderno y elegante (púrpura)  
+CorpoDesignTokens.applyModernTheme();
+
+// Amigable y cálido (naranja)
+CorpoDesignTokens.applyFriendlyTheme();
+
+// Minimalista limpio (B&W)
+CorpoDesignTokens.applyMinimalTheme();
+```
+
+## 🛠️ Personalización Total
+
+¿Quieres algo único? Personaliza todo:
+
+```dart
+CorpoDesignTokens.configure(
+  // Colores
+  primaryColor: Color(0xFF6366F1),
+  secondaryColor: Color(0xFF8B5CF6),
+  successColor: Color(0xFF10B981),
+  
+  // Espaciado
+  baseSpacing: 6.0, // Más generoso
+  
+  // Tipografía  
+  fontFamily: 'SF Pro Display',
+  baseFontSize: 16.0,
+  
+  // Bordes
+  borderRadius: 12.0,
+  borderRadiusLarge: 20.0,
+);
+```
+
+## 🏗️ Componentes Disponibles
+
+### ✅ Ya Disponibles:
+- **Botones**: Primary, Secondary, Ghost, Icon buttons
+- **Layout**: Cards, Surfaces, Dividers, Spacers  
+- **Inputs**: Text fields, Checkboxes, Radio, Switches
+- **Typography**: Headings, Text, Labels, Code blocks
+- **Navigation**: App bars, Bottom nav, Breadcrumbs, Tabs
+- **Feedback**: Alerts, Dialogs, Skeletons, Snackbars
+- **Progress**: Progress bars, Spinners
+- **Media**: Avatars, Images, Icons, Badges
+
+### 🚧 En Desarrollo:
+- **Forms**: Validación avanzada, Date/Time pickers
+- **Data**: Tables, Lists, Timeline
+- **Overlays**: Modals, Popovers, Tooltips
+
+## 🎯 ¿Por qué Corpo UI?
+
+### El Problema Tradicional:
+```dart
+// 😤 Código tradicional: colores hardcodeados por todos lados
+Container(color: Color(0xFF3182CE))
+ElevatedButton(style: ButtonStyle(backgroundColor: Color(0xFF3182CE)))
+Card(color: Color(0xFFFFFFFF))
+Text(style: TextStyle(color: Color(0xFF1A202C)))
+
+// ¿Quieres cambiar el color primario? ¡A buscar y reemplazar en 50 archivos!
+```
+
+### La Solución Corpo UI:
+```dart
+// 😍 Con Corpo UI: un solo lugar controla todo
+CorpoDesignTokens.configure(primaryColor: Colors.teal);
+
+// Todos estos componentes se actualizan automáticamente:
+CorpoButton() // ✅ Usa el teal automáticamente
+CorpoCard()   // ✅ Bordes y colores consistentes  
+CorpoText()   // ✅ Tipografía unificada
+```
+
+## 📚 Ejemplos Completos
+
+### Cambio de Tema en Tiempo Real:
+```dart
+class ThemeSwitcher extends StatefulWidget {
+  @override
+  _ThemeSwitcherState createState() => _ThemeSwitcherState();
+}
+
+class _ThemeSwitcherState extends State<ThemeSwitcher> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            CorpoDesignTokens.applyModernTheme();
+            setState(() {}); // ¡Toda la app cambia!
+          },
+          child: Text('Tema Moderno'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            CorpoDesignTokens.applyFriendlyTheme();
+            setState(() {}); // ¡Otra vez magia!
+          },
+          child: Text('Tema Amigable'),
+        ),
+        // Los componentes de abajo se actualizan automáticamente
+        CorpoButton(child: Text('Botón que se adapta')),
+        CorpoCard(child: Text('Card que se adapta')),
+      ],
+    );
+  }
+}
+```
+
+### Dashboard Corporativo:
+```dart
+void main() {
+  CorpoDesignTokens.applyCorporateTheme();
+  runApp(CorporateDashboard());
+}
+
+class CorporateDashboard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: CorpoAppBar(title: 'Dashboard'),
+        body: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: CorpoCard(
+                    child: Column(
+                      children: [
+                        CorpoText('Ventas', variant: CorpoTextVariant.heading),
+                        CorpoText('$124,532', variant: CorpoTextVariant.display),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: CorpoCard(
+                    child: Column(
+                      children: [
+                        CorpoText('Usuarios', variant: CorpoTextVariant.heading),
+                        CorpoText('2,847', variant: CorpoTextVariant.display),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            CorpoButton(
+              onPressed: () {},
+              child: Text('Generar Reporte'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## 🎨 Inspiración y Filosofía
+
+Corpo UI está **profundamente inspirado por [ShadCN UI](https://ui.shadcn.com/)**, el revolucionario sistema de diseño que transformó el desarrollo web con React. Hemos traído esa misma filosofía a Flutter:
+
+- **Un archivo controla todo**: Como las CSS variables de ShadCN
+- **Componentes que se adaptan**: Sin configuración manual
+- **Temas intercambiables**: Cambia toda la app en una línea
+- **Personalización extrema**: Para que sea TU diseño, no el nuestro
+
+### Lo que aprendimos de ShadCN:
+
+1. **Configuración > Convención**: Flexibilidad total sobre decisiones arbitrarias
+2. **Design Tokens**: Un sistema centralizado que se propaga a todo
+3. **Developer Experience**: Hacer que lo complejo sea simple
+4. **Consistencia Automática**: Los componentes simplemente funcionan juntos
+
+## 🔥 Casos de Uso Perfectos
+
+### 🏢 Apps Corporativas
+```dart
+CorpoDesignTokens.applyCorporateTheme();
+// Obtienes: Azul profesional, tipografía legible, espaciado conservador
+```
+
+### 🎨 Apps Creativas  
+```dart
+CorpoDesignTokens.configure(
+  primaryColor: Colors.deepPurple,
+  borderRadius: 20.0,
+  fontFamily: 'Montserrat',
+);
+// Obtienes: Diseño moderno y creativo
+```
+
+### 🏥 Apps Médicas
+```dart
+CorpoDesignTokens.configure(
+  primaryColor: Colors.teal,
+  successColor: Colors.green.shade600,
+  errorColor: Colors.red.shade600,
+  baseSpacing: 8.0, // Más espacioso para accesibilidad
+);
+// Obtienes: Colores médicos tradicionales, accesible
+```
+
+### 🎮 Apps Gaming
+```dart
+CorpoDesignTokens.configure(
+  primaryColor: Colors.orange,
+  borderRadius: 0, // Sin bordes redondeados
+  fontFamily: 'Orbitron',
+);
+// Obtienes: Look gaming con tipografía futurista
+```
 
 # Specifications
 
