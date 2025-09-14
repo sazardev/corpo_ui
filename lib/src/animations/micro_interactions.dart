@@ -283,20 +283,50 @@ class _CorpoMicroInteractionState extends State<CorpoMicroInteraction>
 
   Color? _getColorEnd() {
     if (widget.customColor != null) {
-      return widget.customColor!.withOpacity(0.1);
+      return Color.fromARGB(
+        (0.1 * 255).round(),
+        (widget.customColor!.r * 255.0).round() & 0xff,
+        (widget.customColor!.g * 255.0).round() & 0xff,
+        (widget.customColor!.b * 255.0).round() & 0xff,
+      );
     }
 
     switch (widget.type) {
       case CorpoMicroInteractionType.hover:
-        return Colors.blue.withOpacity(0.05);
+        return Color.fromARGB(
+          (0.05 * 255).round(),
+          (Colors.blue.r * 255.0).round() & 0xff,
+          (Colors.blue.g * 255.0).round() & 0xff,
+          (Colors.blue.b * 255.0).round() & 0xff,
+        );
       case CorpoMicroInteractionType.focus:
-        return Colors.blue.withOpacity(0.1);
+        return Color.fromARGB(
+          (0.1 * 255).round(),
+          (Colors.blue.r * 255.0).round() & 0xff,
+          (Colors.blue.g * 255.0).round() & 0xff,
+          (Colors.blue.b * 255.0).round() & 0xff,
+        );
       case CorpoMicroInteractionType.success:
-        return Colors.green.withOpacity(0.1);
+        return Color.fromARGB(
+          (0.1 * 255).round(),
+          (Colors.green.r * 255.0).round() & 0xff,
+          (Colors.green.g * 255.0).round() & 0xff,
+          (Colors.green.b * 255.0).round() & 0xff,
+        );
       case CorpoMicroInteractionType.error:
-        return Colors.red.withOpacity(0.1);
+        return Color.fromARGB(
+          (0.1 * 255).round(),
+          (Colors.red.r * 255.0).round() & 0xff,
+          (Colors.red.g * 255.0).round() & 0xff,
+          (Colors.red.b * 255.0).round() & 0xff,
+        );
       case CorpoMicroInteractionType.warning:
-        return Colors.orange.withOpacity(0.1);
+        return Color.fromARGB(
+          (0.1 * 255).round(),
+          (Colors.orange.r * 255.0).round() & 0xff,
+          (Colors.orange.g * 255.0).round() & 0xff,
+          (Colors.orange.b * 255.0).round() & 0xff,
+        );
       default:
         return Colors.transparent;
     }
@@ -371,83 +401,83 @@ class _CorpoMicroInteractionState extends State<CorpoMicroInteraction>
 
   @override
   Widget build(BuildContext context) => MouseRegion(
-      onEnter: (_) {
-        if (widget.type == CorpoMicroInteractionType.hover) {
-          setState(() => _isHovered = true);
-          widget.onHover?.call(true);
+    onEnter: (_) {
+      if (widget.type == CorpoMicroInteractionType.hover) {
+        setState(() => _isHovered = true);
+        widget.onHover?.call(true);
+        _handleInteractionStart();
+      }
+    },
+    onExit: (_) {
+      if (widget.type == CorpoMicroInteractionType.hover) {
+        setState(() => _isHovered = false);
+        widget.onHover?.call(false);
+        _handleInteractionEnd();
+      }
+    },
+    child: GestureDetector(
+      onTapDown: (_) {
+        if (widget.type == CorpoMicroInteractionType.press) {
+          setState(() => _isPressed = true);
           _handleInteractionStart();
         }
       },
-      onExit: (_) {
-        if (widget.type == CorpoMicroInteractionType.hover) {
-          setState(() => _isHovered = false);
-          widget.onHover?.call(false);
+      onTapUp: (_) {
+        if (widget.type == CorpoMicroInteractionType.press) {
+          setState(() => _isPressed = false);
           _handleInteractionEnd();
         }
       },
-      child: GestureDetector(
-        onTapDown: (_) {
-          if (widget.type == CorpoMicroInteractionType.press) {
-            setState(() => _isPressed = true);
-            _handleInteractionStart();
-          }
-        },
-        onTapUp: (_) {
-          if (widget.type == CorpoMicroInteractionType.press) {
-            setState(() => _isPressed = false);
-            _handleInteractionEnd();
-          }
-        },
-        onTapCancel: () {
-          if (widget.type == CorpoMicroInteractionType.press) {
-            setState(() => _isPressed = false);
-            _handleInteractionEnd();
-          }
-        },
-        onTap: widget.onTap,
-        onLongPress: widget.onLongPress,
-        child: Focus(
-          onFocusChange: (bool focused) {
-            if (widget.type == CorpoMicroInteractionType.focus) {
-              setState(() => _isFocused = focused);
-              if (focused) {
-                _handleInteractionStart();
-              } else {
-                _handleInteractionEnd();
-              }
+      onTapCancel: () {
+        if (widget.type == CorpoMicroInteractionType.press) {
+          setState(() => _isPressed = false);
+          _handleInteractionEnd();
+        }
+      },
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      child: Focus(
+        onFocusChange: (bool focused) {
+          if (widget.type == CorpoMicroInteractionType.focus) {
+            setState(() => _isFocused = focused);
+            if (focused) {
+              _handleInteractionStart();
+            } else {
+              _handleInteractionEnd();
             }
-          },
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (BuildContext context, Widget? child) => Transform.scale(
-                scale: _scaleAnimation.value,
-                child: Material(
-                  elevation: _elevationAnimation.value,
-                  color: _colorAnimation.value,
-                  borderRadius: BorderRadius.circular(4),
-                  child: Container(
-                    decoration: widget.type == CorpoMicroInteractionType.focus
-                        ? BoxDecoration(
-                            border: _isFocused
-                                ? Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: CorpoMicroEffects.focusBorderWidth,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(4),
-                          )
-                        : null,
-                    child: Opacity(
-                      opacity: _opacityAnimation.value,
-                      child: widget.child,
-                    ),
-                  ),
+          }
+        },
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (BuildContext context, Widget? child) => Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Material(
+              elevation: _elevationAnimation.value,
+              color: _colorAnimation.value,
+              borderRadius: BorderRadius.circular(4),
+              child: Container(
+                decoration: widget.type == CorpoMicroInteractionType.focus
+                    ? BoxDecoration(
+                        border: _isFocused
+                            ? Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: CorpoMicroEffects.focusBorderWidth,
+                              )
+                            : null,
+                        borderRadius: BorderRadius.circular(4),
+                      )
+                    : null,
+                child: Opacity(
+                  opacity: _opacityAnimation.value,
+                  child: widget.child,
                 ),
               ),
+            ),
           ),
         ),
       ),
-    );
+    ),
+  );
 }
 
 /// Utility class for creating micro-interaction effects.
@@ -459,29 +489,26 @@ abstract final class CorpoMicroInteractions {
     bool enabled = true,
     Color? color,
   }) => CorpoMicroInteraction.hover(
+    enabled: enabled,
+    customColor: color,
+    child: CorpoMicroInteraction.press(
       enabled: enabled,
-      customColor: color,
-      child: CorpoMicroInteraction.press(
+      onTap: onPressed,
+      child: CorpoMicroInteraction.focus(
         enabled: enabled,
-        onTap: onPressed,
-        child: CorpoMicroInteraction.focus(
-          enabled: enabled,
-          customColor: color,
-          child: child,
-        ),
+        customColor: color,
+        child: child,
       ),
-    );
+    ),
+  );
 
   /// Creates a card with hover effect.
   static Widget card({
     required Widget child,
     VoidCallback? onTap,
     bool enabled = true,
-  }) => CorpoMicroInteraction.hover(
-      enabled: enabled,
-      onTap: onTap,
-      child: child,
-    );
+  }) =>
+      CorpoMicroInteraction.hover(enabled: enabled, onTap: onTap, child: child);
 
   /// Creates a loading indicator with pulse effect.
   static Widget loading({
@@ -500,8 +527,8 @@ abstract final class CorpoMicroInteractions {
     required Widget child,
     Duration duration = const Duration(seconds: 3),
   }) => CorpoMicroInteraction(
-      type: CorpoMicroInteractionType.breathe,
-      duration: duration,
-      child: child,
-    );
+    type: CorpoMicroInteractionType.breathe,
+    duration: duration,
+    child: child,
+  );
 }

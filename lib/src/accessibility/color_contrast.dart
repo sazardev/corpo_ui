@@ -102,12 +102,13 @@ class ContrastValidationResult {
   final Color? adjustedBackground;
 
   @override
-  String toString() => 'ContrastValidationResult('
-        'ratio: ${ratio.toStringAsFixed(2)}, '
-        'isCompliant: $isCompliant, '
-        'level: $level, '
-        'requiredRatio: ${requiredRatio.toStringAsFixed(2)}'
-        ')';
+  String toString() =>
+      'ContrastValidationResult('
+      'ratio: ${ratio.toStringAsFixed(2)}, '
+      'isCompliant: $isCompliant, '
+      'level: $level, '
+      'requiredRatio: ${requiredRatio.toStringAsFixed(2)}'
+      ')';
 }
 
 /// Utility class for color contrast validation and adjustment.
@@ -121,7 +122,11 @@ abstract final class CorpoContrastValidator {
     double? customRatio,
   }) {
     final double ratio = calculateContrastRatio(foreground, background);
-    final double requiredRatio = _getRequiredRatio(level, textSize, customRatio);
+    final double requiredRatio = _getRequiredRatio(
+      level,
+      textSize,
+      customRatio,
+    );
     final bool isCompliant = ratio >= requiredRatio;
 
     Color? adjustedForeground;
@@ -168,9 +173,15 @@ abstract final class CorpoContrastValidator {
   ///
   /// Uses the WCAG formula for luminance calculation.
   static double calculateLuminance(Color color) {
-    final double r = _linearizeColorComponent(color.red / 255.0);
-    final double g = _linearizeColorComponent(color.green / 255.0);
-    final double b = _linearizeColorComponent(color.blue / 255.0);
+    final double r = _linearizeColorComponent(
+      (color.r * 255.0).round() / 255.0,
+    );
+    final double g = _linearizeColorComponent(
+      (color.g * 255.0).round() / 255.0,
+    );
+    final double b = _linearizeColorComponent(
+      (color.b * 255.0).round() / 255.0,
+    );
 
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   }
@@ -342,12 +353,17 @@ abstract final class CorpoContrastValidator {
   // Color blindness simulation methods
   static Color _simulateProtanopia(Color color) {
     // Simplified protanopia simulation
-    final double r = 0.567 * color.red + 0.433 * color.green;
-    final double g = 0.558 * color.red + 0.442 * color.green;
-    final double b = color.blue.toDouble();
+    final int colorRed = (color.r * 255.0).round() & 0xff;
+    final int colorGreen = (color.g * 255.0).round() & 0xff;
+    final int colorBlue = (color.b * 255.0).round() & 0xff;
+    final int colorAlpha = (color.a * 255.0).round() & 0xff;
+
+    final double r = 0.567 * colorRed + 0.433 * colorGreen;
+    final double g = 0.558 * colorRed + 0.442 * colorGreen;
+    final double b = colorBlue.toDouble();
 
     return Color.fromARGB(
-      color.alpha,
+      colorAlpha,
       r.round().clamp(0, 255),
       g.round().clamp(0, 255),
       b.round().clamp(0, 255),
@@ -356,12 +372,17 @@ abstract final class CorpoContrastValidator {
 
   static Color _simulateDeuteranopia(Color color) {
     // Simplified deuteranopia simulation
-    final double r = 0.625 * color.red + 0.375 * color.green;
-    final double g = 0.7 * color.red + 0.3 * color.green;
-    final double b = color.blue.toDouble();
+    final int colorRed = (color.r * 255.0).round() & 0xff;
+    final int colorGreen = (color.g * 255.0).round() & 0xff;
+    final int colorBlue = (color.b * 255.0).round() & 0xff;
+    final int colorAlpha = (color.a * 255.0).round() & 0xff;
+
+    final double r = 0.625 * colorRed + 0.375 * colorGreen;
+    final double g = 0.7 * colorRed + 0.3 * colorGreen;
+    final double b = colorBlue.toDouble();
 
     return Color.fromARGB(
-      color.alpha,
+      colorAlpha,
       r.round().clamp(0, 255),
       g.round().clamp(0, 255),
       b.round().clamp(0, 255),
@@ -370,12 +391,17 @@ abstract final class CorpoContrastValidator {
 
   static Color _simulateTritanopia(Color color) {
     // Simplified tritanopia simulation
-    final double r = color.red.toDouble();
-    final double g = 0.95 * color.green + 0.05 * color.blue;
-    final double b = 0.433 * color.green + 0.567 * color.blue;
+    final int colorRed = (color.r * 255.0).round() & 0xff;
+    final int colorGreen = (color.g * 255.0).round() & 0xff;
+    final int colorBlue = (color.b * 255.0).round() & 0xff;
+    final int colorAlpha = (color.a * 255.0).round() & 0xff;
+
+    final double r = colorRed.toDouble();
+    final double g = 0.95 * colorGreen + 0.05 * colorBlue;
+    final double b = 0.433 * colorGreen + 0.567 * colorBlue;
 
     return Color.fromARGB(
-      color.alpha,
+      colorAlpha,
       r.round().clamp(0, 255),
       g.round().clamp(0, 255),
       b.round().clamp(0, 255),
@@ -407,8 +433,9 @@ abstract final class CorpoContrastValidator {
     // Convert to grayscale using luminance formula
     final double luminance = calculateLuminance(color);
     final int gray = (luminance * 255).round();
+    final int colorAlpha = (color.a * 255.0).round() & 0xff;
 
-    return Color.fromARGB(color.alpha, gray, gray, gray);
+    return Color.fromARGB(colorAlpha, gray, gray, gray);
   }
 }
 
@@ -449,12 +476,13 @@ class CorpoContrastTester extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ContrastValidationResult result = CorpoContrastValidator.validateContrast(
-      foreground: foregroundColor,
-      background: backgroundColor,
-      level: level,
-      textSize: textSize,
-    );
+    final ContrastValidationResult result =
+        CorpoContrastValidator.validateContrast(
+          foreground: foregroundColor,
+          background: backgroundColor,
+          level: level,
+          textSize: textSize,
+        );
 
     if (!result.isCompliant) {
       onContrastIssue?.call(result);

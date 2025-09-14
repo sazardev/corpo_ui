@@ -54,10 +54,10 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.neutralWhite.withOpacity(0.1);
+          return CorpoColors.neutralWhite.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.neutralWhite.withOpacity(0.05);
+          return CorpoColors.neutralWhite.withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -119,10 +119,10 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.primary500.withOpacity(0.1);
+          return CorpoColors.primary500.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.primary500.withOpacity(0.05);
+          return CorpoColors.primary500.withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -178,10 +178,10 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.primary500.withOpacity(0.1);
+          return CorpoColors.primary500.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.primary500.withOpacity(0.05);
+          return CorpoColors.primary500.withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -233,10 +233,10 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.neutralWhite.withOpacity(0.1);
+          return CorpoColors.neutralWhite.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.neutralWhite.withOpacity(0.05);
+          return CorpoColors.neutralWhite.withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -302,13 +302,13 @@ abstract final class CorpoButtonStyle {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
           return isDark
-              ? CorpoColors.neutralWhite.withOpacity(0.1)
-              : CorpoColors.neutralBlack.withOpacity(0.1);
+              ? CorpoColors.neutralWhite.withValues(alpha: 0.1)
+              : CorpoColors.neutralBlack.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
           return isDark
-              ? CorpoColors.neutralWhite.withOpacity(0.05)
-              : CorpoColors.neutralBlack.withOpacity(0.05);
+              ? CorpoColors.neutralWhite.withValues(alpha: 0.05)
+              : CorpoColors.neutralBlack.withValues(alpha: 0.05);
         }
         return null;
       }),

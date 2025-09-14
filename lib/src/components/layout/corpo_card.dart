@@ -323,8 +323,8 @@ class CorpoCard extends StatelessWidget {
     if (variant == CorpoCardVariant.outlined) return <BoxShadow>[];
 
     final Color shadowColor = isDark
-        ? CorpoColors.neutralBlack.withOpacity(0.5)
-        : CorpoColors.neutralBlack.withOpacity(0.1);
+        ? CorpoColors.neutralBlack.withValues(alpha: 0.5)
+        : CorpoColors.neutralBlack.withValues(alpha: 0.1);
 
     switch (elevation) {
       case CorpoCardElevation.none:

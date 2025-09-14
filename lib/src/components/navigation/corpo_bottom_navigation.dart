@@ -144,8 +144,8 @@ class CorpoBottomNavigation extends StatelessWidget {
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: isDark
-                ? CorpoColors.neutral800.withOpacity(0.3)
-                : CorpoColors.neutral400.withOpacity(0.2),
+                ? CorpoColors.neutral800.withValues(alpha: 0.3)
+                : CorpoColors.neutral400.withValues(alpha: 0.2),
             offset: const Offset(0, -1),
             blurRadius: elevation,
           ),

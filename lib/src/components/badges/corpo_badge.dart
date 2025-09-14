@@ -148,7 +148,8 @@ class CorpoBadge extends StatelessWidget {
   /// commonly used for notification indicators on icons.
   const CorpoBadge.notification(
     this.count, {
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.variant = CorpoBadgeVariant.error,
     this.size = CorpoBadgeSize.small,
     this.style = CorpoBadgeStyle.filled,
@@ -192,12 +193,12 @@ class CorpoBadge extends StatelessWidget {
 
   /// Builds a notification badge positioned over a child widget.
   Widget _buildNotificationBadge(bool isDark) => Stack(
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        child!,
-        Positioned(top: -8, right: -8, child: _buildBadge(isDark)),
-      ],
-    );
+    clipBehavior: Clip.none,
+    children: <Widget>[
+      child!,
+      Positioned(top: -8, right: -8, child: _buildBadge(isDark)),
+    ],
+  );
 
   /// Builds the main badge widget.
   Widget _buildBadge(bool isDark) {
@@ -366,7 +367,13 @@ class CorpoBadge extends StatelessWidget {
       case CorpoBadgeStyle.outlined:
         return Colors.transparent;
       case CorpoBadgeStyle.subtle:
-        return _getVariantColor(variant, isDark).withOpacity(0.1);
+        final Color baseColor = _getVariantColor(variant, isDark);
+        return Color.fromARGB(
+          (0.1 * 255).round(),
+          (baseColor.r * 255.0).round() & 0xff,
+          (baseColor.g * 255.0).round() & 0xff,
+          (baseColor.b * 255.0).round() & 0xff,
+        );
     }
   }
 
@@ -408,5 +415,6 @@ class CorpoBadge extends StatelessWidget {
   }
 
   /// Determines if a variant uses light colors that need dark text.
-  bool _isLightVariant(CorpoBadgeVariant variant) => variant == CorpoBadgeVariant.warning;
+  bool _isLightVariant(CorpoBadgeVariant variant) =>
+      variant == CorpoBadgeVariant.warning;
 }

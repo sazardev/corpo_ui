@@ -188,12 +188,12 @@ abstract final class CorpoAccessibility {
     String? tooltip,
     bool enabled = true,
   }) => Semantics(
-      button: true,
-      enabled: enabled,
-      label: semanticLabel,
-      onTap: enabled ? onPressed : null,
-      child: Tooltip(message: tooltip ?? '', child: child),
-    );
+    button: true,
+    enabled: enabled,
+    label: semanticLabel,
+    onTap: enabled ? onPressed : null,
+    child: Tooltip(message: tooltip ?? '', child: child),
+  );
 
   /// Creates an accessible text input with proper semantics.
   ///
@@ -208,12 +208,12 @@ abstract final class CorpoAccessibility {
     bool multiline = false,
     TextInputType? keyboardType,
   }) => Semantics(
-      textField: true,
-      label: label,
-      hint: hint,
-      multiline: multiline,
-      child: child,
-    );
+    textField: true,
+    label: label,
+    hint: hint,
+    multiline: multiline,
+    child: child,
+  );
 
   /// Creates a live region for dynamic content updates.
   ///
@@ -234,15 +234,11 @@ abstract final class CorpoAccessibility {
     required String skipText,
     required VoidCallback onSkip,
   }) => Focus(
-      child: Builder(
-        builder: (BuildContext context) => Semantics(
-            label: skipText,
-            button: true,
-            onTap: onSkip,
-            child: child,
-          ),
-      ),
-    );
+    child: Builder(
+      builder: (BuildContext context) =>
+          Semantics(label: skipText, button: true, onTap: onSkip, child: child),
+    ),
+  );
 
   /// Creates an accessible heading with proper semantics.
   ///
@@ -253,11 +249,11 @@ abstract final class CorpoAccessibility {
     required int level,
     String? semanticLabel,
   }) => Semantics(
-      header: true,
-      sortKey: OrdinalSortKey(level.toDouble()),
-      label: semanticLabel,
-      child: child,
-    );
+    header: true,
+    sortKey: OrdinalSortKey(level.toDouble()),
+    label: semanticLabel,
+    child: child,
+  );
 
   /// Provides haptic feedback for accessibility.
   ///
@@ -281,22 +277,26 @@ abstract final class CorpoAccessibility {
   /// Checks if high contrast mode is enabled.
   ///
   /// Useful for adjusting UI for users who need high contrast visuals.
-  static bool isHighContrastEnabled(BuildContext context) => MediaQuery.of(context).highContrast;
+  static bool isHighContrastEnabled(BuildContext context) =>
+      MediaQuery.of(context).highContrast;
 
   /// Checks if animations should be reduced for accessibility.
   ///
   /// Returns true if the user has requested reduced motion.
-  static bool shouldReduceAnimations(BuildContext context) => MediaQuery.of(context).disableAnimations;
+  static bool shouldReduceAnimations(BuildContext context) =>
+      MediaQuery.of(context).disableAnimations;
 
   /// Gets the current text scale factor for accessibility.
   ///
   /// Returns the user's preferred text scaling for vision accessibility.
-  static double getTextScaleFactor(BuildContext context) => MediaQuery.of(context).textScaler.scale(1);
+  static double getTextScaleFactor(BuildContext context) =>
+      MediaQuery.of(context).textScaler.scale(1);
 
   /// Checks if the app is being used with a screen reader.
   ///
   /// Useful for providing alternative interfaces for screen reader users.
-  static bool isScreenReaderEnabled(BuildContext context) => MediaQuery.of(context).accessibleNavigation;
+  static bool isScreenReaderEnabled(BuildContext context) =>
+      MediaQuery.of(context).accessibleNavigation;
 
   // Private helper methods
 
@@ -323,9 +323,9 @@ abstract final class CorpoAccessibility {
 
   static double _calculateLuminance(Color color) {
     // Convert to RGB values between 0 and 1
-    final double r = color.red / 255.0;
-    final double g = color.green / 255.0;
-    final double b = color.blue / 255.0;
+    final double r = (color.r * 255.0).round() / 255.0;
+    final double g = (color.g * 255.0).round() / 255.0;
+    final double b = (color.b * 255.0).round() / 255.0;
 
     // Apply gamma correction
     final double rLin = r <= 0.03928

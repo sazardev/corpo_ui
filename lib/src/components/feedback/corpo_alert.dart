@@ -175,7 +175,7 @@ class CorpoAlert extends StatelessWidget {
               onPressed: onDismiss,
               icon: const Icon(Icons.close),
               iconSize: 16,
-              color: textColor.withOpacity(0.7),
+              color: textColor.withValues(alpha: 0.7),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(
                 minWidth: 24,

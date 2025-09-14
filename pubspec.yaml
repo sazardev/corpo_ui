@@ -1,6 +1,6 @@
 name: corpo_ui
 description: "A comprehensive Flutter design system with corporate-focused UI components, themes, and utilities inspired by Shadcn UI principles."
-version: 0.1.0
+version: 0.1.2
 homepage: https://github.com/sazardev/corpo_ui
 repository: https://github.com/sazardev/corpo_ui
 issue_tracker: https://github.com/sazardev/corpo_ui/issues

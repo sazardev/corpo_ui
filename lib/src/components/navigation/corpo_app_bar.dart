@@ -179,7 +179,7 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const SizedBox(height: CorpoSpacing.extraSmall),
                         DefaultTextStyle(
                           style: CorpoTypography.bodyMedium.copyWith(
-                            color: foregroundColor.withOpacity(0.7),
+                            color: foregroundColor.withValues(alpha: 0.7),
                           ),
                           child: subtitle!,
                         ),

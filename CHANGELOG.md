@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.1.2
+
+* Fix pub.dev score issues for better package quality
+* Add comprehensive example application with working demonstrations
+* Fix deprecated Color API usage (red, green, blue, alpha properties)
+* Improve package structure for pub.dev validation
+* Address static analysis issues to achieve higher pub points
+
 ## 0.1.1
 
 Refactor widget build methods for consistency and readability

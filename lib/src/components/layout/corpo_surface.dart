@@ -218,8 +218,8 @@ class CorpoSurface extends StatelessWidget {
     }
 
     final Color shadowColor = isDark
-        ? CorpoColors.neutralBlack.withOpacity(0.5)
-        : CorpoColors.neutralBlack.withOpacity(0.15);
+        ? CorpoColors.neutralBlack.withValues(alpha: 0.5)
+        : CorpoColors.neutralBlack.withValues(alpha: 0.15);
 
     // Calculate shadow properties based on elevation
     final double blurRadius = elevation * 2;

@@ -129,7 +129,7 @@ class CorpoSpinner extends StatefulWidget {
         child,
         if (isLoading)
           Container(
-            color: overlayColor ?? Colors.black.withOpacity(0.3),
+            color: overlayColor ?? Colors.black.withValues(alpha: 0.3),
             child: Center(
               child: CorpoSpinner.withLabel(
                 label,
@@ -288,7 +288,7 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
       width: width,
       height: height,
       child: LinearProgressIndicator(
-        backgroundColor: color.withOpacity(0.2),
+        backgroundColor: color.withValues(alpha: 0.2),
         valueColor: AlwaysStoppedAnimation<Color>(color),
       ),
     );
