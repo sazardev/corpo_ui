@@ -13,15 +13,12 @@ class FormApplicationExample extends StatelessWidget {
   const FormApplicationExample({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Form Application Example',
       theme: CorpoTheme.light(),
       darkTheme: CorpoTheme.dark(),
-      themeMode: ThemeMode.system,
       home: const FormHomePage(),
     );
-  }
 }
 
 /// Main page showcasing different form patterns.
@@ -29,12 +26,11 @@ class FormHomePage extends StatelessWidget {
   const FormHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(title: const Text('Form Examples'), centerTitle: true),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
           Card(
             child: ListTile(
               title: const Text('User Registration Form'),
@@ -43,7 +39,7 @@ class FormHomePage extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const UserRegistrationForm(),
+                  builder: (BuildContext context) => const UserRegistrationForm(),
                 ),
               ),
             ),
@@ -57,7 +53,7 @@ class FormHomePage extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ContactInformationForm(),
+                  builder: (BuildContext context) => const ContactInformationForm(),
                 ),
               ),
             ),
@@ -70,7 +66,7 @@ class FormHomePage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward),
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SurveyForm()),
+                MaterialPageRoute(builder: (BuildContext context) => const SurveyForm()),
               ),
             ),
           ),
@@ -82,14 +78,13 @@ class FormHomePage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward),
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SettingsForm()),
+                MaterialPageRoute(builder: (BuildContext context) => const SettingsForm()),
               ),
             ),
           ),
         ],
       ),
     );
-  }
 }
 
 /// Multi-step user registration form.
@@ -124,12 +119,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('User Registration'),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
+          preferredSize: const Size.fromHeight(4),
           child: LinearProgressIndicator(
             value: (_currentStep + 1) / _totalSteps,
           ),
@@ -139,12 +133,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         key: _formKey,
         child: PageView(
           controller: _pageController,
-          onPageChanged: (index) {
+          onPageChanged: (int index) {
             setState(() {
               _currentStep = index;
             });
           },
-          children: [
+          children: <Widget>[
             _buildPersonalInfoStep(),
             _buildAccountStep(),
             _buildCompanyStep(),
@@ -153,14 +147,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
       ),
       bottomNavigationBar: _buildNavigationBar(),
     );
-  }
 
-  Widget _buildPersonalInfoStep() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildPersonalInfoStep() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Personal Information',
             style: Theme.of(context).textTheme.headlineMedium,
@@ -176,8 +168,8 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               labelText: 'First Name',
               hintText: 'Enter your first name',
             ),
-            validator: (value) => value?.isEmpty == true ? 'Required' : null,
-            onSaved: (value) => _firstName = value ?? '',
+            validator: (String? value) => value?.isEmpty == true ? 'Required' : null,
+            onSaved: (String? value) => _firstName = value ?? '',
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -185,8 +177,8 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               labelText: 'Last Name',
               hintText: 'Enter your last name',
             ),
-            validator: (value) => value?.isEmpty == true ? 'Required' : null,
-            onSaved: (value) => _lastName = value ?? '',
+            validator: (String? value) => value?.isEmpty == true ? 'Required' : null,
+            onSaved: (String? value) => _lastName = value ?? '',
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -196,7 +188,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
             ),
             keyboardType: TextInputType.emailAddress,
             validator: _validateEmail,
-            onSaved: (value) => _email = value ?? '',
+            onSaved: (String? value) => _email = value ?? '',
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -205,19 +197,17 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               hintText: 'Enter your phone number',
             ),
             keyboardType: TextInputType.phone,
-            onSaved: (value) => _phone = value ?? '',
+            onSaved: (String? value) => _phone = value ?? '',
           ),
         ],
       ),
     );
-  }
 
-  Widget _buildAccountStep() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildAccountStep() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Account Setup',
             style: Theme.of(context).textTheme.headlineMedium,
@@ -236,7 +226,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
             ),
             obscureText: true,
             validator: _validatePassword,
-            onSaved: (value) {
+            onSaved: (String? value) {
               // Password saved for validation
             },
           ),
@@ -248,7 +238,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
             ),
             obscureText: true,
             validator: _validateConfirmPassword,
-            onSaved: (value) {
+            onSaved: (String? value) {
               // Confirm password saved for validation
             },
           ),
@@ -259,7 +249,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               'I agree to the terms of service and privacy policy',
             ),
             value: _termsAccepted,
-            onChanged: (value) {
+            onChanged: (bool? value) {
               setState(() {
                 _termsAccepted = value ?? false;
               });
@@ -270,7 +260,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
             title: const Text('Marketing Communications'),
             subtitle: const Text('Receive updates and promotional emails'),
             value: _marketingOptIn,
-            onChanged: (value) {
+            onChanged: (bool? value) {
               setState(() {
                 _marketingOptIn = value ?? false;
               });
@@ -280,14 +270,12 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         ],
       ),
     );
-  }
 
-  Widget _buildCompanyStep() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildCompanyStep() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Company Information',
             style: Theme.of(context).textTheme.headlineMedium,
@@ -303,7 +291,7 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               labelText: 'Company Name',
               hintText: 'Enter your company name',
             ),
-            onSaved: (value) => _company = value ?? '',
+            onSaved: (String? value) => _company = value ?? '',
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -311,23 +299,23 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
               labelText: 'Job Title',
               hintText: 'Enter your job title',
             ),
-            onSaved: (value) => _jobTitle = value ?? '',
+            onSaved: (String? value) => _jobTitle = value ?? '',
           ),
           const SizedBox(height: 24),
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     'Registration Summary',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
-                  Text('Please review your information before submitting.'),
+                  const Text('Please review your information before submitting.'),
                   const SizedBox(height: 16),
-                  if (_currentStep == _totalSteps - 1) ...[
+                  if (_currentStep == _totalSteps - 1) ...<Widget>[
                     Text('Name: $_firstName $_lastName'),
                     Text('Email: $_email'),
                     if (_phone.isNotEmpty) Text('Phone: $_phone'),
@@ -341,13 +329,11 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         ],
       ),
     );
-  }
 
-  Widget _buildNavigationBar() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildNavigationBar() => Padding(
+      padding: const EdgeInsets.all(16),
       child: Row(
-        children: [
+        children: <Widget>[
           if (_currentStep > 0)
             Expanded(
               child: OutlinedButton(
@@ -365,7 +351,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         ],
       ),
     );
-  }
 
   bool _canProceed() {
     switch (_currentStep) {
@@ -409,10 +394,10 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
 
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (BuildContext context) => AlertDialog(
           title: const Text('Registration Successful'),
           content: const Text('Your account has been created successfully!'),
-          actions: [
+          actions: <Widget>[
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -460,16 +445,15 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
   bool _urgentRequest = false;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(title: const Text('Contact Information')),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text(
                 'Contact Form',
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -480,7 +464,7 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   labelText: 'Full Name',
                   prefixIcon: Icon(Icons.person),
                 ),
-                validator: (value) =>
+                validator: (String? value) =>
                     value?.isEmpty == true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
@@ -490,7 +474,7 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   prefixIcon: Icon(Icons.email),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
+                validator: (String? value) =>
                     value?.isEmpty == true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
@@ -499,17 +483,17 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   labelText: 'Country',
                   prefixIcon: Icon(Icons.public),
                 ),
-                value: _selectedCountry,
+                initialValue: _selectedCountry,
                 items:
-                    ['United States', 'Canada', 'United Kingdom', 'Australia']
+                    <String>['United States', 'Canada', 'United Kingdom', 'Australia']
                         .map(
-                          (country) => DropdownMenuItem(
+                          (String country) => DropdownMenuItem(
                             value: country,
                             child: Text(country),
                           ),
                         )
                         .toList(),
-                onChanged: (value) {
+                onChanged: (String? value) {
                   setState(() {
                     _selectedCountry = value!;
                   });
@@ -521,16 +505,16 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   labelText: 'Category',
                   prefixIcon: Icon(Icons.category),
                 ),
-                value: _selectedCategory,
-                items: ['General', 'Support', 'Sales', 'Feedback', 'Bug Report']
+                initialValue: _selectedCategory,
+                items: <String>['General', 'Support', 'Sales', 'Feedback', 'Bug Report']
                     .map(
-                      (category) => DropdownMenuItem(
+                      (String category) => DropdownMenuItem(
                         value: category,
                         child: Text(category),
                       ),
                     )
                     .toList(),
-                onChanged: (value) {
+                onChanged: (String? value) {
                   setState(() {
                     _selectedCategory = value!;
                   });
@@ -542,7 +526,7 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   labelText: 'Subject',
                   prefixIcon: Icon(Icons.subject),
                 ),
-                validator: (value) =>
+                validator: (String? value) =>
                     value?.isEmpty == true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
@@ -553,7 +537,7 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                   alignLabelWithHint: true,
                 ),
                 maxLines: 5,
-                validator: (value) =>
+                validator: (String? value) =>
                     value?.isEmpty == true ? 'Required' : null,
               ),
               const SizedBox(height: 16),
@@ -561,7 +545,7 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
                 title: const Text('Urgent Request'),
                 subtitle: const Text('Mark this as high priority'),
                 value: _urgentRequest,
-                onChanged: (value) {
+                onChanged: (bool value) {
                   setState(() {
                     _urgentRequest = value;
                   });
@@ -580,18 +564,17 @@ class _ContactInformationFormState extends State<ContactInformationForm> {
         ),
       ),
     );
-  }
 
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (BuildContext context) => AlertDialog(
           title: const Text('Message Sent'),
           content: const Text(
             'Thank you for your message. We\'ll get back to you soon!',
           ),
-          actions: [
+          actions: <Widget>[
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -620,14 +603,13 @@ class _SurveyFormState extends State<SurveyForm> {
   bool _showAdditionalQuestions = false;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(title: const Text('Survey Form')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               'Customer Satisfaction Survey',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -635,13 +617,13 @@ class _SurveyFormState extends State<SurveyForm> {
             const SizedBox(height: 24),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     const Text('How satisfied are you with our service?'),
                     const SizedBox(height: 8),
-                    ...[
+                    ...<String>[
                           'Very Satisfied',
                           'Satisfied',
                           'Neutral',
@@ -649,11 +631,11 @@ class _SurveyFormState extends State<SurveyForm> {
                           'Very Dissatisfied',
                         ]
                         .map(
-                          (option) => RadioListTile<String>(
+                          (String option) => RadioListTile<String>(
                             title: Text(option),
                             value: option,
                             groupValue: _satisfaction,
-                            onChanged: (value) {
+                            onChanged: (String? value) {
                               setState(() {
                                 _satisfaction = value;
                                 _showAdditionalQuestions =
@@ -663,19 +645,19 @@ class _SurveyFormState extends State<SurveyForm> {
                             },
                           ),
                         )
-                        .toList(),
+                        ,
                   ],
                 ),
               ),
             ),
-            if (_showAdditionalQuestions) ...[
+            if (_showAdditionalQuestions) ...<Widget>[
               const SizedBox(height: 16),
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       const Text('What can we improve?'),
                       const SizedBox(height: 16),
                       TextFormField(
@@ -693,13 +675,13 @@ class _SurveyFormState extends State<SurveyForm> {
             const SizedBox(height: 16),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     const Text('Would you recommend us to others?'),
                     const SizedBox(height: 8),
-                    ...[
+                    ...<String>[
                           'Definitely',
                           'Probably',
                           'Not Sure',
@@ -707,18 +689,18 @@ class _SurveyFormState extends State<SurveyForm> {
                           'Definitely Not',
                         ]
                         .map(
-                          (option) => RadioListTile<String>(
+                          (String option) => RadioListTile<String>(
                             title: Text(option),
                             value: option,
                             groupValue: _recommendation,
-                            onChanged: (value) {
+                            onChanged: (String? value) {
                               setState(() {
                                 _recommendation = value;
                               });
                             },
                           ),
                         )
-                        .toList(),
+                        ,
                   ],
                 ),
               ),
@@ -735,15 +717,14 @@ class _SurveyFormState extends State<SurveyForm> {
         ),
       ),
     );
-  }
 
   void _submitSurvey() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('Survey Submitted'),
         content: const Text('Thank you for your feedback!'),
-        actions: [
+        actions: <Widget>[
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -769,29 +750,28 @@ class _SettingsFormState extends State<SettingsForm> {
   bool _notifications = true;
   bool _emailUpdates = false;
   bool _darkMode = false;
-  double _fontSize = 16.0;
+  double _fontSize = 16;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
-        actions: [
+        actions: <Widget>[
           TextButton(onPressed: _saveSettings, child: const Text('Save')),
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
           Card(
             child: Column(
-              children: [
+              children: <Widget>[
                 ListTile(
                   title: const Text('Notifications'),
                   subtitle: const Text('Enable push notifications'),
                   trailing: Switch(
                     value: _notifications,
-                    onChanged: (value) {
+                    onChanged: (bool value) {
                       setState(() {
                         _notifications = value;
                       });
@@ -803,7 +783,7 @@ class _SettingsFormState extends State<SettingsForm> {
                   subtitle: const Text('Receive email notifications'),
                   trailing: Switch(
                     value: _emailUpdates,
-                    onChanged: (value) {
+                    onChanged: (bool value) {
                       setState(() {
                         _emailUpdates = value;
                       });
@@ -815,7 +795,7 @@ class _SettingsFormState extends State<SettingsForm> {
                   subtitle: const Text('Use dark color theme'),
                   trailing: Switch(
                     value: _darkMode,
-                    onChanged: (value) {
+                    onChanged: (bool value) {
                       setState(() {
                         _darkMode = value;
                       });
@@ -828,20 +808,20 @@ class _SettingsFormState extends State<SettingsForm> {
           const SizedBox(height: 16),
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     'Font Size: ${_fontSize.toInt()}px',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Slider(
                     value: _fontSize,
-                    min: 12.0,
-                    max: 24.0,
+                    min: 12,
+                    max: 24,
                     divisions: 6,
-                    onChanged: (value) {
+                    onChanged: (double value) {
                       setState(() {
                         _fontSize = value;
                       });
@@ -854,7 +834,6 @@ class _SettingsFormState extends State<SettingsForm> {
         ],
       ),
     );
-  }
 
   void _saveSettings() {
     ScaffoldMessenger.of(context).showSnackBar(

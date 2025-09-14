@@ -10,15 +10,12 @@ class CorpoUIShowcase extends StatelessWidget {
   const CorpoUIShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Corpo UI Showcase',
       theme: CorpoTheme.light(),
       darkTheme: CorpoTheme.dark(),
-      themeMode: ThemeMode.system,
       home: const ShowcaseHome(),
     );
-  }
 }
 
 /// Main showcase navigation screen.
@@ -46,15 +43,14 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Corpo UI Showcase'),
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          tabs: const [
+          tabs: const <Widget>[
             Tab(text: 'Overview'),
             Tab(text: 'Typography'),
             Tab(text: 'Buttons'),
@@ -67,7 +63,7 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: <Widget>[
           _buildOverviewTab(),
           _buildTypographyTab(),
           _buildButtonsTab(),
@@ -78,14 +74,12 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ],
       ),
     );
-  }
 
-  Widget _buildOverviewTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildOverviewTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Corpo UI Design System'),
           const SizedBox(height: 16),
           _buildInfoCard(
@@ -97,108 +91,92 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ],
       ),
     );
-  }
 
-  Widget _buildTypographyTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildTypographyTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Typography System'),
           const SizedBox(height: 16),
           _buildTypographyExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildButtonsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildButtonsTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Button Components'),
           const SizedBox(height: 16),
           _buildButtonExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildLayoutTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildLayoutTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Layout Components'),
           const SizedBox(height: 16),
           _buildLayoutExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildFormsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildFormsTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Form Components'),
           const SizedBox(height: 16),
           _buildFormExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildNavigationTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildNavigationTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Navigation Components'),
           const SizedBox(height: 16),
           _buildNavigationExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildFeedbackTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget _buildFeedbackTab() => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           _buildSectionHeader('Feedback Components'),
           const SizedBox(height: 16),
           _buildFeedbackExamples(),
         ],
       ),
     );
-  }
 
-  Widget _buildSectionHeader(String title) {
-    return Text(
+  Widget _buildSectionHeader(String title) => Text(
       title,
       style: Theme.of(
         context,
       ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
     );
-  }
 
-  Widget _buildInfoCard(String title, String description) {
-    return Card(
+  Widget _buildInfoCard(String title, String description) => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(title, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 8),
             Text(description, style: Theme.of(context).textTheme.bodyMedium),
@@ -206,13 +184,11 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ),
       ),
     );
-  }
 
-  Widget _buildComponentOverview() {
-    return Wrap(
-      spacing: 16.0,
-      runSpacing: 16.0,
-      children: [
+  Widget _buildComponentOverview() => Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      children: <Widget>[
         _buildFeatureChip('50+ Components'),
         _buildFeatureChip('Responsive Design'),
         _buildFeatureChip('Accessibility'),
@@ -221,19 +197,15 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         _buildFeatureChip('Corporate Design'),
       ],
     );
-  }
 
-  Widget _buildFeatureChip(String label) {
-    return Chip(
+  Widget _buildFeatureChip(String label) => Chip(
       label: Text(label),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
     );
-  }
 
-  Widget _buildTypographyExamples() {
-    return Column(
+  Widget _buildTypographyExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text('Heading 1', style: Theme.of(context).textTheme.headlineLarge),
         const SizedBox(height: 8),
         Text('Heading 2', style: Theme.of(context).textTheme.headlineMedium),
@@ -256,16 +228,14 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ),
       ],
     );
-  }
 
-  Widget _buildButtonExamples() {
-    return Column(
+  Widget _buildButtonExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Wrap(
-          spacing: 16.0,
-          runSpacing: 16.0,
-          children: [
+          spacing: 16,
+          runSpacing: 16,
+          children: <Widget>[
             ElevatedButton(
               onPressed: () {},
               child: const Text('Primary Button'),
@@ -281,9 +251,9 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         const Text('Button States:'),
         const SizedBox(height: 8),
         Wrap(
-          spacing: 16.0,
-          runSpacing: 8.0,
-          children: [
+          spacing: 16,
+          runSpacing: 8,
+          children: <Widget>[
             ElevatedButton(onPressed: () {}, child: const Text('Enabled')),
             const ElevatedButton(onPressed: null, child: Text('Disabled')),
             ElevatedButton.icon(
@@ -295,20 +265,18 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ),
       ],
     );
-  }
 
-  Widget _buildLayoutExamples() {
-    return Column(
+  Widget _buildLayoutExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const Text('Cards:'),
         const SizedBox(height: 8),
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Sample Card',
                   style: Theme.of(context).textTheme.titleMedium,
@@ -327,12 +295,10 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         const Text('Content below'),
       ],
     );
-  }
 
-  Widget _buildFormExamples() {
-    return Column(
+  Widget _buildFormExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const TextField(
           decoration: InputDecoration(
             labelText: 'Text Field',
@@ -343,24 +309,22 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         CheckboxListTile(
           title: const Text('Checkbox'),
           value: true,
-          onChanged: (value) {},
+          onChanged: (bool? value) {},
         ),
         const SizedBox(height: 8),
         SwitchListTile(
           title: const Text('Switch'),
           value: false,
-          onChanged: (value) {},
+          onChanged: (bool value) {},
         ),
         const SizedBox(height: 16),
-        Slider(value: 0.5, onChanged: (value) {}),
+        Slider(value: 0.5, onChanged: (double value) {}),
       ],
     );
-  }
 
-  Widget _buildNavigationExamples() {
-    return Column(
+  Widget _buildNavigationExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const Text('This showcase uses TabBar navigation above.'),
         const SizedBox(height: 16),
         Card(
@@ -381,12 +345,10 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         ),
       ],
     );
-  }
 
-  Widget _buildFeedbackExamples() {
-    return Column(
+  Widget _buildFeedbackExamples() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         ElevatedButton(
           onPressed: () => _showDialog(context),
           child: const Text('Show Dialog'),
@@ -399,9 +361,9 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         const SizedBox(height: 16),
         const Card(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16),
             child: Row(
-              children: [
+              children: <Widget>[
                 Icon(Icons.info, color: Colors.blue),
                 SizedBox(width: 8),
                 Expanded(child: Text('This is an informational alert.')),
@@ -415,15 +377,14 @@ class _ShowcaseHomeState extends State<ShowcaseHome>
         const Center(child: CircularProgressIndicator()),
       ],
     );
-  }
 
   void _showDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('Sample Dialog'),
         content: const Text('This is a sample dialog with some content.'),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),

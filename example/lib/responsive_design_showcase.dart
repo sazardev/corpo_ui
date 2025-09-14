@@ -13,15 +13,12 @@ class ResponsiveDesignShowcase extends StatelessWidget {
   const ResponsiveDesignShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Responsive Design Showcase',
       theme: CorpoTheme.light(),
       darkTheme: CorpoTheme.dark(),
-      themeMode: ThemeMode.system,
       home: const ResponsiveHomePage(),
     );
-  }
 }
 
 /// Main page demonstrating responsive design patterns.
@@ -35,33 +32,32 @@ class ResponsiveHomePage extends StatefulWidget {
 class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
   int _selectedIndex = 0;
 
-  final List<ResponsivePageData> _pages = [
-    ResponsivePageData(
+  final List<ResponsivePageData> _pages = <ResponsivePageData>[
+    const ResponsivePageData(
       title: 'Layout Demo',
       icon: Icons.view_quilt,
-      page: const ResponsiveLayoutDemo(),
+      page: ResponsiveLayoutDemo(),
     ),
-    ResponsivePageData(
+    const ResponsivePageData(
       title: 'Grid Systems',
       icon: Icons.grid_view,
-      page: const ResponsiveGridDemo(),
+      page: ResponsiveGridDemo(),
     ),
-    ResponsivePageData(
+    const ResponsivePageData(
       title: 'Navigation',
       icon: Icons.navigation,
-      page: const ResponsiveNavigationDemo(),
+      page: ResponsiveNavigationDemo(),
     ),
-    ResponsivePageData(
+    const ResponsivePageData(
       title: 'Typography',
       icon: Icons.text_fields,
-      page: const ResponsiveTypographyDemo(),
+      page: ResponsiveTypographyDemo(),
     ),
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return CorpoResponsiveBuilder(
-      builder: (context, screenSize) {
+  Widget build(BuildContext context) => CorpoResponsiveBuilder(
+      builder: (BuildContext context, CorpoScreenSize screenSize) {
         // Determine layout based on screen size
         final bool isMobile = screenSize.isMobile;
         final bool isTablet = screenSize.isTablet;
@@ -76,16 +72,14 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
         }
       },
     );
-  }
 
-  Widget _buildDesktopLayout() {
-    return Scaffold(
+  Widget _buildDesktopLayout() => Scaffold(
       body: Row(
-        children: [
+        children: <Widget>[
           // Side navigation for desktop
           NavigationRail(
             selectedIndex: _selectedIndex,
-            onDestinationSelected: (index) {
+            onDestinationSelected: (int index) {
               setState(() {
                 _selectedIndex = index;
               });
@@ -93,7 +87,7 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
             labelType: NavigationRailLabelType.all,
             destinations: _pages
                 .map(
-                  (page) => NavigationRailDestination(
+                  (ResponsivePageData page) => NavigationRailDestination(
                     icon: Icon(page.icon),
                     label: Text(page.title),
                   ),
@@ -104,7 +98,7 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
           // Main content area
           Expanded(
             child: Column(
-              children: [
+              children: <Widget>[
                 _buildAppBar(),
                 Expanded(child: _pages[_selectedIndex].page),
               ],
@@ -113,23 +107,21 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
         ],
       ),
     );
-  }
 
-  Widget _buildTabletLayout() {
-    return Scaffold(
+  Widget _buildTabletLayout() => Scaffold(
       appBar: _buildAppBar(),
       body: _pages[_selectedIndex].page,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        onTap: (index) {
+        onTap: (int index) {
           setState(() {
             _selectedIndex = index;
           });
         },
         items: _pages
             .map(
-              (page) => BottomNavigationBarItem(
+              (ResponsivePageData page) => BottomNavigationBarItem(
                 icon: Icon(page.icon),
                 label: page.title,
               ),
@@ -137,23 +129,21 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
             .toList(),
       ),
     );
-  }
 
-  Widget _buildMobileLayout() {
-    return Scaffold(
+  Widget _buildMobileLayout() => Scaffold(
       appBar: _buildAppBar(),
       body: _pages[_selectedIndex].page,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        onTap: (index) {
+        onTap: (int index) {
           setState(() {
             _selectedIndex = index;
           });
         },
         items: _pages
             .map(
-              (page) => BottomNavigationBarItem(
+              (ResponsivePageData page) => BottomNavigationBarItem(
                 icon: Icon(page.icon),
                 label: page.title,
               ),
@@ -161,32 +151,28 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
             .toList(),
       ),
     );
-  }
 
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
+  PreferredSizeWidget _buildAppBar() => AppBar(
       title: Text(_pages[_selectedIndex].title),
       centerTitle: true,
-      actions: [
+      actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.info),
           onPressed: _showResponsiveInfo,
         ),
       ],
     );
-  }
 
   void _showResponsiveInfo() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('Responsive Design'),
         content: CorpoResponsiveBuilder(
-          builder: (context, screenSize) {
-            return Column(
+          builder: (BuildContext context, CorpoScreenSize screenSize) => Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Current Screen Size: ${screenSize.deviceType.toString().split('.').last}',
                 ),
@@ -200,10 +186,9 @@ class _ResponsiveHomePageState extends State<ResponsiveHomePage> {
                 const Text('• Tablet: Bottom navigation'),
                 const Text('• Desktop: Side navigation rail'),
               ],
-            );
-          },
+            ),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
@@ -232,9 +217,8 @@ class ResponsiveLayoutDemo extends StatelessWidget {
   const ResponsiveLayoutDemo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CorpoResponsiveBuilder(
-      builder: (context, screenSize) {
+  Widget build(BuildContext context) => CorpoResponsiveBuilder(
+      builder: (BuildContext context, CorpoScreenSize screenSize) {
         final bool isMobile = screenSize.isMobile;
         final bool isTablet = screenSize.isTablet;
 
@@ -242,7 +226,7 @@ class ResponsiveLayoutDemo extends StatelessWidget {
           padding: EdgeInsets.all(isMobile ? 16.0 : 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               _buildScreenInfo(context, screenSize),
               const SizedBox(height: 24),
               _buildAdaptiveCards(context, screenSize),
@@ -253,15 +237,13 @@ class ResponsiveLayoutDemo extends StatelessWidget {
         );
       },
     );
-  }
 
-  Widget _buildScreenInfo(BuildContext context, CorpoScreenSize screenSize) {
-    return Card(
+  Widget _buildScreenInfo(BuildContext context, CorpoScreenSize screenSize) => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               'Screen Information',
               style: Theme.of(context).textTheme.titleLarge,
@@ -277,7 +259,6 @@ class ResponsiveLayoutDemo extends StatelessWidget {
         ),
       ),
     );
-  }
 
   Widget _buildAdaptiveCards(BuildContext context, CorpoScreenSize screenSize) {
     final bool isMobile = screenSize.isMobile;
@@ -289,7 +270,7 @@ class ResponsiveLayoutDemo extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text(
           'Adaptive Card Grid',
           style: Theme.of(context).textTheme.titleLarge,
@@ -300,17 +281,17 @@ class ResponsiveLayoutDemo extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
             childAspectRatio: 1.5,
           ),
           itemCount: 6,
-          itemBuilder: (context, index) => Card(
+          itemBuilder: (BuildContext context, int index) => Card(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Icon(Icons.widgets, size: isMobile ? 32 : 48),
                   const SizedBox(height: 8),
                   Text(
@@ -335,7 +316,7 @@ class ResponsiveLayoutDemo extends StatelessWidget {
     if (isMobile) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text('Mobile Layout', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
           _buildContentCard('Primary Content'),
@@ -346,7 +327,7 @@ class ResponsiveLayoutDemo extends StatelessWidget {
     } else {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Desktop/Tablet Layout',
             style: Theme.of(context).textTheme.titleLarge,
@@ -354,10 +335,10 @@ class ResponsiveLayoutDemo extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Expanded(flex: 2, child: _buildContentCard('Primary Content')),
               const SizedBox(width: 16),
-              Expanded(flex: 1, child: _buildContentCard('Secondary Content')),
+              Expanded(child: _buildContentCard('Secondary Content')),
             ],
           ),
         ],
@@ -365,13 +346,12 @@ class ResponsiveLayoutDemo extends StatelessWidget {
     }
   }
 
-  Widget _buildContentCard(String title) {
-    return Card(
+  Widget _buildContentCard(String title) => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             const Text(
@@ -383,7 +363,6 @@ class ResponsiveLayoutDemo extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 /// Responsive grid system demonstration.
@@ -391,14 +370,12 @@ class ResponsiveGridDemo extends StatelessWidget {
   const ResponsiveGridDemo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CorpoResponsiveBuilder(
-      builder: (context, screenSize) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => CorpoResponsiveBuilder(
+      builder: (BuildContext context, CorpoScreenSize screenSize) => SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text(
                 'Responsive Grid Systems',
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -409,10 +386,8 @@ class ResponsiveGridDemo extends StatelessWidget {
               _buildFlexibleGrid(context, screenSize),
             ],
           ),
-        );
-      },
+        ),
     );
-  }
 
   Widget _buildBreakpointGrid(
     BuildContext context,
@@ -430,7 +405,7 @@ class ResponsiveGridDemo extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text(
           'Breakpoint-Based Grid ($columns columns)',
           style: Theme.of(context).textTheme.titleLarge,
@@ -441,12 +416,11 @@ class ResponsiveGridDemo extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: columns,
-            crossAxisSpacing: 12.0,
-            mainAxisSpacing: 12.0,
-            childAspectRatio: 1.0,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
           itemCount: 8,
-          itemBuilder: (context, index) => Container(
+          itemBuilder: (BuildContext context, int index) => Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8),
@@ -463,21 +437,20 @@ class ResponsiveGridDemo extends StatelessWidget {
     );
   }
 
-  Widget _buildFlexibleGrid(BuildContext context, CorpoScreenSize screenSize) {
-    return Column(
+  Widget _buildFlexibleGrid(BuildContext context, CorpoScreenSize screenSize) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text(
           'Flexible Grid (Auto-sizing)',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 16),
         Wrap(
-          spacing: 12.0,
-          runSpacing: 12.0,
+          spacing: 12,
+          runSpacing: 12,
           children: List.generate(
             12,
-            (index) => Container(
+            (int index) => Container(
               width: screenSize.isMobile
                   ? (MediaQuery.of(context).size.width - 44) / 2
                   : screenSize.isTablet
@@ -499,7 +472,6 @@ class ResponsiveGridDemo extends StatelessWidget {
         ),
       ],
     );
-  }
 }
 
 /// Responsive navigation patterns demonstration.
@@ -507,14 +479,12 @@ class ResponsiveNavigationDemo extends StatelessWidget {
   const ResponsiveNavigationDemo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CorpoResponsiveBuilder(
-      builder: (context, screenSize) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => CorpoResponsiveBuilder(
+      builder: (BuildContext context, CorpoScreenSize screenSize) => SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text(
                 'Responsive Navigation Patterns',
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -525,10 +495,8 @@ class ResponsiveNavigationDemo extends StatelessWidget {
               _buildNavigationExamples(context),
             ],
           ),
-        );
-      },
+        ),
     );
-  }
 
   Widget _buildCurrentPattern(
     BuildContext context,
@@ -551,10 +519,10 @@ class ResponsiveNavigationDemo extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               'Current Navigation Pattern',
               style: Theme.of(context).textTheme.titleLarge,
@@ -571,42 +539,40 @@ class ResponsiveNavigationDemo extends StatelessWidget {
     );
   }
 
-  Widget _buildNavigationExamples(BuildContext context) {
-    return Column(
+  Widget _buildNavigationExamples(BuildContext context) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Text(
           'Navigation Pattern Examples',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 16),
-        Card(
+        const Card(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Mobile (< 600px): Bottom Navigation'),
-                const Text('• Primary navigation at bottom'),
-                const Text('• 3-5 main sections'),
-                const Text('• Thumb-friendly design'),
-                const SizedBox(height: 12),
-                const Text('Tablet (600-1200px): Bottom Navigation or Drawer'),
-                const Text('• Bottom navigation for simple apps'),
-                const Text('• Navigation drawer for complex apps'),
-                const Text('• Larger touch targets'),
-                const SizedBox(height: 12),
-                const Text('Desktop (> 1200px): Navigation Rail or Sidebar'),
-                const Text('• Persistent side navigation'),
-                const Text('• Efficient use of horizontal space'),
-                const Text('• Mouse and keyboard optimized'),
+              children: <Widget>[
+                Text('Mobile (< 600px): Bottom Navigation'),
+                Text('• Primary navigation at bottom'),
+                Text('• 3-5 main sections'),
+                Text('• Thumb-friendly design'),
+                SizedBox(height: 12),
+                Text('Tablet (600-1200px): Bottom Navigation or Drawer'),
+                Text('• Bottom navigation for simple apps'),
+                Text('• Navigation drawer for complex apps'),
+                Text('• Larger touch targets'),
+                SizedBox(height: 12),
+                Text('Desktop (> 1200px): Navigation Rail or Sidebar'),
+                Text('• Persistent side navigation'),
+                Text('• Efficient use of horizontal space'),
+                Text('• Mouse and keyboard optimized'),
               ],
             ),
           ),
         ),
       ],
     );
-  }
 }
 
 /// Responsive typography demonstration.
@@ -614,14 +580,12 @@ class ResponsiveTypographyDemo extends StatelessWidget {
   const ResponsiveTypographyDemo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CorpoResponsiveBuilder(
-      builder: (context, screenSize) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => CorpoResponsiveBuilder(
+      builder: (BuildContext context, CorpoScreenSize screenSize) => SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Text(
                 'Responsive Typography',
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -632,21 +596,18 @@ class ResponsiveTypographyDemo extends StatelessWidget {
               _buildReadabilityExample(context, screenSize),
             ],
           ),
-        );
-      },
+        ),
     );
-  }
 
   Widget _buildTypographyScale(
     BuildContext context,
     CorpoScreenSize screenSize,
-  ) {
-    return Card(
+  ) => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               'Typography Scale',
               style: Theme.of(context).textTheme.titleLarge,
@@ -680,7 +641,6 @@ class ResponsiveTypographyDemo extends StatelessWidget {
         ),
       ),
     );
-  }
 
   Widget _buildReadabilityExample(
     BuildContext context,
@@ -693,7 +653,7 @@ class ResponsiveTypographyDemo extends StatelessWidget {
         padding: EdgeInsets.all(isMobile ? 16.0 : 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(
               'Readable Content',
               style: Theme.of(context).textTheme.titleLarge,

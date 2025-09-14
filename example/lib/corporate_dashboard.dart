@@ -20,32 +20,30 @@ class CorporateDashboard extends StatefulWidget {
 class _CorporateDashboardState extends State<CorporateDashboard> {
   int _currentPageIndex = 0;
 
-  final List<NavigationItem> _navigationItems = [
-    NavigationItem(
+  final List<NavigationItem> _navigationItems = <NavigationItem>[
+    const NavigationItem(
       label: 'Dashboard',
       icon: Icons.dashboard,
-      page: const DashboardPage(),
+      page: DashboardPage(),
     ),
-    NavigationItem(
+    const NavigationItem(
       label: 'Analytics',
       icon: Icons.analytics,
-      page: const AnalyticsPage(),
+      page: AnalyticsPage(),
     ),
-    NavigationItem(label: 'Users', icon: Icons.people, page: const UsersPage()),
-    NavigationItem(
+    const NavigationItem(label: 'Users', icon: Icons.people, page: UsersPage()),
+    const NavigationItem(
       label: 'Settings',
       icon: Icons.settings,
-      page: const SettingsPage(),
+      page: SettingsPage(),
     ),
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Corporate Dashboard',
       theme: CorpoTheme.light(),
       darkTheme: CorpoTheme.dark(),
-      themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: _buildAppBar(),
         drawer: _buildDrawer(),
@@ -53,13 +51,11 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
         bottomNavigationBar: _buildBottomNavigation(),
       ),
     );
-  }
 
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
+  PreferredSizeWidget _buildAppBar() => AppBar(
       title: Text(_navigationItems[_currentPageIndex].label),
       centerTitle: false,
-      actions: [
+      actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.notifications),
           onPressed: _showNotifications,
@@ -72,7 +68,7 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
             child: Icon(Icons.person, size: 20),
           ),
           onSelected: _handleUserMenuSelection,
-          itemBuilder: (context) => [
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
             const PopupMenuItem(value: 'profile', child: Text('Profile')),
             const PopupMenuItem(value: 'logout', child: Text('Logout')),
           ],
@@ -80,18 +76,16 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
         const SizedBox(width: 16),
       ],
     );
-  }
 
-  Widget _buildDrawer() {
-    return Drawer(
+  Widget _buildDrawer() => Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: [
+        children: <Widget>[
           const DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   'Company Portal',
                   style: TextStyle(
@@ -108,7 +102,7 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
               ],
             ),
           ),
-          ..._navigationItems.asMap().entries.map((entry) {
+          ..._navigationItems.asMap().entries.map((MapEntry<int, NavigationItem> entry) {
             final int index = entry.key;
             final NavigationItem item = entry.value;
             return ListTile(
@@ -122,7 +116,7 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
                 Navigator.pop(context);
               },
             );
-          }).toList(),
+          }),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.help),
@@ -137,38 +131,35 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
         ],
       ),
     );
-  }
 
-  Widget _buildBottomNavigation() {
-    return BottomNavigationBar(
+  Widget _buildBottomNavigation() => BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: _currentPageIndex,
-      onTap: (index) {
+      onTap: (int index) {
         setState(() {
           _currentPageIndex = index;
         });
       },
       items: _navigationItems
           .map(
-            (item) => BottomNavigationBarItem(
+            (NavigationItem item) => BottomNavigationBarItem(
               icon: Icon(item.icon),
               label: item.label,
             ),
           )
           .toList(),
     );
-  }
 
   void _showNotifications() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('Notifications'),
         content: const SizedBox(
           width: 300,
           height: 200,
           child: Column(
-            children: [
+            children: <Widget>[
               ListTile(
                 leading: Icon(Icons.info, color: Colors.blue),
                 title: Text('System Update'),
@@ -182,7 +173,7 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
             ],
           ),
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
@@ -206,18 +197,18 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
   void _showProfile() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('User Profile'),
         content: const Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             CircleAvatar(radius: 40, child: Icon(Icons.person, size: 40)),
             SizedBox(height: 16),
             Text('John Doe'),
             Text('john.doe@company.com'),
           ],
         ),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
@@ -230,10 +221,10 @@ class _CorporateDashboardState extends State<CorporateDashboard> {
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: const Text('Logout'),
         content: const Text('Are you sure you want to logout?'),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
@@ -279,12 +270,11 @@ class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Dashboard Overview',
             style: Theme.of(context).textTheme.headlineMedium,
@@ -298,17 +288,15 @@ class DashboardPage extends StatelessWidget {
         ],
       ),
     );
-  }
 
-  Widget _buildKPICards() {
-    return const Row(
-      children: [
+  Widget _buildKPICards() => const Row(
+      children: <Widget>[
         Expanded(
           child: KPICard(title: 'Total Users', value: '12,345', trend: 5.2),
         ),
         SizedBox(width: 16),
         Expanded(
-          child: KPICard(title: 'Revenue', value: '\$45,678', trend: -2.1),
+          child: KPICard(title: 'Revenue', value: r'$45,678', trend: -2.1),
         ),
         SizedBox(width: 16),
         Expanded(
@@ -316,24 +304,22 @@ class DashboardPage extends StatelessWidget {
         ),
       ],
     );
-  }
 
-  Widget _buildQuickActions() {
-    return Card(
+  Widget _buildQuickActions() => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const Text(
               'Quick Actions',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Wrap(
-              spacing: 12.0,
-              runSpacing: 12.0,
-              children: [
+              spacing: 12,
+              runSpacing: 12,
+              children: <Widget>[
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.add_circle),
@@ -355,15 +341,13 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
     );
-  }
 
-  Widget _buildRecentActivity() {
-    return Card(
+  Widget _buildRecentActivity() => Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const Text(
               'Recent Activity',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -373,8 +357,8 @@ class DashboardPage extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: 5,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) => ListTile(
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
+              itemBuilder: (BuildContext context, int index) => ListTile(
                 leading: const CircleAvatar(child: Icon(Icons.person)),
                 title: Text('User ${index + 1} performed an action'),
                 subtitle: Text('${5 - index} minutes ago'),
@@ -385,16 +369,12 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 /// KPI card widget for displaying key metrics.
 class KPICard extends StatelessWidget {
   const KPICard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.trend,
+    required this.title, required this.value, required this.trend, super.key,
   });
 
   final String title;
@@ -411,16 +391,16 @@ class KPICard extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Text(title, style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 8),
             Text(value, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Row(
-              children: [
+              children: <Widget>[
                 Icon(trendIcon, size: 16, color: trendColor),
                 const SizedBox(width: 4),
                 Text(
@@ -441,12 +421,11 @@ class AnalyticsPage extends StatelessWidget {
   const AnalyticsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => const SingleChildScrollView(
+      padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Analytics',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -454,9 +433,9 @@ class AnalyticsPage extends StatelessWidget {
           SizedBox(height: 16),
           Card(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16),
               child: Column(
-                children: [
+                children: <Widget>[
                   Text('Chart placeholder - User Engagement'),
                   SizedBox(height: 100),
                   LinearProgressIndicator(value: 0.75),
@@ -467,7 +446,6 @@ class AnalyticsPage extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 /// Users management page.
@@ -475,12 +453,11 @@ class UsersPage extends StatelessWidget {
   const UsersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => const SingleChildScrollView(
+      padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Users Management',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -488,7 +465,7 @@ class UsersPage extends StatelessWidget {
           SizedBox(height: 16),
           Card(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16),
               child: Text(
                 'User table would go here with search, filters, and actions.',
               ),
@@ -497,7 +474,6 @@ class UsersPage extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 /// Settings page with configuration options.
@@ -505,12 +481,11 @@ class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+  Widget build(BuildContext context) => const SingleChildScrollView(
+      padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'Settings',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -518,14 +493,13 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: 16),
           Card(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16),
               child: Text('Settings and configuration options would go here.'),
             ),
           ),
         ],
       ),
     );
-  }
 }
 
 /// Entry point for the dashboard example.
