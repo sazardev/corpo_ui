@@ -72,7 +72,8 @@ enum CorpoFormValidationMode {
 class CorpoForm extends StatefulWidget {
   /// Creates a Corpo UI form.
   const CorpoForm({
-    required this.children, super.key,
+    required this.children,
+    super.key,
     this.onSubmit,
     this.onChanged,
     this.validationMode = CorpoFormValidationMode.onSubmitThenChange,
@@ -118,7 +119,8 @@ class CorpoForm extends StatefulWidget {
   State<CorpoForm> createState() => CorpoFormState();
 
   /// Gets the nearest CorpoForm instance from the widget tree.
-  static CorpoFormState? of(BuildContext context) => context.findAncestorStateOfType<CorpoFormState>();
+  static CorpoFormState? of(BuildContext context) =>
+      context.findAncestorStateOfType<CorpoFormState>();
 }
 
 /// State for CorpoForm.
@@ -164,25 +166,30 @@ class CorpoFormState extends State<CorpoForm> {
   }
 
   Widget _buildVerticalLayout() => Column(
-      crossAxisAlignment: widget.crossAxisAlignment,
-      mainAxisAlignment: widget.mainAxisAlignment,
-      children: _addSpacing(widget.children),
-    );
+    crossAxisAlignment: widget.crossAxisAlignment,
+    mainAxisAlignment: widget.mainAxisAlignment,
+    children: _addSpacing(widget.children),
+  );
 
   Widget _buildHorizontalLayout() => Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: widget.mainAxisAlignment,
-      children: _addSpacing(
-        widget.children.map((Widget child) => Expanded(child: child)).toList(),
-      ),
-    );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: widget.mainAxisAlignment,
+    children: _addSpacing(
+      widget.children.map((Widget child) => Expanded(child: child)).toList(),
+    ),
+  );
 
   Widget _buildGridLayout() {
     // For grid layout, wrap in a responsive grid
     return Wrap(
       spacing: widget.spacing,
       runSpacing: widget.spacing,
-      children: widget.children.map((Widget child) => SizedBox(width: _getGridItemWidth(), child: child)).toList(),
+      children: widget.children
+          .map(
+            (Widget child) =>
+                SizedBox(width: _getGridItemWidth(), child: child),
+          )
+          .toList(),
     );
   }
 

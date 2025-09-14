@@ -340,7 +340,8 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
     return widget.placeholder;
   }
 
-  String _formatDate(DateTime date) => '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+  String _formatDate(DateTime date) =>
+      '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
 
   Future<void> _showDatePicker() async {
     final DateTime now = DateTime.now();
@@ -355,13 +356,13 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
           firstDate: firstDate,
           lastDate: lastDate,
           builder: (BuildContext context, Widget? child) => Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: Theme.of(
-                  context,
-                ).colorScheme.copyWith(primary: CorpoColors.primary500),
-              ),
-              child: child!,
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(
+                context,
+              ).colorScheme.copyWith(primary: CorpoColors.primary500),
             ),
+            child: child!,
+          ),
         );
 
         if (selectedDate != null) {
@@ -379,13 +380,13 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
               ? DateTimeRange(start: widget.startDate!, end: widget.endDate!)
               : null,
           builder: (BuildContext context, Widget? child) => Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: Theme.of(
-                  context,
-                ).colorScheme.copyWith(primary: CorpoColors.primary500),
-              ),
-              child: child!,
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(
+                context,
+              ).colorScheme.copyWith(primary: CorpoColors.primary500),
             ),
+            child: child!,
+          ),
         );
 
         if (selectedRange != null) {
@@ -396,7 +397,28 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
 
       case CorpoDatePickerVariant.month:
       case CorpoDatePickerVariant.year:
-        // TODO: Implement month/year pickers
+        final DateTime? selectedDate = await showDatePicker(
+          context: context,
+          initialDate: widget.selectedDate ?? now,
+          firstDate: firstDate,
+          lastDate: lastDate,
+          initialDatePickerMode: widget.variant == CorpoDatePickerVariant.month
+              ? DatePickerMode.day
+              : DatePickerMode.year,
+          builder: (BuildContext context, Widget? child) => Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(
+                context,
+              ).colorScheme.copyWith(primary: CorpoColors.primary500),
+            ),
+            child: child!,
+          ),
+        );
+
+        if (selectedDate != null) {
+          widget.onDateSelected?.call(selectedDate);
+          _validateDate(selectedDate);
+        }
         break;
     }
   }

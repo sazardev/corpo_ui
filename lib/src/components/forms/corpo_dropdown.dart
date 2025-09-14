@@ -62,7 +62,7 @@ enum CorpoDropdownSize {
 /// A comprehensive dropdown widget following Corpo UI design principles.
 ///
 /// This component provides consistent styling, validation, and accessibility
-/// features for selection inputs. It supports custom items, search functionality,
+/// features for selection inputs. It supports custom items, search functional
 /// and various size configurations.
 class CorpoDropdown<T> extends StatefulWidget {
   /// Creates a Corpo UI dropdown.
@@ -194,42 +194,42 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
     bool hasError,
     bool isDark,
   ) => Container(
-      height: _getFieldHeight(),
-      decoration: BoxDecoration(
+    height: _getFieldHeight(),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+      border: Border.all(
+        color: _getBorderColor(isDark, isEnabled, hasError),
+        width: hasError ? 2.0 : 1.0,
+      ),
+      color: _getBackgroundColor(isDark, isEnabled),
+    ),
+    child: DropdownButtonHideUnderline(
+      child: DropdownButton<T>(
+        value: widget.value,
+        onChanged: isEnabled ? widget.onChanged : null,
+        items: _filteredItems,
+        hint: widget.placeholder != null
+            ? Text(widget.placeholder!, style: _getPlaceholderStyle(isDark))
+            : null,
+        isExpanded: true,
+        icon: Icon(
+          Icons.keyboard_arrow_down,
+          color: _getIconColor(isDark, isEnabled),
+        ),
+        style: _getTextStyle().copyWith(
+          color: _getTextColor(isDark, isEnabled),
+        ),
+        dropdownColor: isDark
+            ? CorpoColors.neutral800
+            : CorpoColors.neutralWhite,
         borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
-        border: Border.all(
-          color: _getBorderColor(isDark, isEnabled, hasError),
-          width: hasError ? 2.0 : 1.0,
-        ),
-        color: _getBackgroundColor(isDark, isEnabled),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<T>(
-          value: widget.value,
-          onChanged: isEnabled ? widget.onChanged : null,
-          items: _filteredItems,
-          hint: widget.placeholder != null
-              ? Text(widget.placeholder!, style: _getPlaceholderStyle(isDark))
-              : null,
-          isExpanded: true,
-          icon: Icon(
-            Icons.keyboard_arrow_down,
-            color: _getIconColor(isDark, isEnabled),
-          ),
-          style: _getTextStyle().copyWith(
-            color: _getTextColor(isDark, isEnabled),
-          ),
-          dropdownColor: isDark
-              ? CorpoColors.neutral800
-              : CorpoColors.neutralWhite,
-          borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
-          padding: EdgeInsets.symmetric(
-            horizontal: _getHorizontalPadding(),
-            vertical: CorpoSpacing.small,
-          ),
+        padding: EdgeInsets.symmetric(
+          horizontal: _getHorizontalPadding(),
+          vertical: CorpoSpacing.small,
         ),
       ),
-    );
+    ),
+  );
 
   /// Gets the field height based on size variant.
   double _getFieldHeight() {
@@ -284,12 +284,14 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
 
   /// Gets the placeholder text style.
   TextStyle _getPlaceholderStyle(bool isDark) => _getTextStyle().copyWith(
-      color: isDark ? CorpoColors.neutral500 : CorpoColors.neutral400,
-    );
+    color: isDark ? CorpoColors.neutral500 : CorpoColors.neutral400,
+  );
 
   /// Gets the label color based on state.
   Color _getLabelColor(bool isDark, bool isEnabled, bool hasError) {
-    if (hasError) return CorpoColors.error;
+    if (hasError) {
+      return CorpoColors.error;
+    }
     if (!isEnabled) {
       return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
     }
@@ -314,7 +316,9 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
 
   /// Gets the border color based on state.
   Color _getBorderColor(bool isDark, bool isEnabled, bool hasError) {
-    if (hasError) return CorpoColors.error;
+    if (hasError) {
+      return CorpoColors.error;
+    }
     if (!isEnabled) {
       return isDark ? CorpoColors.neutral700 : CorpoColors.neutral300;
     }
