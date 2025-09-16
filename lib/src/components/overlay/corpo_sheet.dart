@@ -152,33 +152,34 @@ class CorpoSheet extends StatelessWidget {
     Duration animationDuration = const Duration(milliseconds: 300),
     VoidCallback? onDismiss,
   }) => showModalBottomSheet<T>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
-      elevation: 0,
+    context: context,
+    backgroundColor: Colors.transparent,
+    barrierColor:
+        barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
+    elevation: 0,
+    isScrollControlled: isScrollControlled,
+    enableDrag: enableDrag && dragBehavior != CorpoSheetDragBehavior.none,
+    builder: (BuildContext context) => CorpoSheet(
+      dragBehavior: dragBehavior,
+      sizeBehavior: sizeBehavior,
+      size: size,
+      minSize: minSize,
+      maxSize: maxSize,
       isScrollControlled: isScrollControlled,
-      enableDrag: enableDrag && dragBehavior != CorpoSheetDragBehavior.none,
-      builder: (BuildContext context) => CorpoSheet(
-        dragBehavior: dragBehavior,
-        sizeBehavior: sizeBehavior,
-        size: size,
-        minSize: minSize,
-        maxSize: maxSize,
-        isScrollControlled: isScrollControlled,
-        padding: padding,
-        margin: margin,
-        backgroundColor: backgroundColor,
-        borderRadius: borderRadius,
-        elevation: elevation,
-        barrierColor: barrierColor,
-        enableDrag: enableDrag,
-        showDragHandle: showDragHandle,
-        dragHandleColor: dragHandleColor,
-        animationDuration: animationDuration,
-        onDismiss: onDismiss,
-        child: child,
-      ),
-    );
+      padding: padding,
+      margin: margin,
+      backgroundColor: backgroundColor,
+      borderRadius: borderRadius,
+      elevation: elevation,
+      barrierColor: barrierColor,
+      enableDrag: enableDrag,
+      showDragHandle: showDragHandle,
+      dragHandleColor: dragHandleColor,
+      animationDuration: animationDuration,
+      onDismiss: onDismiss,
+      child: child,
+    ),
+  );
 
   /// Show a modal sheet from any position.
   static Future<T?> showModalSheet<T>({
@@ -203,45 +204,46 @@ class CorpoSheet extends StatelessWidget {
     Duration animationDuration = const Duration(milliseconds: 300),
     VoidCallback? onDismiss,
   }) => showGeneralDialog<T>(
-      context: context,
-      barrierDismissible: dragBehavior != CorpoSheetDragBehavior.none,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
-      transitionDuration: animationDuration,
-      pageBuilder:
-          (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) => _SheetWrapper(
-              sheet: CorpoSheet(
-                position: position,
-                dragBehavior: dragBehavior,
-                sizeBehavior: sizeBehavior,
-                size: size,
-                minSize: minSize,
-                maxSize: maxSize,
-                isScrollControlled: isScrollControlled,
-                padding: padding,
-                margin: margin,
-                backgroundColor: backgroundColor,
-                borderRadius: borderRadius,
-                elevation: elevation,
-                barrierColor: barrierColor,
-                enableDrag: enableDrag,
-                showDragHandle: showDragHandle,
-                dragHandleColor: dragHandleColor,
-                animationDuration: animationDuration,
-                onDismiss: onDismiss,
-                child: child,
-              ),
-              animation: animation,
-              onDismiss: () {
-                onDismiss?.call();
-                Navigator.of(context).pop();
-              },
-            ),
-    );
+    context: context,
+    barrierDismissible: dragBehavior != CorpoSheetDragBehavior.none,
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierColor:
+        barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
+    transitionDuration: animationDuration,
+    pageBuilder:
+        (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) => _SheetWrapper(
+          sheet: CorpoSheet(
+            position: position,
+            dragBehavior: dragBehavior,
+            sizeBehavior: sizeBehavior,
+            size: size,
+            minSize: minSize,
+            maxSize: maxSize,
+            isScrollControlled: isScrollControlled,
+            padding: padding,
+            margin: margin,
+            backgroundColor: backgroundColor,
+            borderRadius: borderRadius,
+            elevation: elevation,
+            barrierColor: barrierColor,
+            enableDrag: enableDrag,
+            showDragHandle: showDragHandle,
+            dragHandleColor: dragHandleColor,
+            animationDuration: animationDuration,
+            onDismiss: onDismiss,
+            child: child,
+          ),
+          animation: animation,
+          onDismiss: () {
+            onDismiss?.call();
+            Navigator.of(context).pop();
+          },
+        ),
+  );
 
   @override
   Widget build(BuildContext context) => _buildSheetContent(context);
@@ -282,8 +284,9 @@ class CorpoSheet extends StatelessWidget {
     );
   }
 
-  bool _showDragHandleForPosition() => position == CorpoSheetPosition.bottom ||
-        position == CorpoSheetPosition.top;
+  bool _showDragHandleForPosition() =>
+      position == CorpoSheetPosition.bottom ||
+      position == CorpoSheetPosition.top;
 
   Widget _buildDragHandle(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -292,10 +295,7 @@ class CorpoSheet extends StatelessWidget {
         dragHandleColor ?? colorScheme.onSurface.withValues(alpha: 0.4);
 
     return Container(
-      margin: EdgeInsets.only(
-        top: tokens.spacing2x,
-        bottom: tokens.spacing2x,
-      ),
+      margin: EdgeInsets.only(top: tokens.spacing2x, bottom: tokens.spacing2x),
       child: Container(
         width: 32,
         height: 4,
@@ -307,7 +307,8 @@ class CorpoSheet extends StatelessWidget {
     );
   }
 
-  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) => EdgeInsets.all(tokens.spacing6x);
+  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) =>
+      EdgeInsets.all(tokens.spacing6x);
 
   BorderRadius _getDefaultBorderRadius(CorpoDesignTokens tokens) {
     final double radius = tokens.borderRadius;
@@ -398,15 +399,14 @@ class _SheetWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: sheet.dragBehavior != CorpoSheetDragBehavior.none
-          ? onDismiss
-          : null,
-      behavior: HitTestBehavior.translucent,
-      child: AnimatedBuilder(
-        animation: animation,
-        builder: (BuildContext context, Widget? child) => _buildAnimatedSheet(context),
-      ),
-    );
+    onTap: sheet.dragBehavior != CorpoSheetDragBehavior.none ? onDismiss : null,
+    behavior: HitTestBehavior.translucent,
+    child: AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) =>
+          _buildAnimatedSheet(context),
+    ),
+  );
 
   Widget _buildAnimatedSheet(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -536,9 +536,7 @@ class CorpoSheetHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border(
-          bottom: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.2),
-          ),
+          bottom: BorderSide(color: colorScheme.outline.withValues(alpha: 0.2)),
         ),
       ),
       child: Row(

@@ -236,17 +236,17 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
       skeleton = AnimatedBuilder(
         animation: _animation,
         builder: (BuildContext context, Widget? child) => Container(
-            width: width ?? widget.width,
-            height: height ?? widget.height,
-            decoration: BoxDecoration(
-              borderRadius: _getBorderRadius(tokens),
-              gradient: LinearGradient(
-                colors: <Color>[baseColor, highlightColor, baseColor],
-                stops: const <double>[0, 0.5, 1],
-                transform: _SlideGradientTransform(_animation.value),
-              ),
+          width: width ?? widget.width,
+          height: height ?? widget.height,
+          decoration: BoxDecoration(
+            borderRadius: _getBorderRadius(tokens),
+            gradient: LinearGradient(
+              colors: <Color>[baseColor, highlightColor, baseColor],
+              stops: const <double>[0, 0.5, 1],
+              transform: _SlideGradientTransform(_animation.value),
             ),
           ),
+        ),
       );
     } else if (widget.animation == CorpoSkeletonAnimation.pulse) {
       skeleton = AnimatedBuilder(

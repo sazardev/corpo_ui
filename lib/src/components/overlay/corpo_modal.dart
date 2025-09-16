@@ -154,46 +154,48 @@ class CorpoModal extends StatelessWidget {
     Duration animationDuration = const Duration(milliseconds: 300),
     VoidCallback? onDismiss,
   }) => showGeneralDialog<T>(
-      context: context,
-      barrierDismissible:
-          _shouldDismissOnBarrier(dismissBehavior) && barrierDismissible,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
-      transitionDuration: animationDuration,
-      pageBuilder:
-          (
-            BuildContext context,
-            Animation<double> pageAnimation,
-            Animation<double> secondaryAnimation,
-          ) => _ModalWrapper(
-              modal: CorpoModal(
-                size: size,
-                animation: animation,
-                dismissBehavior: dismissBehavior,
-                width: width,
-                height: height,
-                constraints: constraints,
-                padding: padding,
-                margin: margin,
-                backgroundColor: backgroundColor,
-                borderRadius: borderRadius,
-                elevation: elevation,
-                barrierColor: barrierColor,
-                barrierDismissible: barrierDismissible,
-                animationDuration: animationDuration,
-                onDismiss: onDismiss,
-                child: child,
-              ),
-              buildAnimation: pageAnimation,
-              onDismiss: () {
-                onDismiss?.call();
-                Navigator.of(context).pop();
-              },
-            ),
-    );
+    context: context,
+    barrierDismissible:
+        _shouldDismissOnBarrier(dismissBehavior) && barrierDismissible,
+    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierColor:
+        barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
+    transitionDuration: animationDuration,
+    pageBuilder:
+        (
+          BuildContext context,
+          Animation<double> pageAnimation,
+          Animation<double> secondaryAnimation,
+        ) => _ModalWrapper(
+          modal: CorpoModal(
+            size: size,
+            animation: animation,
+            dismissBehavior: dismissBehavior,
+            width: width,
+            height: height,
+            constraints: constraints,
+            padding: padding,
+            margin: margin,
+            backgroundColor: backgroundColor,
+            borderRadius: borderRadius,
+            elevation: elevation,
+            barrierColor: barrierColor,
+            barrierDismissible: barrierDismissible,
+            animationDuration: animationDuration,
+            onDismiss: onDismiss,
+            child: child,
+          ),
+          buildAnimation: pageAnimation,
+          onDismiss: () {
+            onDismiss?.call();
+            Navigator.of(context).pop();
+          },
+        ),
+  );
 
-  static bool _shouldDismissOnBarrier(CorpoModalDismissBehavior behavior) => behavior == CorpoModalDismissBehavior.barrierAndEscape ||
-        behavior == CorpoModalDismissBehavior.barrierOnly;
+  static bool _shouldDismissOnBarrier(CorpoModalDismissBehavior behavior) =>
+      behavior == CorpoModalDismissBehavior.barrierAndEscape ||
+      behavior == CorpoModalDismissBehavior.barrierOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -261,11 +263,12 @@ class CorpoModal extends StatelessWidget {
     );
   }
 
-  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) => switch (size) {
-      CorpoModalSize.small => EdgeInsets.all(tokens.spacing4x),
-      CorpoModalSize.fullScreen => EdgeInsets.zero,
-      _ => EdgeInsets.all(tokens.spacing6x),
-    };
+  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) =>
+      switch (size) {
+        CorpoModalSize.small => EdgeInsets.all(tokens.spacing4x),
+        CorpoModalSize.fullScreen => EdgeInsets.zero,
+        _ => EdgeInsets.all(tokens.spacing6x),
+      };
 
   BorderRadius _getDefaultBorderRadius(CorpoDesignTokens tokens) {
     if (size == CorpoModalSize.fullScreen) {
@@ -293,23 +296,25 @@ class _ModalWrapper extends StatefulWidget {
 class _ModalWrapperState extends State<_ModalWrapper> {
   @override
   Widget build(BuildContext context) => PopScope(
-      canPop: _shouldDismissOnEscape(),
-      onPopInvokedWithResult: (bool didPop, Object? result) {
-        if (didPop && _shouldDismissOnEscape()) {
-          widget.onDismiss();
-        }
-      },
-      child: Center(
-        child: AnimatedBuilder(
-          animation: widget.buildAnimation,
-          builder: (BuildContext context, Widget? child) => _buildAnimatedModal(context),
-        ),
+    canPop: _shouldDismissOnEscape(),
+    onPopInvokedWithResult: (bool didPop, Object? result) {
+      if (didPop && _shouldDismissOnEscape()) {
+        widget.onDismiss();
+      }
+    },
+    child: Center(
+      child: AnimatedBuilder(
+        animation: widget.buildAnimation,
+        builder: (BuildContext context, Widget? child) =>
+            _buildAnimatedModal(context),
       ),
-    );
+    ),
+  );
 
-  bool _shouldDismissOnEscape() => widget.modal.dismissBehavior ==
-            CorpoModalDismissBehavior.barrierAndEscape ||
-        widget.modal.dismissBehavior == CorpoModalDismissBehavior.escapeOnly;
+  bool _shouldDismissOnEscape() =>
+      widget.modal.dismissBehavior ==
+          CorpoModalDismissBehavior.barrierAndEscape ||
+      widget.modal.dismissBehavior == CorpoModalDismissBehavior.escapeOnly;
 
   Widget _buildAnimatedModal(BuildContext context) {
     Widget modal = widget.modal._buildModalContent(context);
@@ -435,9 +440,7 @@ class CorpoModalHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border(
-          bottom: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.2),
-          ),
+          bottom: BorderSide(color: colorScheme.outline.withValues(alpha: 0.2)),
         ),
       ),
       child: Row(
@@ -541,9 +544,7 @@ class CorpoModalFooter extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border(
-          top: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.2),
-          ),
+          top: BorderSide(color: colorScheme.outline.withValues(alpha: 0.2)),
         ),
       ),
       child: Row(

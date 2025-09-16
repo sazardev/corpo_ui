@@ -130,7 +130,7 @@ class CorpoPopover extends StatefulWidget {
     this.onShow,
     this.onHide,
     super.key,
-  });
+  }) : margin = margin ?? const EdgeInsets.all(8.0);
 
   /// The widget that triggers the popover.
   final Widget child;
@@ -320,12 +320,13 @@ class _CorpoPopoverState extends State<CorpoPopover>
     _overlayEntry = null;
   }
 
-  bool _shouldDismiss() => widget.dismissBehavior == CorpoPopoverDismissBehavior.tapOutside ||
-        widget.dismissBehavior ==
-            CorpoPopoverDismissBehavior.tapOutsideAndEscape;
+  bool _shouldDismiss() =>
+      widget.dismissBehavior == CorpoPopoverDismissBehavior.tapOutside ||
+      widget.dismissBehavior == CorpoPopoverDismissBehavior.tapOutsideAndEscape;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(key: _childKey, onTap: _toggle, child: widget.child);
+  Widget build(BuildContext context) =>
+      GestureDetector(key: _childKey, onTap: _toggle, child: widget.child);
 }
 
 class _PopoverOverlay extends StatelessWidget {
@@ -343,25 +344,23 @@ class _PopoverOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-      children: <Widget>[
-        // Barrier
-        if (onDismiss != null)
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: onDismiss,
-              child: Container(
-                color: target.barrierColor ?? Colors.transparent,
-              ),
-            ),
+    children: <Widget>[
+      // Barrier
+      if (onDismiss != null)
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: onDismiss,
+            child: Container(color: target.barrierColor ?? Colors.transparent),
           ),
-        // Popover content
-        _PopoverPositioned(
-          target: target,
-          childKey: childKey,
-          animation: animation,
         ),
-      ],
-    );
+      // Popover content
+      _PopoverPositioned(
+        target: target,
+        childKey: childKey,
+        animation: animation,
+      ),
+    ],
+  );
 }
 
 class _PopoverPositioned extends StatelessWidget {

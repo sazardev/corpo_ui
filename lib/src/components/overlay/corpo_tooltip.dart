@@ -355,17 +355,17 @@ class _TooltipOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.translucent,
-      child: Stack(
-        children: <Widget>[
-          // Invisible tap area to dismiss tooltip
-          if (onTap != null) const Positioned.fill(child: SizedBox.expand()),
-          // Tooltip content
-          _TooltipPositioned(target: target, animation: animation),
-        ],
-      ),
-    );
+    onTap: onTap,
+    behavior: HitTestBehavior.translucent,
+    child: Stack(
+      children: <Widget>[
+        // Invisible tap area to dismiss tooltip
+        if (onTap != null) const Positioned.fill(child: SizedBox.expand()),
+        // Tooltip content
+        _TooltipPositioned(target: target, animation: animation),
+      ],
+    ),
+  );
 }
 
 class _TooltipPositioned extends StatelessWidget {
@@ -383,10 +383,10 @@ class _TooltipPositioned extends StatelessWidget {
     return AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget? child) => Positioned(
-          left: _calculateLeft(context, targetPosition, targetSize),
-          top: _calculateTop(context, targetPosition, targetSize),
-          child: _buildTooltipContent(context),
-        ),
+        left: _calculateLeft(context, targetPosition, targetSize),
+        top: _calculateTop(context, targetPosition, targetSize),
+        child: _buildTooltipContent(context),
+      ),
     );
   }
 
@@ -465,7 +465,8 @@ class _TooltipPositioned extends StatelessWidget {
     Widget content = Material(
       color: backgroundColor,
       elevation: target.elevation,
-      borderRadius: target.borderRadius ?? BorderRadius.circular(tokens.borderRadius),
+      borderRadius:
+          target.borderRadius ?? BorderRadius.circular(tokens.borderRadius),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: target.maxWidth),
         child: Padding(
