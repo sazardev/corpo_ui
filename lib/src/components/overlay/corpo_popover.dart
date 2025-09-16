@@ -514,18 +514,20 @@ class _PopoverPositioned extends StatelessWidget {
   ) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     final Color backgroundColor = target.backgroundColor ?? colorScheme.surface;
 
     Widget content = Material(
       color: backgroundColor,
       elevation: target.elevation,
-      borderRadius: target.borderRadius ?? BorderRadius.circular(12),
+      borderRadius:
+          target.borderRadius ?? BorderRadius.circular(tokens.borderRadius),
       child: Container(
         width: target.width,
         height: target.height,
         constraints: target.constraints,
-        padding: target.padding ?? const EdgeInsets.all(CorpoSpacing.medium),
+        padding: target.padding ?? EdgeInsets.all(tokens.spacing4x),
         child: target.content,
       ),
     );
