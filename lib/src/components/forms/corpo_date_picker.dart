@@ -30,9 +30,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Date picker variant types for different use cases.
 enum CorpoDatePickerVariant {
@@ -163,6 +161,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
@@ -172,66 +171,65 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
         if (widget.label != null) ...<Widget>[
           Row(
             children: <Widget>[
-              Text(widget.label!, style: _getLabelStyle()),
+              Text(widget.label!, style: _getLabelStyle(tokens)),
               if (widget.required) ...<Widget>[
-                const SizedBox(width: CorpoSpacing.extraSmall),
+                SizedBox(width: tokens.spacing1x),
                 Text(
                   '*',
                   style: TextStyle(
-                    color: isDark ? CorpoColors.error : CorpoColors.error,
-                    fontSize: _getLabelStyle().fontSize,
+                    color: tokens.errorColor,
+                    fontSize: _getLabelStyle(tokens).fontSize,
                   ),
                 ),
               ],
             ],
           ),
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
         ],
         InkWell(
           onTap: widget.enabled ? _showDatePicker : null,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
           child: Container(
-            height: _getHeight(),
+            height: _getHeight(tokens),
             padding: EdgeInsets.symmetric(
-              horizontal: _getHorizontalPadding(),
-              vertical: _getVerticalPadding(),
+              horizontal: _getHorizontalPadding(tokens),
+              vertical: _getVerticalPadding(tokens),
             ),
             decoration: BoxDecoration(
-              border: Border.all(color: _getBorderColor(isDark)),
-              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: _getBorderColor(tokens, isDark)),
+              borderRadius: BorderRadius.circular(tokens.borderRadius),
               color: widget.enabled
-                  ? (isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite)
-                  : (isDark ? CorpoColors.neutral700 : CorpoColors.neutral100),
+                  ? tokens.surfaceColor
+                  : tokens.surfaceColor.withOpacity(0.5),
             ),
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(_getDisplayText(), style: _getTextStyle(isDark)),
+                  child: Text(
+                    _getDisplayText(),
+                    style: _getTextStyle(tokens, isDark),
+                  ),
                 ),
                 Icon(
                   Icons.calendar_today,
-                  size: _getIconSize(),
+                  size: _getIconSize(tokens),
                   color: widget.enabled
-                      ? (isDark
-                            ? CorpoColors.neutral300
-                            : CorpoColors.neutral600)
-                      : (isDark
-                            ? CorpoColors.neutral500
-                            : CorpoColors.neutral400),
+                      ? tokens.textSecondary
+                      : tokens.textSecondary.withOpacity(0.5),
                 ),
               ],
             ),
           ),
         ),
         if (widget.helpText != null || _validationError != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
           Text(
             _validationError ?? widget.helpText!,
             style: TextStyle(
-              fontSize: CorpoFontSize.small,
+              fontSize: tokens.fontSizeSmall,
               color: _validationError != null
-                  ? (isDark ? CorpoColors.error : CorpoColors.error)
-                  : (isDark ? CorpoColors.neutral400 : CorpoColors.neutral600),
+                  ? tokens.errorColor
+                  : tokens.textSecondary,
             ),
           ),
         ],
@@ -239,81 +237,96 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
     );
   }
 
-  TextStyle _getLabelStyle() {
+  TextStyle _getLabelStyle(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDatePickerSize.medium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDatePickerSize.large:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+        );
     }
   }
 
-  double _getHeight() {
+  double _getHeight(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return 32;
+        return tokens.spacing8x;
       case CorpoDatePickerSize.medium:
-        return 40;
+        return tokens.spacing8x * 1.25; // 40px equivalent
       case CorpoDatePickerSize.large:
-        return 48;
+        return tokens.spacing12x;
     }
   }
 
-  double _getHorizontalPadding() {
+  double _getHorizontalPadding(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
       case CorpoDatePickerSize.medium:
-        return CorpoSpacing.medium;
+        return tokens.spacing4x;
       case CorpoDatePickerSize.large:
-        return CorpoSpacing.medium;
+        return tokens.spacing4x;
     }
   }
 
-  double _getVerticalPadding() {
+  double _getVerticalPadding(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
       case CorpoDatePickerSize.medium:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
       case CorpoDatePickerSize.large:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
     }
   }
 
-  double _getIconSize() {
+  double _getIconSize(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDatePickerSize.small:
-        return 16;
+        return tokens.spacing4x;
       case CorpoDatePickerSize.medium:
-        return 20;
+        return tokens.spacing4x * 1.25; // 20px equivalent
       case CorpoDatePickerSize.large:
-        return 24;
+        return tokens.spacing6x;
     }
   }
 
-  Color _getBorderColor(bool isDark) {
+  Color _getBorderColor(CorpoDesignTokens tokens, bool isDark) {
     if (_validationError != null) {
-      return isDark ? CorpoColors.error : CorpoColors.error;
+      return tokens.errorColor;
     }
 
     if (!widget.enabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return tokens.textSecondary.withOpacity(0.3);
     }
 
-    return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+    return tokens.textSecondary.withOpacity(0.6);
   }
 
-  TextStyle _getTextStyle(bool isDark) {
+  TextStyle _getTextStyle(CorpoDesignTokens tokens, bool isDark) {
     final TextStyle baseStyle = widget.size == CorpoDatePickerSize.small
-        ? CorpoTypography.bodySmall
-        : CorpoTypography.bodyMedium;
+        ? TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+          )
+        : TextStyle(
+            fontSize: tokens.baseFontSize,
+            fontFamily: tokens.fontFamily,
+          );
 
     final Color textColor = _getDisplayText() == widget.placeholder
-        ? (isDark ? CorpoColors.neutral400 : CorpoColors.neutral500)
-        : (isDark ? CorpoColors.neutralWhite : CorpoColors.neutral900);
+        ? tokens.textSecondary
+        : tokens.textPrimary;
 
     return baseStyle.copyWith(color: textColor);
   }
@@ -344,6 +357,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
       '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
 
   Future<void> _showDatePicker() async {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final DateTime now = DateTime.now();
     final DateTime firstDate = widget.firstDate ?? DateTime(now.year - 100);
     final DateTime lastDate = widget.lastDate ?? DateTime(now.year + 100);
@@ -359,7 +373,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
             data: Theme.of(context).copyWith(
               colorScheme: Theme.of(
                 context,
-              ).colorScheme.copyWith(primary: CorpoColors.primary500),
+              ).colorScheme.copyWith(primary: tokens.primaryColor),
             ),
             child: child!,
           ),
@@ -383,7 +397,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
             data: Theme.of(context).copyWith(
               colorScheme: Theme.of(
                 context,
-              ).colorScheme.copyWith(primary: CorpoColors.primary500),
+              ).colorScheme.copyWith(primary: tokens.primaryColor),
             ),
             child: child!,
           ),
@@ -409,7 +423,7 @@ class _CorpoDatePickerState extends State<CorpoDatePicker> {
             data: Theme.of(context).copyWith(
               colorScheme: Theme.of(
                 context,
-              ).colorScheme.copyWith(primary: CorpoColors.primary500),
+              ).colorScheme.copyWith(primary: tokens.primaryColor),
             ),
             child: child!,
           ),

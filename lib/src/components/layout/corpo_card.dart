@@ -32,8 +32,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Card elevation variants for different visual hierarchy levels.
 ///
@@ -218,6 +217,7 @@ class CorpoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
@@ -235,11 +235,13 @@ class CorpoCard extends StatelessWidget {
     if (isInteractive) {
       card = Material(
         color: Colors.transparent,
-        borderRadius: borderRadius ?? BorderRadius.circular(12),
+        borderRadius:
+            borderRadius ?? BorderRadius.circular(tokens.borderRadius),
         child: InkWell(
           onTap: onTap,
           onLongPress: onLongPress,
-          borderRadius: borderRadius ?? BorderRadius.circular(12),
+          borderRadius:
+              borderRadius ?? BorderRadius.circular(tokens.borderRadius),
           child: card,
         ),
       );
@@ -261,8 +263,10 @@ class CorpoCard extends StatelessWidget {
 
   /// Builds the card decoration based on variant and theme.
   BoxDecoration _buildDecoration(bool isDark) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final Color backgroundColor = _getBackgroundColor(isDark);
-    final BorderRadius radius = borderRadius ?? BorderRadius.circular(12);
+    final BorderRadius radius =
+        borderRadius ?? BorderRadius.circular(tokens.borderRadius);
 
     switch (variant) {
       case CorpoCardVariant.filled:
@@ -297,34 +301,48 @@ class CorpoCard extends StatelessWidget {
 
   /// Gets the background color based on variant and theme.
   Color _getBackgroundColor(bool isDark) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     if (color != null) return color!;
 
     switch (variant) {
       case CorpoCardVariant.filled:
-        return isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite;
+        return isDark
+            ? tokens.secondaryColor.withOpacity(0.8)
+            : tokens.surfaceColor;
 
       case CorpoCardVariant.outlined:
-        return isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite;
+        return isDark
+            ? tokens.secondaryColor.withOpacity(0.9)
+            : tokens.surfaceColor;
 
       case CorpoCardVariant.elevated:
-        return isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite;
+        return isDark
+            ? tokens.secondaryColor.withOpacity(0.8)
+            : tokens.surfaceColor;
 
       case CorpoCardVariant.tinted:
-        return isDark ? CorpoColors.neutral800 : CorpoColors.neutral50;
+        return isDark
+            ? tokens.secondaryColor.withOpacity(0.8)
+            : tokens.primaryColor.withOpacity(0.05);
     }
   }
 
   /// Gets the border color for outlined cards.
-  Color _getBorderColor(bool isDark) =>
-      isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+  Color _getBorderColor(bool isDark) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    return isDark
+        ? tokens.secondaryColor.withOpacity(0.7)
+        : tokens.secondaryColor.withOpacity(0.3);
+  }
 
   /// Gets the box shadow based on elevation level.
   List<BoxShadow> _getBoxShadow(bool isDark) {
     if (variant == CorpoCardVariant.outlined) return <BoxShadow>[];
 
     final Color shadowColor = isDark
-        ? CorpoColors.neutralBlack.withValues(alpha: 0.5)
-        : CorpoColors.neutralBlack.withValues(alpha: 0.1);
+        ? Colors.black.withValues(alpha: 0.5)
+        : Colors.black.withValues(alpha: 0.1);
 
     switch (elevation) {
       case CorpoCardElevation.none:
@@ -370,21 +388,23 @@ class CorpoCard extends StatelessWidget {
 
   /// Gets the content padding based on the padding variant.
   EdgeInsetsGeometry _getContentPadding() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     switch (padding) {
       case CorpoCardPadding.none:
         return EdgeInsets.zero;
 
       case CorpoCardPadding.small:
-        return CorpoPadding.small;
+        return EdgeInsets.all(tokens.spacing2x);
 
       case CorpoCardPadding.medium:
-        return CorpoPadding.medium;
+        return EdgeInsets.all(tokens.spacing4x);
 
       case CorpoCardPadding.large:
-        return const EdgeInsets.all(CorpoSpacing.large);
+        return EdgeInsets.all(tokens.spacing6x);
 
       case CorpoCardPadding.extraLarge:
-        return const EdgeInsets.all(CorpoSpacing.extraLarge);
+        return EdgeInsets.all(tokens.spacing8x);
     }
   }
 }

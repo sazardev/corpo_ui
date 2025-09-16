@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:corpo_ui/corpo_ui.dart';
 
+import 'shadcn_demo.dart';
+
 void main() {
   runApp(const CorpoUIExampleApp());
 }
@@ -44,12 +46,59 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
           variant: CorpoTextVariant.bodyLarge,
         ),
         centerTitle: true,
+        actions: <Widget>[
+          CorpoIconButton(
+            icon: Icons.science,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) =>
+                      const ShadCNPhilosophyDemo(),
+                ),
+              );
+            },
+            tooltip: 'ShadCN Philosophy Demo',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(CorpoSpacing.medium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // ShadCN Demo Button
+            CorpoCard(
+              child: Column(
+                children: <Widget>[
+                  const CorpoText(
+                    '🎯 Experience the ShadCN Philosophy',
+                    variant: CorpoTextVariant.headingMedium,
+                  ),
+                  const CorpoSpacer.small(),
+                  const CorpoText(
+                    'See how "Change one file, transform your entire app" works in action!',
+                    variant: CorpoTextVariant.bodyMedium,
+                  ),
+                  const CorpoSpacer.medium(),
+                  CorpoButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const ShadCNPhilosophyDemo(),
+                        ),
+                      );
+                    },
+                    variant: CorpoButtonVariant.primary,
+                    child: const CorpoText(
+                      '🚀 Try ShadCN Demo',
+                      variant: CorpoTextVariant.button,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const CorpoSpacer.large(),
             // Typography Examples
             const CorpoHeading(
               'Typography Components',

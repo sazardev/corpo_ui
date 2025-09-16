@@ -32,7 +32,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Spacer size variants for different spacing needs.
 enum CorpoSpacerSize {
@@ -62,60 +62,70 @@ enum CorpoSpacerSize {
 /// layout direction (horizontal or vertical) based on its parent container.
 class CorpoSpacer extends StatelessWidget {
   /// Creates a Corpo UI spacer with custom dimensions.
-  const CorpoSpacer({this.width, this.height, this.flex, super.key});
+  const CorpoSpacer({this.width, this.height, this.flex, super.key})
+    : _size = null;
 
   /// Creates an extra small spacer (4px).
   const CorpoSpacer.extraSmall({super.key})
-    : width = CorpoSpacing.extraSmall,
-      height = CorpoSpacing.extraSmall,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.extraSmall;
 
   /// Creates a small spacer (8px).
   const CorpoSpacer.small({super.key})
-    : width = CorpoSpacing.small,
-      height = CorpoSpacing.small,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.small;
 
   /// Creates a medium spacer (16px).
   const CorpoSpacer.medium({super.key})
-    : width = CorpoSpacing.medium,
-      height = CorpoSpacing.medium,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.medium;
 
   /// Creates a large spacer (24px).
   const CorpoSpacer.large({super.key})
-    : width = CorpoSpacing.large,
-      height = CorpoSpacing.large,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.large;
 
   /// Creates an extra large spacer (32px).
   const CorpoSpacer.extraLarge({super.key})
-    : width = CorpoSpacing.extraLarge,
-      height = CorpoSpacing.extraLarge,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.extraLarge;
 
   /// Creates a XXX large spacer (64px).
   const CorpoSpacer.xxxLarge({super.key})
-    : width = CorpoSpacing.xxxLarge,
-      height = CorpoSpacing.xxxLarge,
-      flex = null;
+    : width = null,
+      height = null,
+      flex = null,
+      _size = CorpoSpacerSize.xxxLarge;
 
   /// Creates a horizontal spacer with the specified size.
   CorpoSpacer.horizontal(CorpoSpacerSize size, {super.key})
-    : width = _getSizeValue(size),
+    : width = null,
       height = 0,
-      flex = null;
+      flex = null,
+      _size = size;
 
   /// Creates a vertical spacer with the specified size.
   CorpoSpacer.vertical(CorpoSpacerSize size, {super.key})
     : width = 0,
-      height = _getSizeValue(size),
-      flex = null;
+      height = null,
+      flex = null,
+      _size = size;
 
   /// Creates a flexible spacer that expands to fill available space.
   const CorpoSpacer.flexible({this.flex = 1, super.key})
     : width = null,
-      height = null;
+      height = null,
+      _size = null;
 
   /// The width of the spacer.
   ///
@@ -132,32 +142,49 @@ class CorpoSpacer extends StatelessWidget {
   /// Only used when both width and height are null.
   final int? flex;
 
+  /// Internal size variant for predefined spacers.
+  final CorpoSpacerSize? _size;
+
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     // If both width and height are null, return a flexible Spacer
-    if (width == null && height == null) {
+    if (width == null && height == null && _size == null) {
       return Spacer(flex: flex ?? 1);
     }
 
+    // Get dimensions from size variant if specified
+    double? effectiveWidth = width;
+    double? effectiveHeight = height;
+
+    if (_size != null) {
+      final double sizeValue = _getSizeValue(_size, tokens);
+      effectiveWidth ??= sizeValue;
+      effectiveHeight ??= sizeValue;
+    }
+
     // Return a SizedBox with the specified dimensions
-    return SizedBox(width: width, height: height);
+    return SizedBox(width: effectiveWidth, height: effectiveHeight);
   }
 
   /// Gets the spacing value for the given size variant.
-  static double _getSizeValue(CorpoSpacerSize size) {
+  static double _getSizeValue(CorpoSpacerSize? size, CorpoDesignTokens tokens) {
+    if (size == null) return 0;
+
     switch (size) {
       case CorpoSpacerSize.extraSmall:
-        return CorpoSpacing.extraSmall;
+        return tokens.spacing1x;
       case CorpoSpacerSize.small:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
       case CorpoSpacerSize.medium:
-        return CorpoSpacing.medium;
+        return tokens.spacing4x;
       case CorpoSpacerSize.large:
-        return CorpoSpacing.large;
+        return tokens.spacing6x;
       case CorpoSpacerSize.extraLarge:
-        return CorpoSpacing.extraLarge;
+        return tokens.spacing8x;
       case CorpoSpacerSize.xxxLarge:
-        return CorpoSpacing.xxxLarge;
+        return tokens.spacing16x;
     }
   }
 }

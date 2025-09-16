@@ -28,9 +28,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// A generic form field wrapper following Corpo UI design principles.
 ///
@@ -39,7 +37,8 @@ import '../../constants/typography.dart';
 class CorpoFormField<T> extends FormField<T> {
   /// Creates a Corpo UI form field.
   CorpoFormField({
-    required this.fieldBuilder, super.key,
+    required this.fieldBuilder,
+    super.key,
     super.onSaved,
     super.validator,
     super.initialValue,
@@ -78,8 +77,7 @@ class CorpoFormFieldState<T> extends FormFieldState<T> {
   CorpoFormField<T> get widget => super.widget as CorpoFormField<T>;
 
   Widget _buildField() {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,31 +85,35 @@ class CorpoFormFieldState<T> extends FormFieldState<T> {
         if (widget.label != null) ...<Widget>[
           Row(
             children: <Widget>[
-              Text(widget.label!, style: CorpoTypography.labelMedium),
+              Text(
+                widget.label!,
+                style: TextStyle(
+                  fontSize: tokens.baseFontSize,
+                  fontFamily: tokens.fontFamily,
+                ),
+              ),
               if (widget.required) ...<Widget>[
-                const SizedBox(width: CorpoSpacing.extraSmall),
+                SizedBox(width: tokens.spacing1x),
                 Text(
                   '*',
                   style: TextStyle(
-                    color: isDark ? CorpoColors.error : CorpoColors.error,
-                    fontSize: CorpoFontSize.medium,
+                    color: tokens.errorColor,
+                    fontSize: tokens.baseFontSize,
                   ),
                 ),
               ],
             ],
           ),
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
         ],
         widget.fieldBuilder(context, this),
         if (widget.helpText != null || hasError) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
           Text(
             errorText ?? widget.helpText!,
             style: TextStyle(
-              fontSize: CorpoFontSize.small,
-              color: hasError
-                  ? (isDark ? CorpoColors.error : CorpoColors.error)
-                  : (isDark ? CorpoColors.neutral400 : CorpoColors.neutral600),
+              fontSize: tokens.fontSizeSmall,
+              color: hasError ? tokens.errorColor : tokens.textSecondary,
             ),
           ),
         ],

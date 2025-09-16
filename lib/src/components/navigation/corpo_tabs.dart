@@ -23,9 +23,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Tab styles for different use cases.
 enum CorpoTabStyle {
@@ -61,7 +59,9 @@ class CorpoTab {
 class CorpoTabs extends StatefulWidget {
   /// Creates a Corpo UI tabs component.
   const CorpoTabs({
-    required this.tabs, required this.children, super.key,
+    required this.tabs,
+    required this.children,
+    super.key,
     this.initialIndex = 0,
     this.onTap,
     this.style = CorpoTabStyle.underlined,
@@ -135,12 +135,13 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Column(
       children: <Widget>[
-        _buildTabBar(isDark),
+        _buildTabBar(tokens, isDark),
         Expanded(
           child: TabBarView(
             controller: _tabController,
@@ -151,99 +152,100 @@ class _CorpoTabsState extends State<CorpoTabs> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildTabBar(bool isDark) {
+  Widget _buildTabBar(CorpoDesignTokens tokens, bool isDark) {
     switch (widget.style) {
       case CorpoTabStyle.underlined:
-        return _buildUnderlinedTabBar(isDark);
+        return _buildUnderlinedTabBar(tokens, isDark);
       case CorpoTabStyle.filled:
-        return _buildFilledTabBar(isDark);
+        return _buildFilledTabBar(tokens, isDark);
       case CorpoTabStyle.outlined:
-        return _buildOutlinedTabBar(isDark);
+        return _buildOutlinedTabBar(tokens, isDark);
     }
   }
 
-  Widget _buildUnderlinedTabBar(bool isDark) => Container(
-      decoration: BoxDecoration(
-        color:
-            widget.backgroundColor ??
-            (isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite),
-        border: Border(
-          bottom: BorderSide(
-            color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
+  Widget _buildUnderlinedTabBar(CorpoDesignTokens tokens, bool isDark) =>
+      Container(
+        decoration: BoxDecoration(
+          color: widget.backgroundColor ?? tokens.surfaceColor,
+          border: Border(
+            bottom: BorderSide(color: tokens.textSecondary.withOpacity(0.2)),
           ),
         ),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        tabs: widget.tabs.map(_buildTab).toList(),
-        isScrollable: widget.isScrollable,
-        indicatorColor:
-            widget.indicatorColor ??
-            (isDark ? CorpoColors.primary400 : CorpoColors.primary500),
-        labelColor:
-            widget.labelColor ??
-            (isDark ? CorpoColors.primary400 : CorpoColors.primary500),
-        unselectedLabelColor:
-            widget.unselectedLabelColor ??
-            (isDark ? CorpoColors.neutral400 : CorpoColors.neutral600),
-        labelStyle: CorpoTypography.labelMedium.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: CorpoTypography.labelMedium,
-        splashFactory: NoSplash.splashFactory,
-      ),
-    );
-
-  Widget _buildFilledTabBar(bool isDark) => Container(
-      padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
-      decoration: BoxDecoration(
-        color: isDark ? CorpoColors.neutral800 : CorpoColors.neutral100,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        tabs: widget.tabs.map(_buildTab).toList(),
-        isScrollable: widget.isScrollable,
-        indicator: BoxDecoration(
-          color: isDark ? CorpoColors.primary600 : CorpoColors.primary500,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        labelColor: CorpoColors.neutralWhite,
-        unselectedLabelColor: isDark
-            ? CorpoColors.neutral400
-            : CorpoColors.neutral600,
-        labelStyle: CorpoTypography.labelMedium.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: CorpoTypography.labelMedium,
-        splashFactory: NoSplash.splashFactory,
-      ),
-    );
-
-  Widget _buildOutlinedTabBar(bool isDark) => Container(
-      padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
-      child: TabBar(
-        controller: _tabController,
-        tabs: widget.tabs.map(_buildTab).toList(),
-        isScrollable: widget.isScrollable,
-        indicator: BoxDecoration(
-          border: Border.all(
-            color: isDark ? CorpoColors.primary400 : CorpoColors.primary500,
-            width: 2,
+        child: TabBar(
+          controller: _tabController,
+          tabs: widget.tabs.map(_buildTab).toList(),
+          isScrollable: widget.isScrollable,
+          indicatorColor: widget.indicatorColor ?? tokens.primaryColor,
+          labelColor: widget.labelColor ?? tokens.primaryColor,
+          unselectedLabelColor:
+              widget.unselectedLabelColor ?? tokens.textSecondary,
+          labelStyle: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+            fontWeight: FontWeight.w600,
           ),
-          borderRadius: BorderRadius.circular(6),
+          unselectedLabelStyle: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+          ),
+          splashFactory: NoSplash.splashFactory,
         ),
-        labelColor: isDark ? CorpoColors.primary400 : CorpoColors.primary500,
-        unselectedLabelColor: isDark
-            ? CorpoColors.neutral400
-            : CorpoColors.neutral600,
-        labelStyle: CorpoTypography.labelMedium.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: CorpoTypography.labelMedium,
-        splashFactory: NoSplash.splashFactory,
+      );
+
+  Widget _buildFilledTabBar(CorpoDesignTokens tokens, bool isDark) => Container(
+    padding: EdgeInsets.all(tokens.spacing1x),
+    decoration: BoxDecoration(
+      color: tokens.textSecondary.withOpacity(0.1),
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
+    ),
+    child: TabBar(
+      controller: _tabController,
+      tabs: widget.tabs.map(_buildTab).toList(),
+      isScrollable: widget.isScrollable,
+      indicator: BoxDecoration(
+        color: tokens.primaryColor,
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
       ),
-    );
+      labelColor: tokens.getTextColorFor(tokens.primaryColor),
+      unselectedLabelColor: tokens.textSecondary,
+      labelStyle: TextStyle(
+        fontSize: tokens.fontSizeSmall,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontSize: tokens.fontSizeSmall,
+        fontFamily: tokens.fontFamily,
+      ),
+      splashFactory: NoSplash.splashFactory,
+    ),
+  );
+
+  Widget _buildOutlinedTabBar(CorpoDesignTokens tokens, bool isDark) =>
+      Container(
+        padding: EdgeInsets.all(tokens.spacing1x),
+        child: TabBar(
+          controller: _tabController,
+          tabs: widget.tabs.map(_buildTab).toList(),
+          isScrollable: widget.isScrollable,
+          indicator: BoxDecoration(
+            border: Border.all(color: tokens.primaryColor, width: 2),
+            borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
+          ),
+          labelColor: tokens.primaryColor,
+          unselectedLabelColor: tokens.textSecondary,
+          labelStyle: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+          ),
+          splashFactory: NoSplash.splashFactory,
+        ),
+      );
 
   Widget _buildTab(CorpoTab tab) {
     if (tab.child != null) {

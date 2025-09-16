@@ -24,8 +24,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Semantic variants for text styling.
 ///
@@ -314,9 +313,10 @@ class CorpoText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle baseStyle = _getTextStyleForVariant(variant);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final TextStyle baseStyle = _getTextStyleForVariant(variant, tokens);
     final Color textColor =
-        color ?? _getDefaultColorForVariant(context, variant);
+        color ?? _getDefaultColorForVariant(context, variant, tokens);
 
     final TextStyle effectiveStyle = baseStyle
         .copyWith(color: textColor)
@@ -339,38 +339,102 @@ class CorpoText extends StatelessWidget {
   }
 
   /// Gets the base text style for the given variant.
-  TextStyle _getTextStyleForVariant(CorpoTextVariant variant) {
+  TextStyle _getTextStyleForVariant(
+    CorpoTextVariant variant,
+    CorpoDesignTokens tokens,
+  ) {
     switch (variant) {
       case CorpoTextVariant.displayLarge:
-        return CorpoTypography.displayLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge * 2, // Extra large for display text
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.bold,
+        );
       case CorpoTextVariant.displayMedium:
-        return CorpoTypography.displayMedium;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge * 1.5,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.bold,
+        );
       case CorpoTextVariant.displaySmall:
-        return CorpoTypography.displaySmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoTextVariant.headingLarge:
-        return CorpoTypography.heading1;
+        return TextStyle(
+          fontSize: tokens.fontSizeXLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoTextVariant.headingMedium:
-        return CorpoTypography.heading2;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoTextVariant.headingSmall:
-        return CorpoTypography.heading3;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoTextVariant.bodyLarge:
-        return CorpoTypography.bodyLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.normal,
+        );
       case CorpoTextVariant.bodyMedium:
-        return CorpoTypography.bodyMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.normal,
+        );
       case CorpoTextVariant.bodySmall:
-        return CorpoTypography.bodySmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.normal,
+        );
       case CorpoTextVariant.labelLarge:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoTextVariant.labelMedium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoTextVariant.labelSmall:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoTextVariant.button:
-        return CorpoTypography.buttonMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoTextVariant.caption:
-        return CorpoTypography.caption;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall * 0.9,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.normal,
+        );
       case CorpoTextVariant.overline:
-        return CorpoTypography.overline;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall * 0.8,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 1.2,
+        );
     }
   }
 
@@ -378,34 +442,37 @@ class CorpoText extends StatelessWidget {
   Color _getDefaultColorForVariant(
     BuildContext context,
     CorpoTextVariant variant,
+    CorpoDesignTokens tokens,
   ) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     // For display and heading variants, use stronger text color
     if (_isDisplayOrHeading(variant)) {
-      return isDark ? CorpoColors.neutralWhite : CorpoColors.textPrimary;
+      return isDark ? Colors.white : tokens.textPrimary;
     }
 
     // For body text, use primary text color
     if (_isBodyText(variant)) {
-      return isDark ? CorpoColors.neutral100 : CorpoColors.textPrimary;
+      return isDark ? Colors.white.withOpacity(0.9) : tokens.textPrimary;
     }
 
     // For labels and captions, use secondary text color
-    return isDark ? CorpoColors.neutral300 : CorpoColors.textSecondary;
+    return isDark ? Colors.white.withOpacity(0.7) : tokens.textSecondary;
   }
 
   /// Checks if the variant is a display or heading variant.
-  bool _isDisplayOrHeading(CorpoTextVariant variant) => variant == CorpoTextVariant.displayLarge ||
-        variant == CorpoTextVariant.displayMedium ||
-        variant == CorpoTextVariant.displaySmall ||
-        variant == CorpoTextVariant.headingLarge ||
-        variant == CorpoTextVariant.headingMedium ||
-        variant == CorpoTextVariant.headingSmall;
+  bool _isDisplayOrHeading(CorpoTextVariant variant) =>
+      variant == CorpoTextVariant.displayLarge ||
+      variant == CorpoTextVariant.displayMedium ||
+      variant == CorpoTextVariant.displaySmall ||
+      variant == CorpoTextVariant.headingLarge ||
+      variant == CorpoTextVariant.headingMedium ||
+      variant == CorpoTextVariant.headingSmall;
 
   /// Checks if the variant is a body text variant.
-  bool _isBodyText(CorpoTextVariant variant) => variant == CorpoTextVariant.bodyLarge ||
-        variant == CorpoTextVariant.bodyMedium ||
-        variant == CorpoTextVariant.bodySmall;
+  bool _isBodyText(CorpoTextVariant variant) =>
+      variant == CorpoTextVariant.bodyLarge ||
+      variant == CorpoTextVariant.bodyMedium ||
+      variant == CorpoTextVariant.bodySmall;
 }

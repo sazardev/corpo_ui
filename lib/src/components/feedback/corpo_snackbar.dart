@@ -20,9 +20,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Snackbar types for different message semantics.
 enum CorpoSnackbarType {
@@ -84,26 +82,30 @@ class CorpoSnackbar {
     EdgeInsets? margin,
     double? elevation,
   }) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     final SnackBar snackBar = SnackBar(
-      content: _buildContent(message, type, isDark),
-      backgroundColor: _getBackgroundColor(type, isDark),
+      content: _buildContent(message, type, isDark, tokens),
+      backgroundColor: _getBackgroundColor(type, isDark, tokens),
       duration: duration,
       behavior: SnackBarBehavior.floating,
-      margin: margin ?? _getDefaultMargin(position),
+      margin: margin ?? _getDefaultMargin(position, tokens),
       elevation: elevation ?? 6.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+      ),
       action: action != null
           ? SnackBarAction(
               label: action.label,
               onPressed: action.onPressed,
-              textColor: action.textColor ?? _getActionColor(type, isDark),
+              textColor:
+                  action.textColor ?? _getActionColor(type, isDark, tokens),
             )
           : null,
       showCloseIcon: showCloseIcon,
-      closeIconColor: _getIconColor(type, isDark),
+      closeIconColor: _getIconColor(type, isDark, tokens),
     );
 
     return ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -115,12 +117,7 @@ class CorpoSnackbar {
     required String message,
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
-  }) => show(
-      context,
-      message: message,
-      action: action,
-      duration: duration,
-    );
+  }) => show(context, message: message, action: action, duration: duration);
 
   /// Shows a success snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> success(
@@ -129,12 +126,12 @@ class CorpoSnackbar {
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
   }) => show(
-      context,
-      message: message,
-      type: CorpoSnackbarType.success,
-      action: action,
-      duration: duration,
-    );
+    context,
+    message: message,
+    type: CorpoSnackbarType.success,
+    action: action,
+    duration: duration,
+  );
 
   /// Shows a warning snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> warning(
@@ -143,12 +140,12 @@ class CorpoSnackbar {
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 4),
   }) => show(
-      context,
-      message: message,
-      type: CorpoSnackbarType.warning,
-      action: action,
-      duration: duration,
-    );
+    context,
+    message: message,
+    type: CorpoSnackbarType.warning,
+    action: action,
+    duration: duration,
+  );
 
   /// Shows an error snackbar.
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> error(
@@ -157,31 +154,38 @@ class CorpoSnackbar {
     CorpoSnackbarAction? action,
     Duration duration = const Duration(seconds: 6),
   }) => show(
-      context,
-      message: message,
-      type: CorpoSnackbarType.error,
-      action: action,
-      duration: duration,
-    );
+    context,
+    message: message,
+    type: CorpoSnackbarType.error,
+    action: action,
+    duration: duration,
+  );
 
   static Widget _buildContent(
     String message,
     CorpoSnackbarType type,
     bool isDark,
+    CorpoDesignTokens tokens,
   ) => Row(
-      children: <Widget>[
-        Icon(_getIcon(type), color: _getIconColor(type, isDark), size: 20),
-        const SizedBox(width: CorpoSpacing.small),
-        Expanded(
-          child: Text(
-            message,
-            style: CorpoTypography.bodyMedium.copyWith(
-              color: _getTextColor(type, isDark),
-            ),
+    children: <Widget>[
+      Icon(
+        _getIcon(type),
+        color: _getIconColor(type, isDark, tokens),
+        size: 20,
+      ),
+      SizedBox(width: tokens.spacing2x),
+      Expanded(
+        child: Text(
+          message,
+          style: TextStyle(
+            fontSize: tokens.baseFontSize,
+            fontFamily: tokens.fontFamily,
+            color: _getTextColor(type, isDark, tokens),
           ),
         ),
-      ],
-    );
+      ),
+    ],
+  );
 
   static IconData _getIcon(CorpoSnackbarType type) {
     switch (type) {
@@ -196,56 +200,81 @@ class CorpoSnackbar {
     }
   }
 
-  static Color _getBackgroundColor(CorpoSnackbarType type, bool isDark) {
+  static Color _getBackgroundColor(
+    CorpoSnackbarType type,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     switch (type) {
       case CorpoSnackbarType.info:
-        return isDark ? CorpoColors.info : CorpoColors.infoBackground;
+        return isDark ? tokens.infoColor : tokens.infoColor.withOpacity(0.9);
       case CorpoSnackbarType.success:
-        return isDark ? CorpoColors.success : CorpoColors.successBackground;
+        return isDark
+            ? tokens.successColor
+            : tokens.successColor.withOpacity(0.9);
       case CorpoSnackbarType.warning:
-        return isDark ? CorpoColors.warning : CorpoColors.warningBackground;
+        return isDark
+            ? tokens.warningColor
+            : tokens.warningColor.withOpacity(0.9);
       case CorpoSnackbarType.error:
-        return isDark ? CorpoColors.error : CorpoColors.errorBackground;
+        return isDark ? tokens.errorColor : tokens.errorColor.withOpacity(0.9);
     }
   }
 
-  static Color _getTextColor(CorpoSnackbarType type, bool isDark) {
+  static Color _getTextColor(
+    CorpoSnackbarType type,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     switch (type) {
       case CorpoSnackbarType.info:
-        return isDark ? CorpoColors.neutralWhite : CorpoColors.info;
+        return isDark ? tokens.surfaceColor : tokens.surfaceColor;
       case CorpoSnackbarType.success:
-        return isDark ? CorpoColors.neutralWhite : CorpoColors.success;
+        return isDark ? tokens.surfaceColor : tokens.surfaceColor;
       case CorpoSnackbarType.warning:
-        return isDark ? CorpoColors.neutralWhite : CorpoColors.warning;
+        return isDark ? tokens.surfaceColor : tokens.surfaceColor;
       case CorpoSnackbarType.error:
-        return isDark ? CorpoColors.neutralWhite : CorpoColors.error;
+        return isDark ? tokens.surfaceColor : tokens.surfaceColor;
     }
   }
 
-  static Color _getIconColor(CorpoSnackbarType type, bool isDark) => _getTextColor(type, isDark);
+  static Color _getIconColor(
+    CorpoSnackbarType type,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) => _getTextColor(type, isDark, tokens);
 
-  static Color _getActionColor(CorpoSnackbarType type, bool isDark) {
+  static Color _getActionColor(
+    CorpoSnackbarType type,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     switch (type) {
       case CorpoSnackbarType.info:
-        return isDark ? CorpoColors.primary300 : CorpoColors.primary600;
+        return isDark
+            ? tokens.primaryColor.withOpacity(0.8)
+            : tokens.primaryColor;
       case CorpoSnackbarType.success:
-        return isDark ? CorpoColors.success : CorpoColors.success;
+        return tokens.successColor;
       case CorpoSnackbarType.warning:
-        return isDark ? CorpoColors.warning : CorpoColors.warning;
+        return tokens.warningColor;
       case CorpoSnackbarType.error:
-        return isDark ? CorpoColors.error : CorpoColors.error;
+        return tokens.errorColor;
     }
   }
 
-  static EdgeInsets _getDefaultMargin(CorpoSnackbarPosition position) {
+  static EdgeInsets _getDefaultMargin(
+    CorpoSnackbarPosition position,
+    CorpoDesignTokens tokens,
+  ) {
     switch (position) {
       case CorpoSnackbarPosition.bottom:
-        return const EdgeInsets.all(CorpoSpacing.medium);
+        return EdgeInsets.all(tokens.spacing4x);
       case CorpoSnackbarPosition.top:
-        return const EdgeInsets.only(
-          left: CorpoSpacing.medium,
-          right: CorpoSpacing.medium,
-          top: CorpoSpacing.large,
+        return EdgeInsets.only(
+          left: tokens.spacing4x,
+          right: tokens.spacing4x,
+          top: tokens.spacing6x,
         );
     }
   }

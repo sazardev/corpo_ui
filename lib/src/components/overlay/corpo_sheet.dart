@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the position of the sheet.
 enum CorpoSheetPosition {
@@ -154,7 +154,7 @@ class CorpoSheet extends StatelessWidget {
   }) => showModalBottomSheet<T>(
       context: context,
       backgroundColor: Colors.transparent,
-      barrierColor: barrierColor ?? Colors.black54,
+      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
       elevation: 0,
       isScrollControlled: isScrollControlled,
       enableDrag: enableDrag && dragBehavior != CorpoSheetDragBehavior.none,
@@ -206,7 +206,7 @@ class CorpoSheet extends StatelessWidget {
       context: context,
       barrierDismissible: dragBehavior != CorpoSheetDragBehavior.none,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: barrierColor ?? Colors.black54,
+      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
       transitionDuration: animationDuration,
       pageBuilder:
           (
@@ -249,6 +249,7 @@ class CorpoSheet extends StatelessWidget {
   Widget _buildSheetContent(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     final Color effectiveBackgroundColor =
         backgroundColor ?? colorScheme.surface;
@@ -261,7 +262,7 @@ class CorpoSheet extends StatelessWidget {
         Flexible(
           child: Container(
             width: double.infinity,
-            padding: padding ?? _getDefaultPadding(),
+            padding: padding ?? _getDefaultPadding(tokens),
             margin: margin,
             child: child,
           ),
@@ -276,7 +277,7 @@ class CorpoSheet extends StatelessWidget {
     return Material(
       color: effectiveBackgroundColor,
       elevation: elevation,
-      borderRadius: borderRadius ?? _getDefaultBorderRadius(),
+      borderRadius: borderRadius ?? _getDefaultBorderRadius(tokens),
       child: Container(constraints: _getConstraints(context), child: content),
     );
   }
@@ -286,44 +287,45 @@ class CorpoSheet extends StatelessWidget {
 
   Widget _buildDragHandle(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final Color handleColor =
         dragHandleColor ?? colorScheme.onSurface.withValues(alpha: 0.4);
 
     return Container(
-      margin: const EdgeInsets.only(
-        top: CorpoSpacing.small,
-        bottom: CorpoSpacing.small,
+      margin: EdgeInsets.only(
+        top: tokens.spacing2x,
+        bottom: tokens.spacing2x,
       ),
       child: Container(
         width: 32,
         height: 4,
         decoration: BoxDecoration(
           color: handleColor,
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
         ),
       ),
     );
   }
 
-  EdgeInsetsGeometry _getDefaultPadding() => const EdgeInsets.all(CorpoSpacing.large);
+  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) => EdgeInsets.all(tokens.spacing6x);
 
-  BorderRadius _getDefaultBorderRadius() {
-    const double radius = 16;
+  BorderRadius _getDefaultBorderRadius(CorpoDesignTokens tokens) {
+    final double radius = tokens.borderRadius;
 
     return switch (position) {
-      CorpoSheetPosition.bottom => const BorderRadius.only(
+      CorpoSheetPosition.bottom => BorderRadius.only(
         topLeft: Radius.circular(radius),
         topRight: Radius.circular(radius),
       ),
-      CorpoSheetPosition.top => const BorderRadius.only(
+      CorpoSheetPosition.top => BorderRadius.only(
         bottomLeft: Radius.circular(radius),
         bottomRight: Radius.circular(radius),
       ),
-      CorpoSheetPosition.left => const BorderRadius.only(
+      CorpoSheetPosition.left => BorderRadius.only(
         topRight: Radius.circular(radius),
         bottomRight: Radius.circular(radius),
       ),
-      CorpoSheetPosition.right => const BorderRadius.only(
+      CorpoSheetPosition.right => BorderRadius.only(
         topLeft: Radius.circular(radius),
         bottomLeft: Radius.circular(radius),
       ),
@@ -520,15 +522,16 @@ class CorpoSheetHeader extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
       padding:
           padding ??
-          const EdgeInsets.fromLTRB(
-            CorpoSpacing.large,
-            CorpoSpacing.medium,
-            CorpoSpacing.medium,
-            CorpoSpacing.medium,
+          EdgeInsets.fromLTRB(
+            tokens.spacing6x,
+            tokens.spacing4x,
+            tokens.spacing4x,
+            tokens.spacing4x,
           ),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -542,7 +545,7 @@ class CorpoSheetHeader extends StatelessWidget {
         children: <Widget>[
           if (leading != null) ...<Widget>[
             leading!,
-            const SizedBox(width: CorpoSpacing.medium),
+            SizedBox(width: tokens.spacing4x),
           ],
           Expanded(
             child: Column(
@@ -559,7 +562,7 @@ class CorpoSheetHeader extends StatelessWidget {
                       ),
                 ),
                 if (subtitle != null) ...<Widget>[
-                  const SizedBox(height: CorpoSpacing.extraSmall),
+                  SizedBox(height: tokens.spacing1x),
                   Text(
                     subtitle!,
                     style:
@@ -573,18 +576,18 @@ class CorpoSheetHeader extends StatelessWidget {
             ),
           ),
           if (actions != null) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.medium),
+            SizedBox(width: tokens.spacing4x),
             ...actions!
                 .expand(
                   (Widget action) => <Widget>[
                     action,
-                    const SizedBox(width: CorpoSpacing.small),
+                    SizedBox(width: tokens.spacing2x),
                   ],
                 )
                 .take(actions!.length * 2 - 1),
           ],
           if (showCloseButton) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             IconButton(
               onPressed: onClose ?? () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close),

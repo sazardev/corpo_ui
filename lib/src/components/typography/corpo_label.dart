@@ -26,8 +26,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Label variants for different use cases.
 ///
@@ -191,8 +190,9 @@ class CorpoLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle baseStyle = _getTextStyle(size);
-    final Color effectiveColor = color ?? _getColor(context, variant);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final TextStyle baseStyle = _getTextStyle(size, tokens);
+    final Color effectiveColor = color ?? _getColor(context, variant, tokens);
 
     String displayText = text;
     if (variant == CorpoLabelVariant.required) {
@@ -210,34 +210,50 @@ class CorpoLabel extends StatelessWidget {
   }
 
   /// Gets the appropriate text style for the label size.
-  TextStyle _getTextStyle(CorpoLabelSize size) {
+  TextStyle _getTextStyle(CorpoLabelSize size, CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoLabelSize.small:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoLabelSize.medium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoLabelSize.large:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
     }
   }
 
   /// Gets the appropriate color for the label variant.
-  Color _getColor(BuildContext context, CorpoLabelVariant variant) {
+  Color _getColor(
+    BuildContext context,
+    CorpoLabelVariant variant,
+    CorpoDesignTokens tokens,
+  ) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     switch (variant) {
       case CorpoLabelVariant.fieldLabel:
       case CorpoLabelVariant.required:
-        return isDark ? CorpoColors.neutral200 : CorpoColors.neutral700;
+        return isDark ? Colors.white.withOpacity(0.9) : tokens.textPrimary;
       case CorpoLabelVariant.caption:
       case CorpoLabelVariant.helper:
-        return isDark ? CorpoColors.neutral300 : CorpoColors.neutral600;
+        return isDark ? Colors.white.withOpacity(0.7) : tokens.textSecondary;
       case CorpoLabelVariant.error:
-        return CorpoColors.error;
+        return tokens.errorColor;
       case CorpoLabelVariant.success:
-        return CorpoColors.success;
+        return tokens.successColor;
       case CorpoLabelVariant.warning:
-        return CorpoColors.warning;
+        return tokens.warningColor;
     }
   }
 }

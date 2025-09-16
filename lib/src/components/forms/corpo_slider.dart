@@ -30,9 +30,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Slider size variants for different contexts.
 enum CorpoSliderSize {
@@ -125,6 +123,7 @@ class CorpoSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final bool isEnabled = isRange ? onRangeChanged != null : onChanged != null;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -134,23 +133,27 @@ class CorpoSlider extends StatelessWidget {
         if (label != null) ...<Widget>[
           Text(
             label!,
-            style: _getLabelStyle().copyWith(
-              color: _getLabelColor(isDark, isEnabled),
-            ),
+            style: _getLabelStyle(
+              tokens,
+            ).copyWith(color: _getLabelColor(tokens, isDark, isEnabled)),
           ),
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
         ],
-        _buildSlider(context, isDark, isEnabled),
+        _buildSlider(context, tokens, isDark, isEnabled),
         if (showLabels) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.extraSmall),
-          _buildValueLabels(isDark),
+          SizedBox(height: tokens.spacing1x),
+          _buildValueLabels(tokens, isDark),
         ],
         if (helperText != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.extraSmall),
+          SizedBox(height: tokens.spacing1x),
           Text(
             helperText!,
-            style: CorpoTypography.caption.copyWith(
-              color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral600,
+            style: TextStyle(
+              fontSize: tokens.fontSizeSmall,
+              fontFamily: tokens.fontFamily,
+              color: isDark
+                  ? tokens.textSecondary.withOpacity(0.7)
+                  : tokens.textSecondary,
             ),
           ),
         ],
@@ -158,18 +161,23 @@ class CorpoSlider extends StatelessWidget {
     );
   }
 
-  Widget _buildSlider(BuildContext context, bool isDark, bool isEnabled) {
+  Widget _buildSlider(
+    BuildContext context,
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
     final SliderThemeData sliderTheme = SliderTheme.of(context).copyWith(
       activeTrackColor: isEnabled
-          ? CorpoColors.primary500
-          : _getDisabledColor(isDark),
+          ? tokens.primaryColor
+          : _getDisabledColor(tokens, isDark),
       inactiveTrackColor: isDark
-          ? CorpoColors.neutral700
-          : CorpoColors.neutral300,
+          ? tokens.textSecondary.withOpacity(0.3)
+          : tokens.textSecondary.withOpacity(0.2),
       thumbColor: isEnabled
-          ? CorpoColors.primary500
-          : _getDisabledColor(isDark),
-      overlayColor: CorpoColors.primary100,
+          ? tokens.primaryColor
+          : _getDisabledColor(tokens, isDark),
+      overlayColor: tokens.primaryColor.withOpacity(0.1),
       trackHeight: _getTrackHeight(),
       thumbShape: RoundSliderThumbShape(enabledThumbRadius: _getThumbRadius()),
     );
@@ -201,21 +209,29 @@ class CorpoSlider extends StatelessWidget {
     );
   }
 
-  Widget _buildValueLabels(bool isDark) {
+  Widget _buildValueLabels(CorpoDesignTokens tokens, bool isDark) {
     final Color labelColor = isDark
-        ? CorpoColors.neutral400
-        : CorpoColors.neutral600;
+        ? tokens.textSecondary.withOpacity(0.7)
+        : tokens.textSecondary;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
           min.round().toString(),
-          style: CorpoTypography.caption.copyWith(color: labelColor),
+          style: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+            color: labelColor,
+          ),
         ),
         Text(
           max.round().toString(),
-          style: CorpoTypography.caption.copyWith(color: labelColor),
+          style: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
+            color: labelColor,
+          ),
         ),
       ],
     );
@@ -246,16 +262,21 @@ class CorpoSlider extends StatelessWidget {
   }
 
   /// Gets the label text style.
-  TextStyle _getLabelStyle() => CorpoTypography.labelMedium;
+  TextStyle _getLabelStyle(CorpoDesignTokens tokens) =>
+      TextStyle(fontSize: tokens.baseFontSize, fontFamily: tokens.fontFamily);
 
   /// Gets the label color based on state.
-  Color _getLabelColor(bool isDark, bool isEnabled) {
+  Color _getLabelColor(CorpoDesignTokens tokens, bool isDark, bool isEnabled) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.6)
+          : tokens.textSecondary.withOpacity(0.5);
     }
-    return isDark ? CorpoColors.neutral200 : CorpoColors.neutral700;
+    return isDark ? tokens.textPrimary.withOpacity(0.9) : tokens.textPrimary;
   }
 
   /// Gets the disabled color.
-  Color _getDisabledColor(bool isDark) => isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+  Color _getDisabledColor(CorpoDesignTokens tokens, bool isDark) => isDark
+      ? tokens.textSecondary.withOpacity(0.6)
+      : tokens.textSecondary.withOpacity(0.5);
 }

@@ -28,9 +28,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Size variants for different layout contexts.
 enum CorpoCheckboxSize {
@@ -94,44 +92,52 @@ class CorpoCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final bool isEnabled = onChanged != null;
 
     if (label == null && description == null) {
-      return _buildCheckbox(context, isDark, isEnabled);
+      return _buildCheckbox(context, isDark, isEnabled, tokens);
     }
 
-    return _buildCheckboxWithLabels(context, isDark, isEnabled);
+    return _buildCheckboxWithLabels(context, isDark, isEnabled, tokens);
   }
 
   /// Builds a standalone checkbox without labels.
-  Widget _buildCheckbox(BuildContext context, bool isDark, bool isEnabled) =>
-      Transform.scale(
-        scale: _getCheckboxScale(),
-        child: Checkbox(
-          value: value,
-          onChanged: onChanged,
-          tristate: tristate,
-          autofocus: autofocus,
-          activeColor: _getActiveColor(isDark, isEnabled),
-          checkColor: _getCheckColor(isDark, isEnabled),
-          fillColor: WidgetStateProperty.resolveWith<Color>(
-            (Set<WidgetState> states) => _getFillColor(isDark, states),
-          ),
-          side: BorderSide(
-            color: _getBorderColor(isDark, isEnabled),
-            width: _getBorderWidth(),
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        ),
-      );
+  Widget _buildCheckbox(
+    BuildContext context,
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) => Transform.scale(
+    scale: _getCheckboxScale(),
+    child: Checkbox(
+      value: value,
+      onChanged: onChanged,
+      tristate: tristate,
+      autofocus: autofocus,
+      activeColor: _getActiveColor(isDark, isEnabled, tokens),
+      checkColor: _getCheckColor(isDark, isEnabled, tokens),
+      fillColor: WidgetStateProperty.resolveWith<Color>(
+        (Set<WidgetState> states) => _getFillColor(isDark, states, tokens),
+      ),
+      side: BorderSide(
+        color: _getBorderColor(isDark, isEnabled, tokens),
+        width: _getBorderWidth(),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
+      ),
+    ),
+  );
 
   /// Builds a checkbox with labels and descriptions.
   Widget _buildCheckboxWithLabels(
     BuildContext context,
     bool isDark,
     bool isEnabled,
+    CorpoDesignTokens tokens,
   ) => InkWell(
     onTap: isEnabled
         ? () {
@@ -142,20 +148,21 @@ class CorpoCheckbox extends StatelessWidget {
             }
           }
         : null,
-    borderRadius: BorderRadius.circular(8),
+    borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
     child: Padding(
-      padding: const EdgeInsets.all(CorpoSpacing.small),
+      padding: EdgeInsets.all(tokens.spacing2x),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildCheckbox(context, isDark, isEnabled),
-          const SizedBox(width: CorpoSpacing.medium),
+          _buildCheckbox(context, isDark, isEnabled, tokens),
+          SizedBox(width: tokens.spacing3x),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (label != null) _buildLabel(isDark, isEnabled),
-                if (description != null) _buildDescription(isDark, isEnabled),
+                if (label != null) _buildLabel(isDark, isEnabled, tokens),
+                if (description != null)
+                  _buildDescription(isDark, isEnabled, tokens),
               ],
             ),
           ),
@@ -165,42 +172,38 @@ class CorpoCheckbox extends StatelessWidget {
   );
 
   /// Builds the checkbox label.
-  Widget _buildLabel(bool isDark, bool isEnabled) {
+  Widget _buildLabel(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     final Color labelColor = isEnabled
-        ? isDark
-              ? CorpoColors.neutral200
-              : CorpoColors.neutral800
-        : isDark
-        ? CorpoColors.neutral600
-        : CorpoColors.neutral400;
+        ? tokens.textPrimary
+        : tokens.textSecondary;
 
     return Text(
       label!,
-      style: CorpoTypography.bodyMedium.copyWith(
+      style: TextStyle(
         color: labelColor,
-        fontWeight: CorpoFontWeight.medium,
-        fontSize: _getLabelFontSize(),
+        fontWeight: FontWeight.w500,
+        fontSize: tokens.baseFontSize,
       ),
     );
   }
 
   /// Builds the checkbox description.
-  Widget _buildDescription(bool isDark, bool isEnabled) {
+  Widget _buildDescription(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     final Color descriptionColor = isEnabled
-        ? isDark
-              ? CorpoColors.neutral400
-              : CorpoColors.neutral600
-        : isDark
-        ? CorpoColors.neutral700
-        : CorpoColors.neutral300;
+        ? tokens.textSecondary
+        : tokens.textSecondary.withOpacity(0.6);
 
     return Padding(
-      padding: const EdgeInsets.only(top: CorpoSpacing.extraSmall / 2),
+      padding: EdgeInsets.only(top: tokens.spacing1x / 2),
       child: Text(
         description!,
-        style: CorpoTypography.bodySmall.copyWith(
+        style: TextStyle(
           color: descriptionColor,
-          fontSize: _getDescriptionFontSize(),
+          fontSize: tokens.fontSizeSmall,
         ),
       ),
     );
@@ -218,54 +221,59 @@ class CorpoCheckbox extends StatelessWidget {
   }
 
   /// Gets the active color for the checkbox.
-  Color _getActiveColor(bool isDark, bool isEnabled) {
+  Color _getActiveColor(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return isDark ? Colors.grey[600]! : Colors.grey[400]!;
     }
-    return CorpoColors.primary500;
+    return tokens.primaryColor;
   }
 
   /// Gets the check mark color.
-  Color _getCheckColor(bool isDark, bool isEnabled) => CorpoColors.neutralWhite;
+  Color _getCheckColor(bool isDark, bool isEnabled, CorpoDesignTokens tokens) =>
+      Colors.white;
 
   /// Gets the fill color based on state.
-  Color _getFillColor(bool isDark, Set<WidgetState> states) {
+  Color _getFillColor(
+    bool isDark,
+    Set<WidgetState> states,
+    CorpoDesignTokens tokens,
+  ) {
     if (states.contains(WidgetState.disabled)) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+      return isDark ? Colors.grey[700]! : Colors.grey[300]!;
     }
 
     if (states.contains(WidgetState.selected)) {
       if (states.contains(WidgetState.pressed)) {
-        return CorpoColors.primary600;
+        return tokens.primaryColor.withOpacity(0.8);
       }
       if (states.contains(WidgetState.hovered)) {
-        return CorpoColors.primary400;
+        return tokens.primaryColor.withOpacity(0.9);
       }
-      return CorpoColors.primary500;
+      return tokens.primaryColor;
     }
 
     if (states.contains(WidgetState.pressed)) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral200;
+      return isDark ? Colors.grey[600]! : Colors.grey[300]!;
     }
 
     if (states.contains(WidgetState.hovered)) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral100;
+      return isDark ? Colors.grey[700]! : Colors.grey[200]!;
     }
 
     return Colors.transparent;
   }
 
   /// Gets the border color.
-  Color _getBorderColor(bool isDark, bool isEnabled) {
+  Color _getBorderColor(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return isDark ? Colors.grey[600]! : Colors.grey[400]!;
     }
 
     if (value == true) {
-      return CorpoColors.primary500;
+      return tokens.primaryColor;
     }
 
-    return isDark ? CorpoColors.neutral500 : CorpoColors.neutral400;
+    return isDark ? Colors.grey[500]! : Colors.grey[400]!;
   }
 
   /// Gets the border width.
@@ -289,30 +297,6 @@ class CorpoCheckbox extends StatelessWidget {
         return 1;
       case CorpoCheckboxSize.large:
         return 1.2;
-    }
-  }
-
-  /// Gets the label font size based on checkbox size.
-  double _getLabelFontSize() {
-    switch (size) {
-      case CorpoCheckboxSize.small:
-        return CorpoFontSize.small;
-      case CorpoCheckboxSize.medium:
-        return CorpoFontSize.medium;
-      case CorpoCheckboxSize.large:
-        return CorpoFontSize.large;
-    }
-  }
-
-  /// Gets the description font size based on checkbox size.
-  double _getDescriptionFontSize() {
-    switch (size) {
-      case CorpoCheckboxSize.small:
-        return CorpoFontSize.extraSmall;
-      case CorpoCheckboxSize.medium:
-        return CorpoFontSize.small;
-      case CorpoCheckboxSize.large:
-        return CorpoFontSize.medium;
     }
   }
 }

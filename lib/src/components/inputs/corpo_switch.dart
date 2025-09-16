@@ -27,9 +27,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Size variants for different layout contexts.
 enum CorpoSwitchSize {
@@ -86,40 +84,47 @@ class CorpoSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final bool isEnabled = onChanged != null;
 
     if (label == null && description == null) {
-      return _buildSwitch(context, isDark, isEnabled);
+      return _buildSwitch(context, isDark, isEnabled, tokens);
     }
 
-    return _buildSwitchWithLabels(context, isDark, isEnabled);
+    return _buildSwitchWithLabels(context, isDark, isEnabled, tokens);
   }
 
   /// Builds a standalone switch without labels.
-  Widget _buildSwitch(BuildContext context, bool isDark, bool isEnabled) =>
-      Transform.scale(
-        scale: _getSwitchScale(),
-        child: Switch(
-          value: value,
-          onChanged: onChanged,
-          autofocus: autofocus,
-          activeThumbColor: _getActiveColor(isDark, isEnabled),
-          activeTrackColor: _getActiveTrackColor(isDark, isEnabled),
-          inactiveThumbColor: _getInactiveThumbColor(isDark, isEnabled),
-          inactiveTrackColor: _getInactiveTrackColor(isDark, isEnabled),
-          trackOutlineColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) => _getTrackOutlineColor(isDark, states),
-          ),
-        ),
-      );
+  Widget _buildSwitch(
+    BuildContext context,
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) => Transform.scale(
+    scale: _getSwitchScale(),
+    child: Switch(
+      value: value,
+      onChanged: onChanged,
+      autofocus: autofocus,
+      activeThumbColor: _getActiveColor(isDark, isEnabled, tokens),
+      activeTrackColor: _getActiveTrackColor(isDark, isEnabled, tokens),
+      inactiveThumbColor: _getInactiveThumbColor(isDark, isEnabled, tokens),
+      inactiveTrackColor: _getInactiveTrackColor(isDark, isEnabled, tokens),
+      trackOutlineColor: WidgetStateProperty.resolveWith<Color?>(
+        (Set<WidgetState> states) =>
+            _getTrackOutlineColor(isDark, states, tokens),
+      ),
+    ),
+  );
 
   /// Builds a switch with labels and descriptions.
   Widget _buildSwitchWithLabels(
     BuildContext context,
     bool isDark,
     bool isEnabled,
+    CorpoDesignTokens tokens,
   ) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -127,105 +132,118 @@ class CorpoSwitch extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (label != null) _buildLabel(isDark, isEnabled),
-            if (description != null) _buildDescription(isDark, isEnabled),
+            if (label != null) _buildLabel(isDark, isEnabled, tokens),
+            if (description != null)
+              _buildDescription(isDark, isEnabled, tokens),
           ],
         ),
       ),
-      const SizedBox(width: CorpoSpacing.medium),
-      _buildSwitch(context, isDark, isEnabled),
+      SizedBox(width: tokens.spacing3x),
+      _buildSwitch(context, isDark, isEnabled, tokens),
     ],
   );
 
   /// Builds the switch label.
-  Widget _buildLabel(bool isDark, bool isEnabled) {
+  Widget _buildLabel(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     final Color labelColor = isEnabled
-        ? isDark
-              ? CorpoColors.neutral200
-              : CorpoColors.neutral800
-        : isDark
-        ? CorpoColors.neutral600
-        : CorpoColors.neutral400;
+        ? tokens.textPrimary
+        : tokens.textSecondary;
 
     return Text(
       label!,
-      style: CorpoTypography.bodyMedium.copyWith(
+      style: TextStyle(
         color: labelColor,
-        fontWeight: CorpoFontWeight.medium,
-        fontSize: _getLabelFontSize(),
+        fontWeight: FontWeight.w500,
+        fontSize: tokens.baseFontSize,
       ),
     );
   }
 
   /// Builds the switch description.
-  Widget _buildDescription(bool isDark, bool isEnabled) {
+  Widget _buildDescription(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     final Color descriptionColor = isEnabled
-        ? isDark
-              ? CorpoColors.neutral400
-              : CorpoColors.neutral600
-        : isDark
-        ? CorpoColors.neutral700
-        : CorpoColors.neutral300;
+        ? tokens.textSecondary
+        : tokens.textSecondary.withOpacity(0.6);
 
     return Padding(
-      padding: const EdgeInsets.only(top: CorpoSpacing.extraSmall / 2),
+      padding: EdgeInsets.only(top: tokens.spacing1x / 2),
       child: Text(
         description!,
-        style: CorpoTypography.bodySmall.copyWith(
+        style: TextStyle(
           color: descriptionColor,
-          fontSize: _getDescriptionFontSize(),
+          fontSize: tokens.fontSizeSmall,
         ),
       ),
     );
   }
 
   /// Gets the active thumb color.
-  Color _getActiveColor(bool isDark, bool isEnabled) {
+  Color _getActiveColor(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return tokens.textSecondary.withOpacity(0.4);
     }
-    return CorpoColors.neutralWhite;
+    return Colors.white;
   }
 
   /// Gets the active track color.
-  Color _getActiveTrackColor(bool isDark, bool isEnabled) {
+  Color _getActiveTrackColor(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+      return tokens.surfaceColor.withOpacity(0.3);
     }
-    return CorpoColors.primary500;
+    return tokens.primaryColor;
   }
 
   /// Gets the inactive thumb color.
-  Color _getInactiveThumbColor(bool isDark, bool isEnabled) {
+  Color _getInactiveThumbColor(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return tokens.textSecondary.withOpacity(0.4);
     }
-    return CorpoColors.neutralWhite;
+    return Colors.white;
   }
 
   /// Gets the inactive track color.
-  Color _getInactiveTrackColor(bool isDark, bool isEnabled) {
+  Color _getInactiveTrackColor(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+      return tokens.surfaceColor.withOpacity(0.3);
     }
-    return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+    return tokens.textSecondary.withOpacity(0.3);
   }
 
   /// Gets the track outline color based on state.
-  Color? _getTrackOutlineColor(bool isDark, Set<WidgetState> states) {
+  Color? _getTrackOutlineColor(
+    bool isDark,
+    Set<WidgetState> states,
+    CorpoDesignTokens tokens,
+  ) {
     if (states.contains(WidgetState.disabled)) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+      return tokens.surfaceColor.withOpacity(0.3);
     }
 
     if (states.contains(WidgetState.focused)) {
-      return CorpoColors.primary500;
+      return tokens.primaryColor;
     }
 
     if (states.contains(WidgetState.selected)) {
-      return CorpoColors.primary600;
+      return tokens.primaryColor.withOpacity(0.8);
     }
 
-    return isDark ? CorpoColors.neutral500 : CorpoColors.neutral400;
+    return tokens.textSecondary.withOpacity(0.5);
   }
 
   /// Gets the switch scale based on size.
@@ -237,30 +255,6 @@ class CorpoSwitch extends StatelessWidget {
         return 1;
       case CorpoSwitchSize.large:
         return 1.2;
-    }
-  }
-
-  /// Gets the label font size based on switch size.
-  double _getLabelFontSize() {
-    switch (size) {
-      case CorpoSwitchSize.small:
-        return CorpoFontSize.small;
-      case CorpoSwitchSize.medium:
-        return CorpoFontSize.medium;
-      case CorpoSwitchSize.large:
-        return CorpoFontSize.large;
-    }
-  }
-
-  /// Gets the description font size based on switch size.
-  double _getDescriptionFontSize() {
-    switch (size) {
-      case CorpoSwitchSize.small:
-        return CorpoFontSize.extraSmall;
-      case CorpoSwitchSize.medium:
-        return CorpoFontSize.small;
-      case CorpoSwitchSize.large:
-        return CorpoFontSize.medium;
     }
   }
 }

@@ -30,9 +30,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Spinner size variants for different contexts.
 ///
@@ -125,22 +123,22 @@ class CorpoSpinner extends StatefulWidget {
     String? label,
     Color? overlayColor,
   }) => Stack(
-      children: <Widget>[
-        child,
-        if (isLoading)
-          Container(
-            color: overlayColor ?? Colors.black.withValues(alpha: 0.3),
-            child: Center(
-              child: CorpoSpinner.withLabel(
-                label,
-                size: size,
-                style: style,
-                color: color ?? CorpoColors.neutralWhite,
-              ),
+    children: <Widget>[
+      child,
+      if (isLoading)
+        Container(
+          color: overlayColor ?? Colors.black.withValues(alpha: 0.3),
+          child: Center(
+            child: CorpoSpinner.withLabel(
+              label,
+              size: size,
+              style: style,
+              color: color ?? CorpoDesignTokens().surfaceColor,
             ),
           ),
-      ],
-    );
+        ),
+    ],
+  );
 
   /// The size variant of the spinner.
   final CorpoSpinnerSize size;
@@ -193,21 +191,26 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final Color effectiveColor =
         widget.color ??
-        (isDark ? CorpoColors.primary400 : CorpoColors.primary500);
+        (isDark ? tokens.primaryColor.withOpacity(0.8) : tokens.primaryColor);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _buildSpinner(effectiveColor),
+        _buildSpinner(effectiveColor, tokens),
         if (widget.label != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
           Text(
             widget.label!,
-            style: CorpoTypography.labelMedium.copyWith(color: effectiveColor),
+            style: TextStyle(
+              fontSize: tokens.baseFontSize,
+              fontFamily: tokens.fontFamily,
+              color: effectiveColor,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -216,73 +219,71 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
   }
 
   /// Builds the spinner widget based on style.
-  Widget _buildSpinner(Color color) {
+  Widget _buildSpinner(Color color, CorpoDesignTokens tokens) {
     switch (widget.style) {
       case CorpoSpinnerStyle.circular:
-        return _buildCircularSpinner(color);
+        return _buildCircularSpinner(color, tokens);
       case CorpoSpinnerStyle.dots:
-        return _buildDotsSpinner(color);
+        return _buildDotsSpinner(color, tokens);
       case CorpoSpinnerStyle.linear:
-        return _buildLinearSpinner(color);
+        return _buildLinearSpinner(color, tokens);
     }
   }
 
   /// Builds a circular spinner.
-  Widget _buildCircularSpinner(Color color) {
-    final double size = _getSpinnerSize();
-    final double strokeWidth = widget.strokeWidth ?? _getDefaultStrokeWidth();
+  Widget _buildCircularSpinner(Color color, CorpoDesignTokens tokens) {
+    final double size = _getSpinnerSize(tokens);
+    final double strokeWidth =
+        widget.strokeWidth ?? _getDefaultStrokeWidth(tokens);
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget? child) => SizedBox(
-          width: size,
-          height: size,
-          child: CircularProgressIndicator(
-            strokeWidth: strokeWidth,
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
+        width: size,
+        height: size,
+        child: CircularProgressIndicator(
+          strokeWidth: strokeWidth,
+          valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
+      ),
     );
   }
 
   /// Builds a dots spinner.
-  Widget _buildDotsSpinner(Color color) {
-    final double dotSize = _getDotSize();
+  Widget _buildDotsSpinner(Color color, CorpoDesignTokens tokens) {
+    final double dotSize = _getDotSize(tokens);
 
     return AnimatedBuilder(
       animation: _dotsController,
       builder: (BuildContext context, Widget? child) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List<Widget>.generate(3, (int index) {
-            final double delay = index * 0.3;
-            final double animationValue = (_dotsController.value + delay) % 1.0;
-            final double scale = _getDotScale(animationValue);
+        mainAxisSize: MainAxisSize.min,
+        children: List<Widget>.generate(3, (int index) {
+          final double delay = index * 0.3;
+          final double animationValue = (_dotsController.value + delay) % 1.0;
+          final double scale = _getDotScale(animationValue);
 
-            return Container(
-              margin: index < 2
-                  ? const EdgeInsets.only(right: CorpoSpacing.extraSmall)
-                  : EdgeInsets.zero,
-              child: Transform.scale(
-                scale: scale,
-                child: Container(
-                  width: dotSize,
-                  height: dotSize,
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+          return Container(
+            margin: index < 2
+                ? EdgeInsets.only(right: tokens.spacing1x)
+                : EdgeInsets.zero,
+            child: Transform.scale(
+              scale: scale,
+              child: Container(
+                width: dotSize,
+                height: dotSize,
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
+      ),
     );
   }
 
   /// Builds a linear spinner.
-  Widget _buildLinearSpinner(Color color) {
-    final double width = _getLinearWidth();
-    final double height = _getLinearHeight();
+  Widget _buildLinearSpinner(Color color, CorpoDesignTokens tokens) {
+    final double width = _getLinearWidth(tokens);
+    final double height = _getLinearHeight(tokens);
 
     return SizedBox(
       width: width,
@@ -295,82 +296,82 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
   }
 
   /// Gets the spinner size in pixels.
-  double _getSpinnerSize() {
+  double _getSpinnerSize(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoSpinnerSize.extraSmall:
-        return 16;
+        return tokens.spacing4x; // 16px
       case CorpoSpinnerSize.small:
-        return 20;
+        return tokens.spacing4x * 1.25; // 20px
       case CorpoSpinnerSize.medium:
-        return 24;
+        return tokens.spacing6x; // 24px
       case CorpoSpinnerSize.large:
-        return 32;
+        return tokens.spacing8x; // 32px
       case CorpoSpinnerSize.extraLarge:
-        return 48;
+        return tokens.spacing12x; // 48px
     }
   }
 
   /// Gets the default stroke width for circular spinners.
-  double _getDefaultStrokeWidth() {
+  double _getDefaultStrokeWidth(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoSpinnerSize.extraSmall:
-        return 2;
+        return tokens.spacing1x / 2; // 2px
       case CorpoSpinnerSize.small:
-        return 2.5;
+        return tokens.spacing1x * 0.625; // 2.5px
       case CorpoSpinnerSize.medium:
-        return 3;
+        return tokens.spacing1x * 0.75; // 3px
       case CorpoSpinnerSize.large:
-        return 3.5;
+        return tokens.spacing1x * 0.875; // 3.5px
       case CorpoSpinnerSize.extraLarge:
-        return 4;
+        return tokens.spacing1x; // 4px
     }
   }
 
   /// Gets the dot size for dots spinner.
-  double _getDotSize() {
+  double _getDotSize(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoSpinnerSize.extraSmall:
-        return 4;
+        return tokens.spacing1x; // 4px
       case CorpoSpinnerSize.small:
-        return 5;
+        return tokens.spacing1x * 1.25; // 5px
       case CorpoSpinnerSize.medium:
-        return 6;
+        return tokens.spacing1x * 1.5; // 6px
       case CorpoSpinnerSize.large:
-        return 8;
+        return tokens.spacing2x; // 8px
       case CorpoSpinnerSize.extraLarge:
-        return 12;
+        return tokens.spacing3x; // 12px
     }
   }
 
   /// Gets the linear spinner width.
-  double _getLinearWidth() {
+  double _getLinearWidth(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoSpinnerSize.extraSmall:
-        return 60;
+        return tokens.spacing16x * 0.9375; // 60px (64px * 0.9375)
       case CorpoSpinnerSize.small:
-        return 80;
+        return tokens.spacing16x * 1.25; // 80px
       case CorpoSpinnerSize.medium:
-        return 100;
+        return tokens.spacing16x * 1.5625; // 100px
       case CorpoSpinnerSize.large:
-        return 120;
+        return tokens.spacing16x * 1.875; // 120px
       case CorpoSpinnerSize.extraLarge:
-        return 160;
+        return tokens.spacing16x * 2.5; // 160px
     }
   }
 
   /// Gets the linear spinner height.
-  double _getLinearHeight() {
+  double _getLinearHeight(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoSpinnerSize.extraSmall:
-        return 2;
+        return tokens.spacing1x / 2; // 2px
       case CorpoSpinnerSize.small:
-        return 3;
+        return tokens.spacing1x * 0.75; // 3px
       case CorpoSpinnerSize.medium:
-        return 4;
+        return tokens.spacing1x; // 4px
       case CorpoSpinnerSize.large:
-        return 5;
+        return tokens.spacing1x * 1.25; // 5px
       case CorpoSpinnerSize.extraLarge:
-        return 6;
+        return tokens.spacing1x * 1.5; // 6px
     }
   }
 

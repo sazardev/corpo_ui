@@ -34,9 +34,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Bottom navigation bar types.
 enum CorpoBottomNavigationType {
@@ -52,7 +50,8 @@ class CorpoBottomNavigationItem {
   /// Creates a bottom navigation item.
   const CorpoBottomNavigationItem({
     required this.icon,
-    required this.label, this.activeIcon,
+    required this.label,
+    this.activeIcon,
     this.badge,
     this.tooltip,
     this.enabled = true,
@@ -84,7 +83,8 @@ class CorpoBottomNavigationItem {
 class CorpoBottomNavigation extends StatelessWidget {
   /// Creates a Corpo UI bottom navigation.
   const CorpoBottomNavigation({
-    required this.items, super.key,
+    required this.items,
+    super.key,
     this.currentIndex = 0,
     this.onTap,
     this.type = CorpoBottomNavigationType.fixed,
@@ -132,28 +132,23 @@ class CorpoBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color:
-            backgroundColor ??
-            (isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite),
+        color: backgroundColor ?? tokens.surfaceColor,
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: isDark
-                ? CorpoColors.neutral800.withValues(alpha: 0.3)
-                : CorpoColors.neutral400.withValues(alpha: 0.2),
+            color: tokens.textSecondary.withOpacity(0.1),
             offset: const Offset(0, -1),
             blurRadius: elevation,
           ),
         ],
         border: Border(
-          top: BorderSide(
-            color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
-          ),
+          top: BorderSide(color: tokens.textSecondary.withOpacity(0.2)),
         ),
       ),
       child: SafeArea(
@@ -164,7 +159,7 @@ class CorpoBottomNavigation extends StatelessWidget {
           ) {
             final int index = entry.key;
             final CorpoBottomNavigationItem item = entry.value;
-            return _buildNavigationItem(context, index, item, isDark);
+            return _buildNavigationItem(context, index, item, tokens, isDark);
           }).toList(),
         ),
       ),
@@ -175,22 +170,21 @@ class CorpoBottomNavigation extends StatelessWidget {
     BuildContext context,
     int index,
     CorpoBottomNavigationItem item,
+    CorpoDesignTokens tokens,
     bool isDark,
   ) {
     final bool isSelected = index == currentIndex;
     final Color itemColor = isSelected
-        ? (selectedItemColor ??
-              (isDark ? CorpoColors.primary400 : CorpoColors.primary500))
-        : (unselectedItemColor ??
-              (isDark ? CorpoColors.neutral400 : CorpoColors.neutral600));
+        ? (selectedItemColor ?? tokens.primaryColor)
+        : (unselectedItemColor ?? tokens.textSecondary);
 
     Widget child = InkWell(
       onTap: item.enabled ? () => onTap?.call(index) : null,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.small,
-          vertical: CorpoSpacing.extraSmall,
+        padding: EdgeInsets.symmetric(
+          horizontal: tokens.spacing2x,
+          vertical: tokens.spacing1x,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -205,29 +199,27 @@ class CorpoBottomNavigation extends StatelessWidget {
                       : item.icon,
                   color: item.enabled
                       ? itemColor
-                      : (isDark
-                            ? CorpoColors.neutral600
-                            : CorpoColors.neutral400),
+                      : tokens.textSecondary.withOpacity(0.5),
                   size: 24,
                 ),
                 if (showBadges && item.badge != null)
                   Positioned(
                     right: -6,
                     top: -6,
-                    child: _buildBadge(item.badge!, isDark),
+                    child: _buildBadge(item.badge!, tokens, isDark),
                   ),
               ],
             ),
             if (showLabels) ...<Widget>[
-              const SizedBox(height: CorpoSpacing.extraSmall),
+              SizedBox(height: tokens.spacing1x),
               Text(
                 item.label,
-                style: CorpoTypography.labelSmall.copyWith(
+                style: TextStyle(
+                  fontSize: tokens.fontSizeSmall,
+                  fontFamily: tokens.fontFamily,
                   color: item.enabled
                       ? itemColor
-                      : (isDark
-                            ? CorpoColors.neutral600
-                            : CorpoColors.neutral400),
+                      : tokens.textSecondary.withOpacity(0.5),
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
                 maxLines: 1,
@@ -246,28 +238,24 @@ class CorpoBottomNavigation extends StatelessWidget {
     return Expanded(child: child);
   }
 
-  Widget _buildBadge(String badge, bool isDark) {
+  Widget _buildBadge(String badge, CorpoDesignTokens tokens, bool isDark) {
     // Parse badge to check if it's numeric
     final int? count = int.tryParse(badge);
     final bool isNumeric = count != null;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: isNumeric && count > 99
-            ? CorpoSpacing.extraSmall
-            : CorpoSpacing.extraSmall,
-        vertical: 2,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: tokens.spacing1x, vertical: 2),
       constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
       decoration: BoxDecoration(
-        color: isDark ? CorpoColors.error : CorpoColors.error,
-        borderRadius: BorderRadius.circular(8),
+        color: tokens.errorColor,
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
       ),
       child: Text(
         isNumeric && count > 99 ? '99+' : badge,
-        style: CorpoTypography.labelSmall.copyWith(
-          color: CorpoColors.neutralWhite,
+        style: TextStyle(
           fontSize: 10,
+          fontFamily: tokens.fontFamily,
+          color: tokens.getTextColorFor(tokens.errorColor),
           fontWeight: FontWeight.w600,
         ),
         textAlign: TextAlign.center,

@@ -35,8 +35,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Form layout variants for different use cases.
 enum CorpoFormLayout {
@@ -78,7 +77,7 @@ class CorpoForm extends StatefulWidget {
     this.onChanged,
     this.validationMode = CorpoFormValidationMode.onSubmitThenChange,
     this.layout = CorpoFormLayout.vertical,
-    this.spacing = CorpoSpacing.medium,
+    this.spacing,
     this.crossAxisAlignment = CrossAxisAlignment.stretch,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.enabled = true,
@@ -98,7 +97,7 @@ class CorpoForm extends StatefulWidget {
   final CorpoFormLayout layout;
 
   /// Spacing between form fields.
-  final double spacing;
+  final double? spacing;
 
   /// Cross axis alignment for form fields.
   final CrossAxisAlignment crossAxisAlignment;
@@ -137,13 +136,16 @@ class CorpoFormState extends State<CorpoForm> {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite,
-        borderRadius: BorderRadius.circular(8),
+        color: isDark
+            ? tokens.textSecondary.withOpacity(0.1)
+            : tokens.surfaceColor,
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
       ),
       child: Form(
         key: _formKey,
@@ -155,35 +157,40 @@ class CorpoFormState extends State<CorpoForm> {
   }
 
   Widget _buildLayout() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     switch (widget.layout) {
       case CorpoFormLayout.vertical:
-        return _buildVerticalLayout();
+        return _buildVerticalLayout(tokens);
       case CorpoFormLayout.horizontal:
-        return _buildHorizontalLayout();
+        return _buildHorizontalLayout(tokens);
       case CorpoFormLayout.grid:
-        return _buildGridLayout();
+        return _buildGridLayout(tokens);
     }
   }
 
-  Widget _buildVerticalLayout() => Column(
+  Widget _buildVerticalLayout(CorpoDesignTokens tokens) => Column(
     crossAxisAlignment: widget.crossAxisAlignment,
     mainAxisAlignment: widget.mainAxisAlignment,
-    children: _addSpacing(widget.children),
+    children: _addSpacing(widget.children, tokens),
   );
 
-  Widget _buildHorizontalLayout() => Row(
+  Widget _buildHorizontalLayout(CorpoDesignTokens tokens) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: widget.mainAxisAlignment,
     children: _addSpacing(
       widget.children.map((Widget child) => Expanded(child: child)).toList(),
+      tokens,
     ),
   );
 
-  Widget _buildGridLayout() {
+  Widget _buildGridLayout(CorpoDesignTokens tokens) {
+    final double effectiveSpacing = widget.spacing ?? tokens.spacing4x;
+
     // For grid layout, wrap in a responsive grid
     return Wrap(
-      spacing: widget.spacing,
-      runSpacing: widget.spacing,
+      spacing: effectiveSpacing,
+      runSpacing: effectiveSpacing,
       children: widget.children
           .map(
             (Widget child) =>
@@ -198,17 +205,18 @@ class CorpoFormState extends State<CorpoForm> {
     return MediaQuery.of(context).size.width > 768 ? 300 : double.infinity;
   }
 
-  List<Widget> _addSpacing(List<Widget> children) {
+  List<Widget> _addSpacing(List<Widget> children, CorpoDesignTokens tokens) {
     if (children.isEmpty) return children;
 
+    final double effectiveSpacing = widget.spacing ?? tokens.spacing4x;
     final List<Widget> spacedChildren = <Widget>[];
     for (int i = 0; i < children.length; i++) {
       spacedChildren.add(children[i]);
       if (i < children.length - 1) {
         if (widget.layout == CorpoFormLayout.vertical) {
-          spacedChildren.add(SizedBox(height: widget.spacing));
+          spacedChildren.add(SizedBox(height: effectiveSpacing));
         } else {
-          spacedChildren.add(SizedBox(width: widget.spacing));
+          spacedChildren.add(SizedBox(width: effectiveSpacing));
         }
       }
     }

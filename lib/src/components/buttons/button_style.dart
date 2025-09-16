@@ -10,9 +10,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Button styling configurations for the Corpo UI design system.
 ///
@@ -20,31 +18,63 @@ import '../../constants/typography.dart';
 /// button variants, ensuring consistency and maintainability across
 /// the component library.
 abstract final class CorpoButtonStyle {
+  /// Helper method to darken a color by a given factor.
+  static Color _darkenColor(Color color, double factor) {
+    return Color.fromARGB(
+      color.alpha,
+      (color.red * (1 - factor)).round(),
+      (color.green * (1 - factor)).round(),
+      (color.blue * (1 - factor)).round(),
+    );
+  }
+
+  /// Helper method to lighten a color by a given factor.
+  static Color _lightenColor(Color color, double factor) {
+    return Color.fromARGB(
+      color.alpha,
+      (color.red + ((255 - color.red) * factor)).round(),
+      (color.green + ((255 - color.green) * factor)).round(),
+      (color.blue + ((255 - color.blue) * factor)).round(),
+    );
+  }
+
   /// Creates the primary button style.
   ///
   /// Primary buttons are used for the main call-to-action in a interface.
   /// They have high visual prominence with solid background colors.
   static ButtonStyle primary({required bool isDark, bool isEnabled = true}) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     final Color backgroundColor = isEnabled
-        ? CorpoColors.primary500
-        : (isDark ? CorpoColors.neutral700 : CorpoColors.neutral300);
+        ? tokens.primaryColor
+        : (isDark
+              ? tokens.surfaceColor.withValues(alpha: 0.3)
+              : tokens.surfaceColor.withValues(alpha: 0.6));
 
     final Color foregroundColor = isEnabled
-        ? CorpoColors.neutralWhite
-        : (isDark ? CorpoColors.neutral500 : CorpoColors.neutral400);
+        ? tokens.getTextColorFor(tokens.primaryColor)
+        : (isDark
+              ? tokens.textSecondary
+              : tokens.textSecondary.withValues(alpha: 0.7));
 
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((
         Set<WidgetState> states,
       ) {
         if (states.contains(WidgetState.pressed)) {
-          return isEnabled ? CorpoColors.primary700 : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.primaryColor, 0.2)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.hovered)) {
-          return isEnabled ? CorpoColors.primary600 : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.primaryColor, 0.1)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.focused)) {
-          return isEnabled ? CorpoColors.primary600 : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.primaryColor, 0.1)
+              : backgroundColor;
         }
         return backgroundColor;
       }),
@@ -54,10 +84,14 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.neutralWhite.withValues(alpha: 0.1);
+          return tokens
+              .getTextColorFor(tokens.primaryColor)
+              .withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.neutralWhite.withValues(alpha: 0.05);
+          return tokens
+              .getTextColorFor(tokens.primaryColor)
+              .withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -69,14 +103,20 @@ abstract final class CorpoButtonStyle {
         if (states.contains(WidgetState.hovered)) return 4;
         return 1;
       }),
-      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(CorpoPadding.medium),
+      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+        EdgeInsets.all(tokens.spacing4x),
+      ),
       minimumSize: WidgetStateProperty.all<Size>(const Size(88, 40)),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
+        ),
       ),
       textStyle: WidgetStateProperty.all<TextStyle>(
-        CorpoTypography.labelMedium.copyWith(
-          fontWeight: CorpoFontWeight.semiBold,
+        TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -87,29 +127,35 @@ abstract final class CorpoButtonStyle {
   /// Secondary buttons are used for secondary actions and have
   /// a subtle background with border emphasis.
   static ButtonStyle secondary({required bool isDark, bool isEnabled = true}) {
-    final Color backgroundColor = isDark
-        ? CorpoColors.neutral800
-        : CorpoColors.neutralWhite;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+    final Color backgroundColor = tokens.surfaceColor;
     final Color borderColor = isEnabled
-        ? CorpoColors.primary500
-        : (isDark ? CorpoColors.neutral600 : CorpoColors.neutral300);
+        ? tokens.primaryColor
+        : tokens.textSecondary.withValues(alpha: 0.5);
 
     final Color foregroundColor = isEnabled
-        ? CorpoColors.primary500
-        : (isDark ? CorpoColors.neutral500 : CorpoColors.neutral400);
+        ? tokens.primaryColor
+        : tokens.textSecondary;
 
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((
         Set<WidgetState> states,
       ) {
         if (states.contains(WidgetState.pressed)) {
-          return isEnabled ? CorpoColors.primary50 : backgroundColor;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.9)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.hovered)) {
-          return isEnabled ? CorpoColors.primary50 : backgroundColor;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.9)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.focused)) {
-          return isEnabled ? CorpoColors.primary50 : backgroundColor;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.9)
+              : backgroundColor;
         }
         return backgroundColor;
       }),
@@ -119,15 +165,17 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.primary500.withValues(alpha: 0.1);
+          return tokens.primaryColor.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.primary500.withValues(alpha: 0.05);
+          return tokens.primaryColor.withValues(alpha: 0.05);
         }
         return null;
       }),
       elevation: WidgetStateProperty.all<double>(0),
-      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(CorpoPadding.medium),
+      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+        EdgeInsets.all(tokens.spacing4x),
+      ),
       minimumSize: WidgetStateProperty.all<Size>(const Size(88, 40)),
       side: WidgetStateProperty.resolveWith<BorderSide>((
         Set<WidgetState> states,
@@ -138,11 +186,15 @@ abstract final class CorpoButtonStyle {
         return BorderSide(color: borderColor);
       }),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
+        ),
       ),
       textStyle: WidgetStateProperty.all<TextStyle>(
-        CorpoTypography.labelMedium.copyWith(
-          fontWeight: CorpoFontWeight.semiBold,
+        TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -153,22 +205,30 @@ abstract final class CorpoButtonStyle {
   /// Tertiary buttons are used for minimal actions and have
   /// no background or border in their default state.
   static ButtonStyle tertiary({required bool isDark, bool isEnabled = true}) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     final Color foregroundColor = isEnabled
-        ? CorpoColors.primary500
-        : (isDark ? CorpoColors.neutral500 : CorpoColors.neutral400);
+        ? tokens.primaryColor
+        : tokens.textSecondary;
 
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((
         Set<WidgetState> states,
       ) {
         if (states.contains(WidgetState.pressed)) {
-          return isEnabled ? CorpoColors.primary100 : Colors.transparent;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.8)
+              : Colors.transparent;
         }
         if (states.contains(WidgetState.hovered)) {
-          return isEnabled ? CorpoColors.primary50 : Colors.transparent;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.9)
+              : Colors.transparent;
         }
         if (states.contains(WidgetState.focused)) {
-          return isEnabled ? CorpoColors.primary50 : Colors.transparent;
+          return isEnabled
+              ? _lightenColor(tokens.primaryColor, 0.9)
+              : Colors.transparent;
         }
         return Colors.transparent;
       }),
@@ -178,22 +238,28 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.primary500.withValues(alpha: 0.1);
+          return tokens.primaryColor.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.primary500.withValues(alpha: 0.05);
+          return tokens.primaryColor.withValues(alpha: 0.05);
         }
         return null;
       }),
       elevation: WidgetStateProperty.all<double>(0),
-      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(CorpoPadding.medium),
+      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+        EdgeInsets.all(tokens.spacing4x),
+      ),
       minimumSize: WidgetStateProperty.all<Size>(const Size(88, 40)),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
+        ),
       ),
       textStyle: WidgetStateProperty.all<TextStyle>(
-        CorpoTypography.labelMedium.copyWith(
-          fontWeight: CorpoFontWeight.semiBold,
+        TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -204,26 +270,36 @@ abstract final class CorpoButtonStyle {
   /// Danger buttons are used for destructive actions and have
   /// prominent red/error coloring to warn users.
   static ButtonStyle danger({required bool isDark, bool isEnabled = true}) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     final Color backgroundColor = isEnabled
-        ? CorpoColors.error
-        : (isDark ? CorpoColors.neutral700 : CorpoColors.neutral300);
+        ? tokens.errorColor
+        : (isDark
+              ? tokens.surfaceColor.withValues(alpha: 0.3)
+              : tokens.surfaceColor.withValues(alpha: 0.6));
 
     final Color foregroundColor = isEnabled
-        ? CorpoColors.neutralWhite
-        : (isDark ? CorpoColors.neutral500 : CorpoColors.neutral400);
+        ? tokens.getTextColorFor(tokens.errorColor)
+        : tokens.textSecondary;
 
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((
         Set<WidgetState> states,
       ) {
         if (states.contains(WidgetState.pressed)) {
-          return isEnabled ? CorpoColors.error : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.errorColor, 0.2)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.hovered)) {
-          return isEnabled ? CorpoColors.error : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.errorColor, 0.1)
+              : backgroundColor;
         }
         if (states.contains(WidgetState.focused)) {
-          return isEnabled ? CorpoColors.error : backgroundColor;
+          return isEnabled
+              ? _darkenColor(tokens.errorColor, 0.1)
+              : backgroundColor;
         }
         return backgroundColor;
       }),
@@ -233,10 +309,14 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return CorpoColors.neutralWhite.withValues(alpha: 0.1);
+          return tokens
+              .getTextColorFor(tokens.errorColor)
+              .withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return CorpoColors.neutralWhite.withValues(alpha: 0.05);
+          return tokens
+              .getTextColorFor(tokens.errorColor)
+              .withValues(alpha: 0.05);
         }
         return null;
       }),
@@ -248,14 +328,20 @@ abstract final class CorpoButtonStyle {
         if (states.contains(WidgetState.hovered)) return 4;
         return 1;
       }),
-      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(CorpoPadding.medium),
+      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+        EdgeInsets.all(tokens.spacing4x),
+      ),
       minimumSize: WidgetStateProperty.all<Size>(const Size(88, 40)),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
+        ),
       ),
       textStyle: WidgetStateProperty.all<TextStyle>(
-        CorpoTypography.labelMedium.copyWith(
-          fontWeight: CorpoFontWeight.semiBold,
+        TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -270,9 +356,11 @@ abstract final class CorpoButtonStyle {
     bool isEnabled = true,
     double size = 40.0,
   }) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
     final Color foregroundColor = isEnabled
-        ? (isDark ? CorpoColors.neutral200 : CorpoColors.neutral700)
-        : (isDark ? CorpoColors.neutral600 : CorpoColors.neutral400);
+        ? tokens.textPrimary
+        : tokens.textSecondary;
 
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((
@@ -280,17 +368,17 @@ abstract final class CorpoButtonStyle {
       ) {
         if (states.contains(WidgetState.pressed)) {
           return isEnabled
-              ? (isDark ? CorpoColors.neutral700 : CorpoColors.neutral200)
+              ? tokens.surfaceColor.withValues(alpha: 0.8)
               : Colors.transparent;
         }
         if (states.contains(WidgetState.hovered)) {
           return isEnabled
-              ? (isDark ? CorpoColors.neutral800 : CorpoColors.neutral100)
+              ? tokens.surfaceColor.withValues(alpha: 0.9)
               : Colors.transparent;
         }
         if (states.contains(WidgetState.focused)) {
           return isEnabled
-              ? (isDark ? CorpoColors.neutral800 : CorpoColors.neutral100)
+              ? tokens.surfaceColor.withValues(alpha: 0.9)
               : Colors.transparent;
         }
         return Colors.transparent;
@@ -301,14 +389,10 @@ abstract final class CorpoButtonStyle {
       ) {
         if (!isEnabled) return null;
         if (states.contains(WidgetState.pressed)) {
-          return isDark
-              ? CorpoColors.neutralWhite.withValues(alpha: 0.1)
-              : CorpoColors.neutralBlack.withValues(alpha: 0.1);
+          return tokens.textPrimary.withValues(alpha: 0.1);
         }
         if (states.contains(WidgetState.hovered)) {
-          return isDark
-              ? CorpoColors.neutralWhite.withValues(alpha: 0.05)
-              : CorpoColors.neutralBlack.withValues(alpha: 0.05);
+          return tokens.textPrimary.withValues(alpha: 0.05);
         }
         return null;
       }),

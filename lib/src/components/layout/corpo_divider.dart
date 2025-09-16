@@ -32,9 +32,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Divider thickness variants for different emphasis levels.
 ///
@@ -164,49 +162,52 @@ class CorpoDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     if (label != null) {
-      return _buildLabeledDivider(isDark);
+      return _buildLabeledDivider(isDark, tokens);
     }
 
     switch (orientation) {
       case CorpoDividerOrientation.horizontal:
-        return _buildHorizontalDivider(isDark);
+        return _buildHorizontalDivider(isDark, tokens);
       case CorpoDividerOrientation.vertical:
-        return _buildVerticalDivider(isDark);
+        return _buildVerticalDivider(isDark, tokens);
     }
   }
 
   /// Builds a horizontal divider.
-  Widget _buildHorizontalDivider(bool isDark) => Container(
-    width: width,
-    margin: EdgeInsets.only(left: indent, right: endIndent),
-    child: Divider(
-      height: 1,
-      thickness: _getThickness(),
-      color: _getDividerColor(isDark),
-    ),
-  );
+  Widget _buildHorizontalDivider(bool isDark, CorpoDesignTokens tokens) =>
+      Container(
+        width: width,
+        margin: EdgeInsets.only(left: indent, right: endIndent),
+        child: Divider(
+          height: 1,
+          thickness: _getThickness(),
+          color: _getDividerColor(isDark, tokens),
+        ),
+      );
 
   /// Builds a vertical divider.
-  Widget _buildVerticalDivider(bool isDark) => Container(
-    height: height,
-    margin: EdgeInsets.only(top: indent, bottom: endIndent),
-    child: VerticalDivider(
-      width: 1,
-      thickness: _getThickness(),
-      color: _getDividerColor(isDark),
-    ),
-  );
+  Widget _buildVerticalDivider(bool isDark, CorpoDesignTokens tokens) =>
+      Container(
+        height: height,
+        margin: EdgeInsets.only(top: indent, bottom: endIndent),
+        child: VerticalDivider(
+          width: 1,
+          thickness: _getThickness(),
+          color: _getDividerColor(isDark, tokens),
+        ),
+      );
 
   /// Builds a labeled divider with text in the center.
-  Widget _buildLabeledDivider(bool isDark) {
-    final Color dividerColor = _getDividerColor(isDark);
+  Widget _buildLabeledDivider(bool isDark, CorpoDesignTokens tokens) {
+    final Color dividerColor = _getDividerColor(isDark, tokens);
     final Color labelColor = isDark
-        ? CorpoColors.neutral400
-        : CorpoColors.neutral600;
+        ? tokens.textSecondary
+        : tokens.textSecondary;
 
     return SizedBox(
       width: width,
@@ -220,14 +221,14 @@ class CorpoDivider extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: CorpoSpacing.medium,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: tokens.spacing4x),
             child: Text(
               label!,
-              style: CorpoTypography.labelSmall.copyWith(
+              style: TextStyle(
+                fontSize: tokens.fontSizeSmall,
+                fontFamily: tokens.fontFamily,
                 color: labelColor,
-                fontWeight: CorpoFontWeight.medium,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -244,10 +245,12 @@ class CorpoDivider extends StatelessWidget {
   }
 
   /// Gets the divider color based on theme.
-  Color _getDividerColor(bool isDark) {
+  Color _getDividerColor(bool isDark, CorpoDesignTokens tokens) {
     if (color != null) return color!;
 
-    return isDark ? CorpoColors.neutral700 : CorpoColors.neutral200;
+    return isDark
+        ? tokens.textSecondary.withOpacity(0.3)
+        : tokens.textSecondary.withOpacity(0.2);
   }
 
   /// Gets the thickness value based on the thickness variant.

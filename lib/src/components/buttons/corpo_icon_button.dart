@@ -29,8 +29,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Icon button variants for different use cases.
 enum CorpoIconButtonVariant {
@@ -161,18 +160,19 @@ class CorpoIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final bool isEnabled = onPressed != null;
-    final double buttonSize = _getButtonSize(size);
-    final double iconSize = _getIconSize(size);
+    final double buttonSize = _getButtonSize(size, tokens);
+    final double iconSize = _getIconSize(size, tokens);
 
     Widget button = IconButton(
       onPressed: onPressed,
       icon: Icon(
         icon,
         size: iconSize,
-        color: color ?? _getIconColor(context, variant, isEnabled),
+        color: color ?? _getIconColor(context, variant, isEnabled, tokens),
       ),
-      style: _getButtonStyle(context, variant, isEnabled, buttonSize),
+      style: _getButtonStyle(context, variant, isEnabled, buttonSize, tokens),
       tooltip: tooltip,
     );
 
@@ -189,26 +189,26 @@ class CorpoIconButton extends StatelessWidget {
   }
 
   /// Gets the button size for the given size variant.
-  double _getButtonSize(CorpoIconButtonSize size) {
+  double _getButtonSize(CorpoIconButtonSize size, CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoIconButtonSize.small:
-        return 32;
+        return tokens.spacing8x; // 32px
       case CorpoIconButtonSize.medium:
-        return 40;
+        return tokens.spacing8x + tokens.spacing2x; // 40px (32 + 8)
       case CorpoIconButtonSize.large:
-        return 48;
+        return tokens.spacing12x; // 48px
     }
   }
 
   /// Gets the icon size for the given size variant.
-  double _getIconSize(CorpoIconButtonSize size) {
+  double _getIconSize(CorpoIconButtonSize size, CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoIconButtonSize.small:
-        return 16;
+        return tokens.spacing4x; // 16px
       case CorpoIconButtonSize.medium:
-        return 20;
+        return tokens.spacing4x + tokens.spacing1x; // 20px (16 + 4)
       case CorpoIconButtonSize.large:
-        return 24;
+        return tokens.spacing6x; // 24px
     }
   }
 
@@ -217,25 +217,22 @@ class CorpoIconButton extends StatelessWidget {
     BuildContext context,
     CorpoIconButtonVariant variant,
     bool isEnabled,
+    CorpoDesignTokens tokens,
   ) {
     if (!isEnabled) {
-      return Theme.of(context).brightness == Brightness.dark
-          ? CorpoColors.neutral600
-          : CorpoColors.neutral400;
+      return tokens.textSecondary;
     }
 
     switch (variant) {
       case CorpoIconButtonVariant.primary:
-        return CorpoColors.neutralWhite;
+        return tokens.getTextColorFor(tokens.primaryColor);
       case CorpoIconButtonVariant.secondary:
       case CorpoIconButtonVariant.tertiary:
-        return Theme.of(context).brightness == Brightness.dark
-            ? CorpoColors.neutral200
-            : CorpoColors.neutral700;
+        return tokens.textPrimary;
       case CorpoIconButtonVariant.danger:
         return variant == CorpoIconButtonVariant.danger
-            ? CorpoColors.neutralWhite
-            : CorpoColors.error;
+            ? tokens.getTextColorFor(tokens.errorColor)
+            : tokens.errorColor;
     }
   }
 
@@ -245,21 +242,20 @@ class CorpoIconButton extends StatelessWidget {
     CorpoIconButtonVariant variant,
     bool isEnabled,
     double buttonSize,
+    CorpoDesignTokens tokens,
   ) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return IconButton.styleFrom(
       minimumSize: Size(buttonSize, buttonSize),
       maximumSize: Size(buttonSize, buttonSize),
-      backgroundColor: _getBackgroundColor(variant, isEnabled, isDark),
-      foregroundColor: _getIconColor(context, variant, isEnabled),
-      disabledBackgroundColor: isDark
-          ? CorpoColors.neutral800
-          : CorpoColors.neutral100,
-      padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
+      backgroundColor: _getBackgroundColor(variant, isEnabled, isDark, tokens),
+      foregroundColor: _getIconColor(context, variant, isEnabled, tokens),
+      disabledBackgroundColor: tokens.surfaceColor.withValues(alpha: 0.5),
+      padding: EdgeInsets.all(tokens.spacing1x),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
-        side: _getBorderSide(variant, isEnabled, isDark),
+        borderRadius: BorderRadius.circular(tokens.spacing1x),
+        side: _getBorderSide(variant, isEnabled, isDark, tokens),
       ),
     );
   }
@@ -269,20 +265,21 @@ class CorpoIconButton extends StatelessWidget {
     CorpoIconButtonVariant variant,
     bool isEnabled,
     bool isDark,
+    CorpoDesignTokens tokens,
   ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral800 : CorpoColors.neutral100;
+      return tokens.surfaceColor.withValues(alpha: 0.5);
     }
 
     switch (variant) {
       case CorpoIconButtonVariant.primary:
-        return CorpoColors.primary500;
+        return tokens.primaryColor;
       case CorpoIconButtonVariant.secondary:
-        return isDark ? CorpoColors.neutral700 : CorpoColors.neutral100;
+        return tokens.surfaceColor.withValues(alpha: 0.8);
       case CorpoIconButtonVariant.tertiary:
         return Colors.transparent;
       case CorpoIconButtonVariant.danger:
-        return CorpoColors.error;
+        return tokens.errorColor;
     }
   }
 
@@ -291,11 +288,10 @@ class CorpoIconButton extends StatelessWidget {
     CorpoIconButtonVariant variant,
     bool isEnabled,
     bool isDark,
+    CorpoDesignTokens tokens,
   ) {
     if (variant == CorpoIconButtonVariant.secondary && isEnabled) {
-      return BorderSide(
-        color: isDark ? CorpoColors.neutral600 : CorpoColors.neutral300,
-      );
+      return BorderSide(color: tokens.textSecondary.withValues(alpha: 0.5));
     }
     return BorderSide.none;
   }

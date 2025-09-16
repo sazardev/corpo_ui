@@ -20,7 +20,7 @@
 /// )
 ///
 /// CorpoSurface.tinted(
-///   tint: CorpoColors.primary50,
+///   tint: tokens.primaryColor.withOpacity(0.1),
 ///   child: HighlightedContent(),
 /// )
 /// ```
@@ -28,7 +28,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
+import '../../design_tokens.dart';
 
 /// Surface types for different use cases.
 ///
@@ -158,6 +158,7 @@ class CorpoSurface extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
@@ -165,7 +166,7 @@ class CorpoSurface extends StatelessWidget {
       width: width,
       height: height,
       margin: margin,
-      decoration: _buildDecoration(isDark),
+      decoration: _buildDecoration(isDark, tokens),
       clipBehavior: clipBehavior,
       child: _buildContent(),
     );
@@ -179,32 +180,34 @@ class CorpoSurface extends StatelessWidget {
   }
 
   /// Builds the surface decoration based on type and theme.
-  BoxDecoration _buildDecoration(bool isDark) {
-    final Color backgroundColor = _getBackgroundColor(isDark);
+  BoxDecoration _buildDecoration(bool isDark, CorpoDesignTokens tokens) {
+    final Color backgroundColor = _getBackgroundColor(isDark, tokens);
     final BorderRadius radius = borderRadius ?? BorderRadius.zero;
 
     return BoxDecoration(
       color: backgroundColor,
       borderRadius: radius,
       border: border,
-      boxShadow: _getBoxShadow(isDark),
+      boxShadow: _getBoxShadow(isDark, tokens),
     );
   }
 
   /// Gets the background color based on type and theme.
-  Color _getBackgroundColor(bool isDark) {
+  Color _getBackgroundColor(bool isDark, CorpoDesignTokens tokens) {
     if (color != null) return color!;
 
     switch (type) {
       case CorpoSurfaceType.standard:
-        return isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite;
+        return tokens.surfaceColor;
 
       case CorpoSurfaceType.elevated:
-        return isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite;
+        return tokens.surfaceColor;
 
       case CorpoSurfaceType.tinted:
         if (tint != null) return tint!;
-        return isDark ? CorpoColors.neutral800 : CorpoColors.neutral50;
+        return isDark
+            ? tokens.surfaceColor.withOpacity(0.9)
+            : tokens.surfaceColor.withOpacity(0.5);
 
       case CorpoSurfaceType.transparent:
         return Colors.transparent;
@@ -212,14 +215,14 @@ class CorpoSurface extends StatelessWidget {
   }
 
   /// Gets the box shadow based on elevation level.
-  List<BoxShadow> _getBoxShadow(bool isDark) {
+  List<BoxShadow> _getBoxShadow(bool isDark, CorpoDesignTokens tokens) {
     if (elevation <= 0 || type == CorpoSurfaceType.transparent) {
       return <BoxShadow>[];
     }
 
     final Color shadowColor = isDark
-        ? CorpoColors.neutralBlack.withValues(alpha: 0.5)
-        : CorpoColors.neutralBlack.withValues(alpha: 0.15);
+        ? Colors.black.withValues(alpha: 0.5)
+        : Colors.black.withValues(alpha: 0.15);
 
     // Calculate shadow properties based on elevation
     final double blurRadius = elevation * 2;

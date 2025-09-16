@@ -100,9 +100,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Input variants for different use cases.
 ///
@@ -429,6 +427,7 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final bool hasError = widget.errorText != null;
@@ -436,36 +435,38 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (widget.label != null) _buildLabel(isDark, hasError),
-        _buildTextField(context, isDark, hasError),
+        if (widget.label != null) _buildLabel(isDark, hasError, tokens),
+        _buildTextField(context, isDark, hasError, tokens),
         if (widget.helperText != null || widget.errorText != null)
-          _buildHelperText(isDark, hasError),
+          _buildHelperText(isDark, hasError, tokens),
       ],
     );
   }
 
   /// Builds the field label.
-  Widget _buildLabel(bool isDark, bool hasError) {
+  Widget _buildLabel(bool isDark, bool hasError, CorpoDesignTokens tokens) {
     final Color labelColor = hasError
-        ? CorpoColors.error
+        ? tokens.errorColor
         : isDark
-        ? CorpoColors.neutral300
-        : CorpoColors.neutral700;
+        ? tokens.textSecondary
+        : tokens.textPrimary;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: CorpoSpacing.extraSmall),
+      padding: EdgeInsets.only(bottom: tokens.spacing1x),
       child: RichText(
         text: TextSpan(
           text: widget.label,
-          style: CorpoTypography.labelMedium.copyWith(
+          style: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
             color: labelColor,
-            fontWeight: CorpoFontWeight.medium,
+            fontWeight: FontWeight.w500,
           ),
           children: widget.required
               ? <TextSpan>[
-                  const TextSpan(
+                  TextSpan(
                     text: ' *',
-                    style: TextStyle(color: CorpoColors.error),
+                    style: TextStyle(color: tokens.errorColor),
                   ),
                 ]
               : null,
@@ -475,8 +476,17 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
   }
 
   /// Builds the main text field.
-  Widget _buildTextField(BuildContext context, bool isDark, bool hasError) {
-    final InputDecoration decoration = _buildInputDecoration(isDark, hasError);
+  Widget _buildTextField(
+    BuildContext context,
+    bool isDark,
+    bool hasError,
+    CorpoDesignTokens tokens,
+  ) {
+    final InputDecoration decoration = _buildInputDecoration(
+      isDark,
+      hasError,
+      tokens,
+    );
 
     return TextFormField(
       controller: widget.controller,
@@ -495,52 +505,60 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
       inputFormatters: widget.inputFormatters,
       autofocus: widget.autofocus,
       obscureText: _obscureText,
-      style: _getTextStyle(isDark),
+      style: _getTextStyle(isDark, tokens),
       decoration: decoration,
     );
   }
 
   /// Builds the input decoration.
-  InputDecoration _buildInputDecoration(bool isDark, bool hasError) {
+  InputDecoration _buildInputDecoration(
+    bool isDark,
+    bool hasError,
+    CorpoDesignTokens tokens,
+  ) {
     final Color borderColor = hasError
-        ? CorpoColors.error
+        ? tokens.errorColor
         : _isFocused
-        ? CorpoColors.primary500
+        ? tokens.primaryColor
         : isDark
-        ? CorpoColors.neutral600
-        : CorpoColors.neutral300;
+        ? tokens.textSecondary
+        : tokens.textSecondary.withOpacity(0.5);
 
     final Color fillColor = isDark
-        ? CorpoColors.neutral800
-        : CorpoColors.neutralWhite;
+        ? tokens.surfaceColor.withOpacity(0.1)
+        : tokens.surfaceColor;
 
     return InputDecoration(
       hintText: widget.placeholder,
-      hintStyle: CorpoTypography.bodyMedium.copyWith(
-        color: isDark ? CorpoColors.neutral500 : CorpoColors.neutral400,
+      hintStyle: TextStyle(
+        fontSize: tokens.baseFontSize,
+        fontFamily: tokens.fontFamily,
+        color: isDark
+            ? tokens.textSecondary
+            : tokens.textSecondary.withOpacity(0.7),
       ),
       prefixIcon: widget.prefixIcon != null
           ? Icon(
               widget.prefixIcon,
-              color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+              color: isDark ? tokens.textSecondary : tokens.textSecondary,
               size: _getIconSize(),
             )
           : null,
-      suffixIcon: _buildSuffixIcon(isDark),
+      suffixIcon: _buildSuffixIcon(isDark, tokens),
       filled: true,
       fillColor: fillColor,
-      contentPadding: _getContentPadding(),
+      contentPadding: _getContentPadding(tokens),
       border: _buildBorder(borderColor),
       enabledBorder: _buildBorder(borderColor),
       focusedBorder: _buildBorder(borderColor, width: 2),
-      errorBorder: _buildBorder(CorpoColors.error),
-      focusedErrorBorder: _buildBorder(CorpoColors.error, width: 2),
+      errorBorder: _buildBorder(tokens.errorColor),
+      focusedErrorBorder: _buildBorder(tokens.errorColor, width: 2),
       counterText: widget.maxLength != null ? null : '',
     );
   }
 
   /// Builds the suffix icon with special handling for password fields.
-  Widget? _buildSuffixIcon(bool isDark) {
+  Widget? _buildSuffixIcon(bool isDark, CorpoDesignTokens tokens) {
     if (widget.variant == CorpoTextFieldVariant.password) {
       return IconButton(
         onPressed: () {
@@ -550,7 +568,7 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
         },
         icon: Icon(
           _obscureText ? Icons.visibility : Icons.visibility_off,
-          color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+          color: isDark ? tokens.textSecondary : tokens.textSecondary,
           size: _getIconSize(),
         ),
       );
@@ -559,7 +577,7 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
     if (widget.suffixIcon != null) {
       return Icon(
         widget.suffixIcon,
-        color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+        color: isDark ? tokens.textSecondary : tokens.textSecondary,
         size: _getIconSize(),
       );
     }
@@ -568,62 +586,72 @@ class _CorpoTextFieldState extends State<CorpoTextField> {
   }
 
   /// Builds the helper text or error text.
-  Widget _buildHelperText(bool isDark, bool hasError) {
+  Widget _buildHelperText(
+    bool isDark,
+    bool hasError,
+    CorpoDesignTokens tokens,
+  ) {
     final String text = widget.errorText ?? widget.helperText ?? '';
     final Color textColor = hasError
-        ? CorpoColors.error
+        ? tokens.errorColor
         : isDark
-        ? CorpoColors.neutral400
-        : CorpoColors.neutral500;
+        ? tokens.textSecondary
+        : tokens.textSecondary;
 
     return Padding(
-      padding: const EdgeInsets.only(top: CorpoSpacing.extraSmall),
+      padding: EdgeInsets.only(top: tokens.spacing1x),
       child: Text(
         text,
-        style: CorpoTypography.bodySmall.copyWith(color: textColor),
+        style: TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          color: textColor,
+        ),
       ),
     );
   }
 
   /// Gets the text style for the input.
-  TextStyle _getTextStyle(bool isDark) {
-    final Color textColor = isDark
-        ? CorpoColors.neutral100
-        : CorpoColors.neutral800;
+  TextStyle _getTextStyle(bool isDark, CorpoDesignTokens tokens) {
+    final Color textColor = isDark ? tokens.textPrimary : tokens.textPrimary;
 
-    return CorpoTypography.bodyMedium.copyWith(
+    return TextStyle(
       color: textColor,
-      fontSize: _getFontSize(),
+      fontSize: _getFontSize(tokens),
+      fontFamily: tokens.fontFamily,
     );
   }
 
   /// Gets the content padding based on size.
-  EdgeInsetsGeometry _getContentPadding() {
+  EdgeInsetsGeometry _getContentPadding(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoTextFieldSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.medium,
-          vertical: CorpoSpacing.small,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing2x,
         );
       case CorpoTextFieldSize.medium:
-        return CorpoPadding.medium;
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing3x,
+        );
       case CorpoTextFieldSize.large:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.large,
-          vertical: CorpoSpacing.medium,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing6x,
+          vertical: tokens.spacing4x,
         );
     }
   }
 
   /// Gets the font size based on input size.
-  double _getFontSize() {
+  double _getFontSize(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoTextFieldSize.small:
-        return CorpoFontSize.small;
+        return tokens.fontSizeSmall;
       case CorpoTextFieldSize.medium:
-        return CorpoFontSize.medium;
+        return tokens.baseFontSize;
       case CorpoTextFieldSize.large:
-        return CorpoFontSize.large;
+        return tokens.fontSizeLarge;
     }
   }
 

@@ -22,9 +22,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Alert types for different semantic meanings.
 enum CorpoAlertType {
@@ -125,24 +123,25 @@ class CorpoAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = _getBackgroundColor(type);
-    final Color borderColor = _getBorderColor(type);
-    final Color iconColor = _getIconColor(type);
-    final Color textColor = _getTextColor(type);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final Color backgroundColor = _getBackgroundColor(type, tokens);
+    final Color borderColor = _getBorderColor(type, tokens);
+    final Color iconColor = _getIconColor(type, tokens);
+    final Color textColor = _getTextColor(type, tokens);
     final IconData effectiveIcon = icon ?? _getDefaultIcon(type);
 
     return Container(
-      padding: const EdgeInsets.all(CorpoSpacing.medium),
+      padding: EdgeInsets.all(tokens.spacing4x),
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(color: borderColor),
-        borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+        borderRadius: BorderRadius.circular(tokens.spacing1x),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Icon(effectiveIcon, color: iconColor, size: 20),
-          const SizedBox(width: CorpoSpacing.small),
+          SizedBox(width: tokens.spacing2x),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,37 +149,40 @@ class CorpoAlert extends StatelessWidget {
                 if (title != null)
                   Text(
                     title!,
-                    style: CorpoTypography.labelMedium.copyWith(
+                    style: TextStyle(
+                      fontSize: tokens.baseFontSize,
+                      fontFamily: tokens.fontFamily,
                       color: textColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 if (title != null && message != null)
-                  const SizedBox(height: CorpoSpacing.extraSmall),
+                  SizedBox(height: tokens.spacing1x),
                 if (message != null)
                   Text(
                     message!,
-                    style: CorpoTypography.bodySmall.copyWith(color: textColor),
+                    style: TextStyle(
+                      fontSize: tokens.fontSizeSmall,
+                      fontFamily: tokens.fontFamily,
+                      color: textColor,
+                    ),
                   ),
                 if (actions != null) ...<Widget>[
-                  const SizedBox(height: CorpoSpacing.small),
+                  SizedBox(height: tokens.spacing2x),
                   Row(children: actions!),
                 ],
               ],
             ),
           ),
           if (isDismissible && onDismiss != null) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             IconButton(
               onPressed: onDismiss,
               icon: const Icon(Icons.close),
               iconSize: 16,
               color: textColor.withValues(alpha: 0.7),
               padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(
-                minWidth: 24,
-                minHeight: 24,
-              ),
+              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
             ),
           ],
         ],
@@ -189,51 +191,51 @@ class CorpoAlert extends StatelessWidget {
   }
 
   /// Gets the background color for the alert type.
-  Color _getBackgroundColor(CorpoAlertType type) {
+  Color _getBackgroundColor(CorpoAlertType type, CorpoDesignTokens tokens) {
     switch (type) {
       case CorpoAlertType.info:
-        return CorpoColors.infoBackground;
+        return tokens.infoColor.withOpacity(0.1);
       case CorpoAlertType.success:
-        return CorpoColors.successBackground;
+        return tokens.successColor.withOpacity(0.1);
       case CorpoAlertType.warning:
-        return CorpoColors.warningBackground;
+        return tokens.warningColor.withOpacity(0.1);
       case CorpoAlertType.error:
-        return CorpoColors.errorBackground;
+        return tokens.errorColor.withOpacity(0.1);
     }
   }
 
   /// Gets the border color for the alert type.
-  Color _getBorderColor(CorpoAlertType type) {
+  Color _getBorderColor(CorpoAlertType type, CorpoDesignTokens tokens) {
     switch (type) {
       case CorpoAlertType.info:
-        return CorpoColors.infoBorder;
+        return tokens.infoColor.withOpacity(0.3);
       case CorpoAlertType.success:
-        return CorpoColors.successBorder;
+        return tokens.successColor.withOpacity(0.3);
       case CorpoAlertType.warning:
-        return CorpoColors.warningBorder;
+        return tokens.warningColor.withOpacity(0.3);
       case CorpoAlertType.error:
-        return CorpoColors.errorBorder;
+        return tokens.errorColor.withOpacity(0.3);
     }
   }
 
   /// Gets the icon color for the alert type.
-  Color _getIconColor(CorpoAlertType type) {
+  Color _getIconColor(CorpoAlertType type, CorpoDesignTokens tokens) {
     switch (type) {
       case CorpoAlertType.info:
-        return CorpoColors.info;
+        return tokens.infoColor;
       case CorpoAlertType.success:
-        return CorpoColors.success;
+        return tokens.successColor;
       case CorpoAlertType.warning:
-        return CorpoColors.warning;
+        return tokens.warningColor;
       case CorpoAlertType.error:
-        return CorpoColors.error;
+        return tokens.errorColor;
     }
   }
 
   /// Gets the text color for the alert type.
-  Color _getTextColor(CorpoAlertType type) {
+  Color _getTextColor(CorpoAlertType type, CorpoDesignTokens tokens) {
     // All alert backgrounds are light, so we use dark text
-    return CorpoColors.neutral800;
+    return tokens.textPrimary;
   }
 
   /// Gets the default icon for the alert type.

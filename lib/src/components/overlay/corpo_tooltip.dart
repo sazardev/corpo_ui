@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the preferred position of the tooltip relative to its child.
 enum CorpoTooltipPosition {
@@ -113,7 +113,7 @@ class CorpoTooltip extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 200),
     this.maxWidth = 320.0,
     this.padding,
-    this.margin = const EdgeInsets.all(8),
+    EdgeInsetsGeometry? margin,
     this.backgroundColor,
     this.textStyle,
     this.borderRadius,
@@ -123,7 +123,7 @@ class CorpoTooltip extends StatefulWidget {
     this.onShow,
     this.onHide,
     super.key,
-  });
+  }) : margin = margin ?? const EdgeInsets.all(8.0);
 
   /// The widget that the tooltip is attached to.
   final Widget child;
@@ -451,6 +451,7 @@ class _TooltipPositioned extends StatelessWidget {
   Widget _buildTooltipContent(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     final Color backgroundColor =
         target.backgroundColor ?? colorScheme.inverseSurface;
@@ -464,15 +465,15 @@ class _TooltipPositioned extends StatelessWidget {
     Widget content = Material(
       color: backgroundColor,
       elevation: target.elevation,
-      borderRadius: target.borderRadius ?? BorderRadius.circular(8),
+      borderRadius: target.borderRadius ?? BorderRadius.circular(tokens.borderRadius),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: target.maxWidth),
         child: Padding(
           padding:
               target.padding ??
-              const EdgeInsets.symmetric(
-                horizontal: CorpoSpacing.medium,
-                vertical: CorpoSpacing.small,
+              EdgeInsets.symmetric(
+                horizontal: tokens.spacing4x,
+                vertical: tokens.spacing2x,
               ),
           child: target.richMessage != null
               ? Text.rich(target.richMessage!, style: textStyle)

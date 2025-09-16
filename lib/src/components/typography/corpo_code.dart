@@ -26,9 +26,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Display variants for code content.
 ///
@@ -129,37 +127,39 @@ class CorpoCode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle codeStyle = _getCodeStyle(context);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final TextStyle codeStyle = _getCodeStyle(context, tokens);
 
     switch (variant) {
       case CorpoCodeVariant.inline:
-        return _buildInlineCode(context, codeStyle);
+        return _buildInlineCode(context, codeStyle, tokens);
       case CorpoCodeVariant.block:
-        return _buildCodeBlock(context, codeStyle);
+        return _buildCodeBlock(context, codeStyle, tokens);
       case CorpoCodeVariant.terminal:
-        return _buildTerminalCode(context, codeStyle);
+        return _buildTerminalCode(context, codeStyle, tokens);
     }
   }
 
   /// Builds inline code styling.
-  Widget _buildInlineCode(BuildContext context, TextStyle codeStyle) {
+  Widget _buildInlineCode(
+    BuildContext context,
+    TextStyle codeStyle,
+    CorpoDesignTokens tokens,
+  ) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     final Color backgroundColor = isDark
-        ? CorpoColors.neutral800
-        : CorpoColors.neutral100;
+        ? Colors.grey[800]!
+        : Colors.grey[100]!;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.extraSmall,
-        vertical: 2,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: tokens.spacing1x, vertical: 2),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
         border: Border.all(
-          color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
+          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
         ),
       ),
       child: _buildCodeText(codeStyle),
@@ -167,30 +167,32 @@ class CorpoCode extends StatelessWidget {
   }
 
   /// Builds code block styling.
-  Widget _buildCodeBlock(BuildContext context, TextStyle codeStyle) {
+  Widget _buildCodeBlock(
+    BuildContext context,
+    TextStyle codeStyle,
+    CorpoDesignTokens tokens,
+  ) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
-    final Color backgroundColor = isDark
-        ? CorpoColors.neutral900
-        : CorpoColors.neutral50;
+    final Color backgroundColor = isDark ? Colors.grey[900]! : Colors.grey[50]!;
 
     return Container(
       width: double.infinity,
-      padding: CorpoPadding.medium,
+      padding: EdgeInsets.all(tokens.spacing4x),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
         border: Border.all(
-          color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
+          color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (language != null || showCopyButton) ...<Widget>[
-            _buildCodeHeader(context),
-            const SizedBox(height: CorpoSpacing.small),
+            _buildCodeHeader(context, tokens),
+            SizedBox(height: tokens.spacing2x),
           ],
           _buildCodeText(codeStyle),
         ],
@@ -199,26 +201,30 @@ class CorpoCode extends StatelessWidget {
   }
 
   /// Builds terminal/console styling.
-  Widget _buildTerminalCode(BuildContext context, TextStyle codeStyle) {
+  Widget _buildTerminalCode(
+    BuildContext context,
+    TextStyle codeStyle,
+    CorpoDesignTokens tokens,
+  ) {
     final TextStyle terminalStyle = codeStyle.copyWith(
-      color: CorpoColors.neutralWhite,
+      color: Colors.white,
       fontFamily: 'monospace',
     );
 
     return Container(
       width: double.infinity,
-      padding: CorpoPadding.medium,
+      padding: EdgeInsets.all(tokens.spacing4x),
       decoration: BoxDecoration(
-        color: CorpoColors.neutralBlack,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: CorpoColors.neutral600),
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+        border: Border.all(color: Colors.grey[600]!),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (showCopyButton) ...<Widget>[
-            _buildTerminalHeader(context),
-            const SizedBox(height: CorpoSpacing.small),
+            _buildTerminalHeader(context, tokens),
+            SizedBox(height: tokens.spacing2x),
           ],
           _buildCodeText(terminalStyle),
         ],
@@ -227,68 +233,77 @@ class CorpoCode extends StatelessWidget {
   }
 
   /// Builds the code header with language and copy button.
-  Widget _buildCodeHeader(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        if (language != null)
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: CorpoSpacing.small,
-              vertical: CorpoSpacing.extraSmall,
-            ),
-            decoration: BoxDecoration(
-              color: CorpoColors.primary100,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              language!.toUpperCase(),
-              style: CorpoTypography.labelSmall.copyWith(
-                color: CorpoColors.primary700,
-                fontWeight: CorpoFontWeight.semiBold,
+  Widget _buildCodeHeader(BuildContext context, CorpoDesignTokens tokens) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          if (language != null)
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: tokens.spacing2x,
+                vertical: tokens.spacing1x,
               ),
-            ),
-          )
-        else
-          const Spacer(),
-        if (showCopyButton) _buildCopyButton(context),
-      ],
-    );
+              decoration: BoxDecoration(
+                color: tokens.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
+              ),
+              child: Text(
+                language!.toUpperCase(),
+                style: TextStyle(
+                  fontSize: tokens.fontSizeSmall,
+                  fontFamily: tokens.fontFamily,
+                  fontWeight: FontWeight.w600,
+                  color: tokens.primaryColor,
+                ),
+              ),
+            )
+          else
+            const Spacer(),
+          if (showCopyButton) _buildCopyButton(context, tokens),
+        ],
+      );
 
   /// Builds the terminal header with copy button.
-  Widget _buildTerminalHeader(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            _buildTerminalDot(CorpoColors.error),
-            const SizedBox(width: CorpoSpacing.extraSmall),
-            _buildTerminalDot(CorpoColors.warning),
-            const SizedBox(width: CorpoSpacing.extraSmall),
-            _buildTerminalDot(CorpoColors.success),
-          ],
-        ),
-        if (showCopyButton) _buildCopyButton(context, isTerminal: true),
-      ],
-    );
+  Widget _buildTerminalHeader(BuildContext context, CorpoDesignTokens tokens) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              _buildTerminalDot(tokens.errorColor),
+              SizedBox(width: tokens.spacing1x),
+              _buildTerminalDot(tokens.warningColor),
+              SizedBox(width: tokens.spacing1x),
+              _buildTerminalDot(tokens.successColor),
+            ],
+          ),
+          if (showCopyButton)
+            _buildCopyButton(context, tokens, isTerminal: true),
+        ],
+      );
 
   /// Builds a terminal window dot.
   Widget _buildTerminalDot(Color color) => Container(
-      width: 12,
-      height: 12,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-    );
+    width: 12,
+    height: 12,
+    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+  );
 
   /// Builds the copy button.
-  Widget _buildCopyButton(BuildContext context, {bool isTerminal = false}) {
+  Widget _buildCopyButton(
+    BuildContext context,
+    CorpoDesignTokens tokens, {
+    bool isTerminal = false,
+  }) {
     final Color iconColor = isTerminal
-        ? CorpoColors.neutral400
-        : CorpoColors.textSecondary;
+        ? Colors.grey[400]!
+        : tokens.textSecondary;
 
     return IconButton(
       onPressed: () => _copyToClipboard(context),
       icon: Icon(Icons.copy, size: 16, color: iconColor),
       constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-      padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
+      padding: EdgeInsets.all(tokens.spacing1x),
       tooltip: 'Copy code',
     );
   }
@@ -310,18 +325,16 @@ class CorpoCode extends StatelessWidget {
   }
 
   /// Gets the appropriate code text style for the current theme.
-  TextStyle _getCodeStyle(BuildContext context) {
+  TextStyle _getCodeStyle(BuildContext context, CorpoDesignTokens tokens) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
-    final Color textColor = isDark
-        ? CorpoColors.neutral100
-        : CorpoColors.neutral800;
+    final Color textColor = isDark ? Colors.grey[100]! : Colors.grey[800]!;
 
     return TextStyle(
       fontFamily: 'monospace',
-      fontSize: CorpoFontSize.small,
-      fontWeight: CorpoFontWeight.regular,
+      fontSize: tokens.fontSizeSmall,
+      fontWeight: FontWeight.normal,
       color: textColor,
       height: 1.4,
       letterSpacing: 0.5,

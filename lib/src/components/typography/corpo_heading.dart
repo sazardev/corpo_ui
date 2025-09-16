@@ -20,15 +20,14 @@
 ///
 /// CorpoHeading.h3(
 ///   'Subsection Title',
-///   color: CorpoColors.primary500,
+///   color: tokens.primaryColor,
 /// )
 /// ```
 library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Heading level variants for semantic hierarchy.
 ///
@@ -169,12 +168,13 @@ class CorpoHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle style = _getTextStyle(level);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final TextStyle style = _getTextStyle(level, tokens);
     final Color effectiveColor =
         color ??
         (Theme.of(context).brightness == Brightness.dark
-            ? CorpoColors.neutralWhite
-            : CorpoColors.neutral900);
+            ? Colors.white
+            : tokens.textPrimary);
 
     return Text(
       text,
@@ -187,20 +187,44 @@ class CorpoHeading extends StatelessWidget {
   }
 
   /// Gets the appropriate text style for the heading level.
-  TextStyle _getTextStyle(CorpoHeadingLevel level) {
+  TextStyle _getTextStyle(CorpoHeadingLevel level, CorpoDesignTokens tokens) {
     switch (level) {
       case CorpoHeadingLevel.h1:
-        return CorpoTypography.displayLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge * 2,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.bold,
+        );
       case CorpoHeadingLevel.h2:
-        return CorpoTypography.displayMedium;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge * 1.5,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.bold,
+        );
       case CorpoHeadingLevel.h3:
-        return CorpoTypography.displaySmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeXXLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoHeadingLevel.h4:
-        return CorpoTypography.heading1;
+        return TextStyle(
+          fontSize: tokens.fontSizeXLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoHeadingLevel.h5:
-        return CorpoTypography.heading2;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoHeadingLevel.h6:
-        return CorpoTypography.heading3;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
     }
   }
 }

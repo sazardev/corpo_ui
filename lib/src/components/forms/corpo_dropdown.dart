@@ -31,9 +31,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Dropdown item for CorpoDropdown.
 class CorpoDropdownItem<T> extends DropdownMenuItem<T> {
@@ -156,6 +154,7 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final bool isEnabled = widget.onChanged != null;
     final bool hasError = widget.errorText != null;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -166,21 +165,23 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
         if (widget.label != null) ...<Widget>[
           Text(
             widget.label!,
-            style: _getLabelStyle().copyWith(
-              color: _getLabelColor(isDark, isEnabled, hasError),
+            style: _getLabelStyle(tokens).copyWith(
+              color: _getLabelColor(tokens, isDark, isEnabled, hasError),
             ),
           ),
-          const SizedBox(height: CorpoSpacing.extraSmall),
+          SizedBox(height: tokens.spacing1x),
         ],
-        _buildDropdownField(context, isEnabled, hasError, isDark),
+        _buildDropdownField(context, tokens, isEnabled, hasError, isDark),
         if (widget.helperText != null || widget.errorText != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.extraSmall),
+          SizedBox(height: tokens.spacing1x),
           Text(
             widget.errorText ?? widget.helperText!,
-            style: _getHelperStyle().copyWith(
+            style: _getHelperStyle(tokens).copyWith(
               color: hasError
-                  ? CorpoColors.error
-                  : (isDark ? CorpoColors.neutral400 : CorpoColors.neutral600),
+                  ? tokens.errorColor
+                  : (isDark
+                        ? tokens.textSecondary.withOpacity(0.7)
+                        : tokens.textSecondary),
             ),
           ),
         ],
@@ -190,18 +191,19 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
 
   Widget _buildDropdownField(
     BuildContext context,
+    CorpoDesignTokens tokens,
     bool isEnabled,
     bool hasError,
     bool isDark,
   ) => Container(
-    height: _getFieldHeight(),
+    height: _getFieldHeight(tokens),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+      borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
       border: Border.all(
-        color: _getBorderColor(isDark, isEnabled, hasError),
+        color: _getBorderColor(tokens, isDark, isEnabled, hasError),
         width: hasError ? 2.0 : 1.0,
       ),
-      color: _getBackgroundColor(isDark, isEnabled),
+      color: _getBackgroundColor(tokens, isDark, isEnabled),
     ),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<T>(
@@ -209,127 +211,182 @@ class _CorpoDropdownState<T> extends State<CorpoDropdown<T>> {
         onChanged: isEnabled ? widget.onChanged : null,
         items: _filteredItems,
         hint: widget.placeholder != null
-            ? Text(widget.placeholder!, style: _getPlaceholderStyle(isDark))
+            ? Text(
+                widget.placeholder!,
+                style: _getPlaceholderStyle(tokens, isDark),
+              )
             : null,
         isExpanded: true,
         icon: Icon(
           Icons.keyboard_arrow_down,
-          color: _getIconColor(isDark, isEnabled),
+          color: _getIconColor(tokens, isDark, isEnabled),
         ),
-        style: _getTextStyle().copyWith(
-          color: _getTextColor(isDark, isEnabled),
-        ),
+        style: _getTextStyle(
+          tokens,
+        ).copyWith(color: _getTextColor(tokens, isDark, isEnabled)),
         dropdownColor: isDark
-            ? CorpoColors.neutral800
-            : CorpoColors.neutralWhite,
-        borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+            ? tokens.textSecondary.withOpacity(0.1)
+            : tokens.surfaceColor,
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
         padding: EdgeInsets.symmetric(
-          horizontal: _getHorizontalPadding(),
-          vertical: CorpoSpacing.small,
+          horizontal: _getHorizontalPadding(tokens),
+          vertical: tokens.spacing2x,
         ),
       ),
     ),
   );
 
   /// Gets the field height based on size variant.
-  double _getFieldHeight() {
+  double _getFieldHeight(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDropdownSize.small:
-        return 32;
+        return tokens.spacing8x; // 32px
       case CorpoDropdownSize.medium:
-        return 40;
+        return tokens.spacing8x + tokens.spacing2x; // 40px (32 + 8)
       case CorpoDropdownSize.large:
-        return 48;
+        return tokens.spacing12x; // 48px
     }
   }
 
   /// Gets the horizontal padding based on size variant.
-  double _getHorizontalPadding() {
+  double _getHorizontalPadding(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDropdownSize.small:
-        return CorpoSpacing.small;
+        return tokens.spacing2x;
       case CorpoDropdownSize.medium:
-        return CorpoSpacing.medium;
+        return tokens.spacing4x;
       case CorpoDropdownSize.large:
-        return CorpoSpacing.large;
+        return tokens.spacing6x;
     }
   }
 
   /// Gets the label text style.
-  TextStyle _getLabelStyle() {
+  TextStyle _getLabelStyle(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDropdownSize.small:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDropdownSize.medium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDropdownSize.large:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+        );
     }
   }
 
   /// Gets the text style for the dropdown value.
-  TextStyle _getTextStyle() {
+  TextStyle _getTextStyle(CorpoDesignTokens tokens) {
     switch (widget.size) {
       case CorpoDropdownSize.small:
-        return CorpoTypography.bodySmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDropdownSize.medium:
-        return CorpoTypography.bodyMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoDropdownSize.large:
-        return CorpoTypography.bodyLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+        );
     }
   }
 
   /// Gets the helper text style.
-  TextStyle _getHelperStyle() => CorpoTypography.caption;
+  TextStyle _getHelperStyle(CorpoDesignTokens tokens) =>
+      TextStyle(fontSize: tokens.fontSizeSmall, fontFamily: tokens.fontFamily);
 
   /// Gets the placeholder text style.
-  TextStyle _getPlaceholderStyle(bool isDark) => _getTextStyle().copyWith(
-    color: isDark ? CorpoColors.neutral500 : CorpoColors.neutral400,
-  );
+  TextStyle _getPlaceholderStyle(CorpoDesignTokens tokens, bool isDark) =>
+      _getTextStyle(tokens).copyWith(
+        color: isDark
+            ? tokens.textSecondary.withOpacity(0.6)
+            : tokens.textSecondary.withOpacity(0.8),
+      );
 
   /// Gets the label color based on state.
-  Color _getLabelColor(bool isDark, bool isEnabled, bool hasError) {
+  Color _getLabelColor(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+    bool hasError,
+  ) {
     if (hasError) {
-      return CorpoColors.error;
+      return tokens.errorColor;
     }
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.6)
+          : tokens.textSecondary.withOpacity(0.5);
     }
-    return isDark ? CorpoColors.neutral200 : CorpoColors.neutral700;
+    return isDark ? tokens.textPrimary.withOpacity(0.9) : tokens.textPrimary;
   }
 
   /// Gets the text color based on state.
-  Color _getTextColor(bool isDark, bool isEnabled) {
+  Color _getTextColor(CorpoDesignTokens tokens, bool isDark, bool isEnabled) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.6)
+          : tokens.textSecondary.withOpacity(0.5);
     }
-    return isDark ? CorpoColors.neutral100 : CorpoColors.neutral800;
+    return isDark ? tokens.textPrimary.withOpacity(0.9) : tokens.textPrimary;
   }
 
   /// Gets the icon color based on state.
-  Color _getIconColor(bool isDark, bool isEnabled) {
+  Color _getIconColor(CorpoDesignTokens tokens, bool isDark, bool isEnabled) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.6)
+          : tokens.textSecondary.withOpacity(0.5);
     }
-    return isDark ? CorpoColors.neutral400 : CorpoColors.neutral500;
+    return isDark
+        ? tokens.textSecondary.withOpacity(0.8)
+        : tokens.textSecondary;
   }
 
   /// Gets the border color based on state.
-  Color _getBorderColor(bool isDark, bool isEnabled, bool hasError) {
+  Color _getBorderColor(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+    bool hasError,
+  ) {
     if (hasError) {
-      return CorpoColors.error;
+      return tokens.errorColor;
     }
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral300;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.3)
+          : tokens.textSecondary.withOpacity(0.2);
     }
-    return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+    return isDark
+        ? tokens.textSecondary.withOpacity(0.5)
+        : tokens.textSecondary.withOpacity(0.4);
   }
 
   /// Gets the background color based on state.
-  Color _getBackgroundColor(bool isDark, bool isEnabled) {
+  Color _getBackgroundColor(
+    CorpoDesignTokens tokens,
+    bool isDark,
+    bool isEnabled,
+  ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral800 : CorpoColors.neutral100;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.1)
+          : tokens.textSecondary.withOpacity(0.05);
     }
-    return isDark ? CorpoColors.neutral800 : CorpoColors.neutralWhite;
+    return isDark
+        ? tokens.textSecondary.withOpacity(0.05)
+        : tokens.surfaceColor;
   }
 }

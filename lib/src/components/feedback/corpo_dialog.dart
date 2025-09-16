@@ -28,9 +28,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Dialog size variants for different content amounts.
 enum CorpoDialogSize {
@@ -79,15 +77,16 @@ class CorpoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final double maxWidth = _getMaxWidth(context, size);
+    final double maxWidth = _getMaxWidth(context, size, tokens);
 
     return Dialog(
       backgroundColor: isDark
-          ? CorpoColors.neutral800
-          : CorpoColors.neutralWhite,
+          ? tokens.surfaceColor.withOpacity(0.95)
+          : tokens.surfaceColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(CorpoSpacing.small),
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -98,67 +97,78 @@ class CorpoDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (title != null) _buildTitleSection(isDark),
-            if (content != null) _buildContentSection(isDark),
-            if (actions != null && actions!.isNotEmpty) _buildActionsSection(),
+            if (title != null) _buildTitleSection(isDark, tokens),
+            if (content != null) _buildContentSection(isDark, tokens),
+            if (actions != null && actions!.isNotEmpty)
+              _buildActionsSection(tokens),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTitleSection(bool isDark) => Padding(
-      padding: const EdgeInsets.fromLTRB(
-        CorpoSpacing.large,
-        CorpoSpacing.large,
-        CorpoSpacing.large,
-        CorpoSpacing.medium,
+  Widget _buildTitleSection(bool isDark, CorpoDesignTokens tokens) => Padding(
+    padding: EdgeInsets.fromLTRB(
+      tokens.spacing6x,
+      tokens.spacing6x,
+      tokens.spacing6x,
+      tokens.spacing4x,
+    ),
+    child: DefaultTextStyle(
+      style: TextStyle(
+        fontSize: tokens.fontSizeLarge,
+        fontFamily: tokens.fontFamily,
+        color: isDark ? tokens.surfaceColor : tokens.textPrimary,
+        fontWeight: FontWeight.w600,
       ),
-      child: DefaultTextStyle(
-        style: CorpoTypography.heading3.copyWith(
-          color: isDark ? CorpoColors.neutralWhite : CorpoColors.neutral900,
-        ),
-        child: title!,
-      ),
-    );
+      child: title!,
+    ),
+  );
 
-  Widget _buildContentSection(bool isDark) => Flexible(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          CorpoSpacing.large,
-          title != null ? 0 : CorpoSpacing.large,
-          CorpoSpacing.large,
-          CorpoSpacing.medium,
-        ),
-        child: DefaultTextStyle(
-          style: CorpoTypography.bodyMedium.copyWith(
-            color: isDark ? CorpoColors.neutral200 : CorpoColors.neutral700,
+  Widget _buildContentSection(bool isDark, CorpoDesignTokens tokens) =>
+      Flexible(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            tokens.spacing6x,
+            title != null ? 0 : tokens.spacing6x,
+            tokens.spacing6x,
+            tokens.spacing4x,
           ),
-          child: content!,
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontSize: tokens.baseFontSize,
+              fontFamily: tokens.fontFamily,
+              color: isDark ? tokens.textSecondary : tokens.textSecondary,
+            ),
+            child: content!,
+          ),
         ),
-      ),
-    );
+      );
 
-  Widget _buildActionsSection() => Padding(
-      padding: const EdgeInsets.fromLTRB(
-        CorpoSpacing.large,
-        CorpoSpacing.medium,
-        CorpoSpacing.large,
-        CorpoSpacing.large,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          for (int i = 0; i < actions!.length; i++) ...<Widget>[
-            if (i > 0) const SizedBox(width: CorpoSpacing.small),
-            actions![i],
-          ],
+  Widget _buildActionsSection(CorpoDesignTokens tokens) => Padding(
+    padding: EdgeInsets.fromLTRB(
+      tokens.spacing6x,
+      tokens.spacing4x,
+      tokens.spacing6x,
+      tokens.spacing6x,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        for (int i = 0; i < actions!.length; i++) ...<Widget>[
+          if (i > 0) SizedBox(width: tokens.spacing2x),
+          actions![i],
         ],
-      ),
-    );
+      ],
+    ),
+  );
 
   /// Gets the maximum width based on size variant and screen size.
-  double _getMaxWidth(BuildContext context, CorpoDialogSize size) {
+  double _getMaxWidth(
+    BuildContext context,
+    CorpoDialogSize size,
+    CorpoDesignTokens tokens,
+  ) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     switch (size) {
@@ -169,7 +179,7 @@ class CorpoDialog extends StatelessWidget {
       case CorpoDialogSize.large:
         return (screenWidth * 0.7).clamp(600.0, 800.0);
       case CorpoDialogSize.fullWidth:
-        return screenWidth - (CorpoSpacing.large * 2);
+        return screenWidth - (tokens.spacing6x * 2);
     }
   }
 
@@ -181,10 +191,10 @@ class CorpoDialog extends StatelessWidget {
     Color? barrierColor,
     String? barrierLabel,
   }) => showDialog<T>(
-      context: context,
-      builder: builder,
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
-      barrierLabel: barrierLabel,
-    );
+    context: context,
+    builder: builder,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+    barrierLabel: barrierLabel,
+  );
 }

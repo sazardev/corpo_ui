@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the size variants for modals.
 enum CorpoModalSize {
@@ -158,7 +158,7 @@ class CorpoModal extends StatelessWidget {
       barrierDismissible:
           _shouldDismissOnBarrier(dismissBehavior) && barrierDismissible,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: barrierColor ?? Colors.black54,
+      barrierColor: barrierColor ?? CorpoDesignTokens().textPrimary.withValues(alpha: 0.54),
       transitionDuration: animationDuration,
       pageBuilder:
           (
@@ -204,6 +204,7 @@ class CorpoModal extends StatelessWidget {
   Widget _buildModalContent(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     final Color effectiveBackgroundColor =
         backgroundColor ?? colorScheme.surface;
@@ -211,12 +212,12 @@ class CorpoModal extends StatelessWidget {
     return Material(
       color: effectiveBackgroundColor,
       elevation: elevation,
-      borderRadius: borderRadius ?? _getDefaultBorderRadius(),
+      borderRadius: borderRadius ?? _getDefaultBorderRadius(tokens),
       child: Container(
         width: _getWidth(context),
         height: _getHeight(context),
         constraints: constraints ?? _getConstraints(context),
-        padding: padding ?? _getDefaultPadding(),
+        padding: padding ?? _getDefaultPadding(tokens),
         margin: margin,
         child: child,
       ),
@@ -260,17 +261,17 @@ class CorpoModal extends StatelessWidget {
     );
   }
 
-  EdgeInsetsGeometry _getDefaultPadding() => switch (size) {
-      CorpoModalSize.small => const EdgeInsets.all(CorpoSpacing.medium),
+  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) => switch (size) {
+      CorpoModalSize.small => EdgeInsets.all(tokens.spacing4x),
       CorpoModalSize.fullScreen => EdgeInsets.zero,
-      _ => const EdgeInsets.all(CorpoSpacing.large),
+      _ => EdgeInsets.all(tokens.spacing6x),
     };
 
-  BorderRadius _getDefaultBorderRadius() {
+  BorderRadius _getDefaultBorderRadius(CorpoDesignTokens tokens) {
     if (size == CorpoModalSize.fullScreen) {
       return BorderRadius.zero;
     }
-    return BorderRadius.circular(16);
+    return BorderRadius.circular(tokens.borderRadius);
   }
 }
 
@@ -420,15 +421,16 @@ class CorpoModalHeader extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final ColorScheme colorScheme = theme.colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
       padding:
           padding ??
-          const EdgeInsets.fromLTRB(
-            CorpoSpacing.large,
-            CorpoSpacing.large,
-            CorpoSpacing.medium,
-            CorpoSpacing.medium,
+          EdgeInsets.fromLTRB(
+            tokens.spacing6x,
+            tokens.spacing6x,
+            tokens.spacing4x,
+            tokens.spacing4x,
           ),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -442,7 +444,7 @@ class CorpoModalHeader extends StatelessWidget {
         children: <Widget>[
           if (leading != null) ...<Widget>[
             leading!,
-            const SizedBox(width: CorpoSpacing.medium),
+            SizedBox(width: tokens.spacing4x),
           ],
           Expanded(
             child: Column(
@@ -459,7 +461,7 @@ class CorpoModalHeader extends StatelessWidget {
                       ),
                 ),
                 if (subtitle != null) ...<Widget>[
-                  const SizedBox(height: CorpoSpacing.extraSmall),
+                  SizedBox(height: tokens.spacing1x),
                   Text(
                     subtitle!,
                     style:
@@ -473,18 +475,18 @@ class CorpoModalHeader extends StatelessWidget {
             ),
           ),
           if (actions != null) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.medium),
+            SizedBox(width: tokens.spacing4x),
             ...actions!
                 .expand(
                   (Widget action) => <Widget>[
                     action,
-                    const SizedBox(width: CorpoSpacing.small),
+                    SizedBox(width: tokens.spacing2x),
                   ],
                 )
                 .take(actions!.length * 2 - 1),
           ],
           if (showCloseButton) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             IconButton(
               onPressed: onClose ?? () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close),
@@ -525,15 +527,16 @@ class CorpoModalFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
       padding:
           padding ??
-          const EdgeInsets.fromLTRB(
-            CorpoSpacing.large,
-            CorpoSpacing.medium,
-            CorpoSpacing.large,
-            CorpoSpacing.large,
+          EdgeInsets.fromLTRB(
+            tokens.spacing6x,
+            tokens.spacing4x,
+            tokens.spacing6x,
+            tokens.spacing6x,
           ),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -549,7 +552,7 @@ class CorpoModalFooter extends StatelessWidget {
             .expand(
               (Widget action) => <Widget>[
                 action,
-                const SizedBox(width: CorpoSpacing.small),
+                SizedBox(width: tokens.spacing2x),
               ],
             )
             .take(actions.length * 2 - 1)

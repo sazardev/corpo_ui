@@ -20,9 +20,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// App bar variant types for different use cases.
 enum CorpoAppBarVariant {
@@ -96,17 +94,16 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final Color effectiveBackgroundColor =
-        backgroundColor ??
-        (isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite);
+        backgroundColor ?? tokens.surfaceColor;
     final Color effectiveForegroundColor =
-        foregroundColor ??
-        (isDark ? CorpoColors.neutralWhite : CorpoColors.neutral900);
+        foregroundColor ?? tokens.textPrimary;
 
     if (variant == CorpoAppBarVariant.large) {
       return _buildLargeAppBar(
         context,
+        tokens,
         effectiveBackgroundColor,
         effectiveForegroundColor,
       );
@@ -121,6 +118,7 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation ?? 1.0,
       centerTitle: centerTitle ?? false,
       titleTextStyle: _getTitleStyle(
+        tokens,
         variant,
       ).copyWith(color: effectiveForegroundColor),
       toolbarHeight: preferredSize.height,
@@ -129,80 +127,97 @@ class CorpoAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildLargeAppBar(
     BuildContext context,
+    CorpoDesignTokens tokens,
     Color backgroundColor,
     Color foregroundColor,
   ) => Container(
-      height: preferredSize.height,
-      color: backgroundColor,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: CorpoSpacing.medium),
-          child: Column(
-            crossAxisAlignment: centerTitle == true
-                ? CrossAxisAlignment.center
-                : CrossAxisAlignment.start,
-            children: <Widget>[
-              // Top row with leading and actions
-              SizedBox(
-                height: 56,
-                child: Row(
+    height: preferredSize.height,
+    color: backgroundColor,
+    child: SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: tokens.spacing4x),
+        child: Column(
+          crossAxisAlignment: centerTitle == true
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          children: <Widget>[
+            // Top row with leading and actions
+            SizedBox(
+              height: 56,
+              child: Row(
+                children: <Widget>[
+                  if (leading != null) ...<Widget>[
+                    leading!,
+                    SizedBox(width: tokens.spacing2x),
+                  ],
+                  const Spacer(),
+                  if (actions != null) ...actions!,
+                ],
+              ),
+            ),
+            // Title section
+            Expanded(
+              child: Align(
+                alignment: centerTitle == true
+                    ? Alignment.center
+                    : Alignment.centerLeft,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: centerTitle == true
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (leading != null) ...<Widget>[
-                      leading!,
-                      const SizedBox(width: CorpoSpacing.small),
+                    if (title != null)
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: tokens.fontSizeXLarge,
+                          fontFamily: tokens.fontFamily,
+                          color: foregroundColor,
+                        ),
+                        child: title!,
+                      ),
+                    if (subtitle != null) ...<Widget>[
+                      SizedBox(height: tokens.spacing1x),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontSize: tokens.baseFontSize,
+                          fontFamily: tokens.fontFamily,
+                          color: foregroundColor.withValues(alpha: 0.7),
+                        ),
+                        child: subtitle!,
+                      ),
                     ],
-                    const Spacer(),
-                    if (actions != null) ...actions!,
                   ],
                 ),
               ),
-              // Title section
-              Expanded(
-                child: Align(
-                  alignment: centerTitle == true
-                      ? Alignment.center
-                      : Alignment.centerLeft,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: centerTitle == true
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.start,
-                    children: <Widget>[
-                      if (title != null)
-                        DefaultTextStyle(
-                          style: CorpoTypography.heading1.copyWith(
-                            color: foregroundColor,
-                          ),
-                          child: title!,
-                        ),
-                      if (subtitle != null) ...<Widget>[
-                        const SizedBox(height: CorpoSpacing.extraSmall),
-                        DefaultTextStyle(
-                          style: CorpoTypography.bodyMedium.copyWith(
-                            color: foregroundColor.withValues(alpha: 0.7),
-                          ),
-                          child: subtitle!,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
+    ),
+  );
 
   /// Gets the title text style based on variant.
-  TextStyle _getTitleStyle(CorpoAppBarVariant variant) {
+  TextStyle _getTitleStyle(
+    CorpoDesignTokens tokens,
+    CorpoAppBarVariant variant,
+  ) {
     switch (variant) {
       case CorpoAppBarVariant.compact:
-        return CorpoTypography.heading4;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoAppBarVariant.standard:
-        return CorpoTypography.heading3;
+        return TextStyle(
+          fontSize: tokens.fontSizeXLarge,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoAppBarVariant.large:
-        return CorpoTypography.heading1;
+        return TextStyle(
+          fontSize: tokens.fontSizeXLarge * 1.2,
+          fontFamily: tokens.fontFamily,
+        );
     }
   }
 }

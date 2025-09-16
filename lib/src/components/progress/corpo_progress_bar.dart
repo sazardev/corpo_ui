@@ -29,9 +29,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Progress bar height variants for different visual emphasis.
 ///
@@ -146,21 +144,19 @@ class CorpoProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
-    final Color effectiveColor = color ?? CorpoColors.primary500;
+    final Color effectiveColor = color ?? tokens.primaryColor;
     final Color effectiveBackgroundColor =
-        backgroundColor ??
-        (isDark ? CorpoColors.neutral700 : CorpoColors.neutral200);
+        backgroundColor ?? tokens.textSecondary.withOpacity(0.2);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         if (showLabel && label != null) ...<Widget>[
-          _buildLabel(),
-          const SizedBox(height: CorpoSpacing.extraSmall),
+          _buildLabel(tokens),
+          SizedBox(height: tokens.spacing1x),
         ],
         Row(
           children: <Widget>[
@@ -168,11 +164,12 @@ class CorpoProgressBar extends StatelessWidget {
               child: _buildProgressIndicator(
                 effectiveColor,
                 effectiveBackgroundColor,
+                tokens,
               ),
             ),
             if (showPercentage && value != null) ...<Widget>[
-              const SizedBox(width: CorpoSpacing.small),
-              _buildPercentageText(),
+              SizedBox(width: tokens.spacing2x),
+              _buildPercentageText(tokens),
             ],
           ],
         ),
@@ -181,27 +178,51 @@ class CorpoProgressBar extends StatelessWidget {
   }
 
   /// Builds the label widget.
-  Widget _buildLabel() => Text(label!, style: CorpoTypography.labelMedium);
+  Widget _buildLabel(CorpoDesignTokens tokens) => Text(
+    label!,
+    style: TextStyle(
+      fontSize: tokens.baseFontSize,
+      fontFamily: tokens.fontFamily,
+      color: tokens.textPrimary,
+      fontWeight: FontWeight.w500,
+    ),
+  );
 
   /// Builds the percentage text widget.
-  Widget _buildPercentageText() {
+  Widget _buildPercentageText(CorpoDesignTokens tokens) {
     final int percentage = ((value ?? 0) * 100).round();
-    return Text('$percentage%', style: CorpoTypography.labelSmall);
+    return Text(
+      '$percentage%',
+      style: TextStyle(
+        fontSize: tokens.fontSizeSmall,
+        fontFamily: tokens.fontFamily,
+        color: tokens.textSecondary,
+        fontWeight: FontWeight.w500,
+      ),
+    );
   }
 
   /// Builds the main progress indicator based on style.
-  Widget _buildProgressIndicator(Color progressColor, Color trackColor) {
+  Widget _buildProgressIndicator(
+    Color progressColor,
+    Color trackColor,
+    CorpoDesignTokens tokens,
+  ) {
     switch (style) {
       case CorpoProgressBarStyle.linear:
-        return _buildLinearProgress(progressColor, trackColor);
+        return _buildLinearProgress(progressColor, trackColor, tokens);
       case CorpoProgressBarStyle.stepped:
-        return _buildSteppedProgress(progressColor, trackColor);
+        return _buildSteppedProgress(progressColor, trackColor, tokens);
     }
   }
 
   /// Builds a linear progress indicator.
-  Widget _buildLinearProgress(Color progressColor, Color trackColor) {
-    final double barHeight = _getBarHeight();
+  Widget _buildLinearProgress(
+    Color progressColor,
+    Color trackColor,
+    CorpoDesignTokens tokens,
+  ) {
+    final double barHeight = _getBarHeight(tokens);
     final BorderRadius borderRadius = BorderRadius.circular(barHeight / 2);
 
     return Container(
@@ -220,7 +241,11 @@ class CorpoProgressBar extends StatelessWidget {
   }
 
   /// Builds a stepped progress indicator.
-  Widget _buildSteppedProgress(Color progressColor, Color trackColor) {
+  Widget _buildSteppedProgress(
+    Color progressColor,
+    Color trackColor,
+    CorpoDesignTokens tokens,
+  ) {
     const int totalSteps = 10;
     final int completedSteps = value != null
         ? (value! * totalSteps).round()
@@ -231,13 +256,13 @@ class CorpoProgressBar extends StatelessWidget {
         final bool isCompleted = index < completedSteps;
         return Expanded(
           child: Container(
-            height: _getBarHeight(),
+            height: _getBarHeight(tokens),
             margin: index < totalSteps - 1
-                ? const EdgeInsets.only(right: 2)
+                ? EdgeInsets.only(right: tokens.spacing1x / 2)
                 : EdgeInsets.zero,
             decoration: BoxDecoration(
               color: isCompleted ? progressColor : trackColor,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
             ),
           ),
         );
@@ -246,14 +271,14 @@ class CorpoProgressBar extends StatelessWidget {
   }
 
   /// Gets the height of the progress bar in pixels.
-  double _getBarHeight() {
+  double _getBarHeight(CorpoDesignTokens tokens) {
     switch (height) {
       case CorpoProgressBarHeight.thin:
-        return 4;
+        return tokens.spacing1x; // 4px
       case CorpoProgressBarHeight.medium:
-        return 8;
+        return tokens.spacing2x; // 8px
       case CorpoProgressBarHeight.thick:
-        return 12;
+        return tokens.spacing3x; // 12px
     }
   }
 }

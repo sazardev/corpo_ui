@@ -40,9 +40,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Drawer width for different screen sizes.
 enum CorpoDrawerWidth {
@@ -104,21 +102,18 @@ class CorpoDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Drawer(
       width: _getDrawerWidth(),
       elevation: elevation,
-      backgroundColor:
-          backgroundColor ??
-          (isDark ? CorpoColors.neutral900 : CorpoColors.neutralWhite),
+      backgroundColor: backgroundColor ?? tokens.surfaceColor,
       child: Column(
         children: <Widget>[
           if (header != null) header!,
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: CorpoSpacing.small),
+              padding: EdgeInsets.symmetric(vertical: tokens.spacing2x),
               itemCount: items.length,
               itemBuilder: (BuildContext context, int index) => items[index],
             ),
@@ -174,19 +169,16 @@ class CorpoDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
       height: height,
-      padding: const EdgeInsets.all(CorpoSpacing.medium),
+      padding: EdgeInsets.all(tokens.spacing4x),
       decoration: BoxDecoration(
-        color:
-            backgroundColor ??
-            (isDark ? CorpoColors.primary700 : CorpoColors.primary500),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(8),
+        color: backgroundColor ?? tokens.primaryColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(tokens.borderRadius),
+          bottomRight: Radius.circular(tokens.borderRadius),
         ),
       ),
       child: InkWell(
@@ -197,20 +189,27 @@ class CorpoDrawerHeader extends StatelessWidget {
           children: <Widget>[
             if (avatar != null) ...<Widget>[
               avatar!,
-              const SizedBox(height: CorpoSpacing.small),
+              SizedBox(height: tokens.spacing2x),
             ],
             if (title != null)
               Text(
                 title!,
-                style: CorpoTypography.heading3.copyWith(
-                  color: CorpoColors.neutralWhite,
+                style: TextStyle(
+                  fontSize: tokens.fontSizeLarge,
+                  fontFamily: tokens.fontFamily,
+                  color: tokens.getTextColorFor(tokens.primaryColor),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             if (subtitle != null)
               Text(
                 subtitle!,
-                style: CorpoTypography.bodySmall.copyWith(
-                  color: CorpoColors.primary100,
+                style: TextStyle(
+                  fontSize: tokens.fontSizeSmall,
+                  fontFamily: tokens.fontFamily,
+                  color: tokens
+                      .getTextColorFor(tokens.primaryColor)
+                      .withOpacity(0.8),
                 ),
               ),
           ],
@@ -238,7 +237,8 @@ class CorpoDrawerItem extends StatelessWidget {
 
   /// Creates a section header.
   const CorpoDrawerItem.section({
-    required this.title, super.key,
+    required this.title,
+    super.key,
     this.children = const <CorpoDrawerItem>[],
   }) : icon = null,
        subtitle = null,
@@ -300,43 +300,32 @@ class CorpoDrawerItem extends StatelessWidget {
   }
 
   Widget _buildItem(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.small,
-        vertical: CorpoSpacing.extraSmall,
+      margin: EdgeInsets.symmetric(
+        horizontal: tokens.spacing2x,
+        vertical: tokens.spacing1x,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: selected
-            ? (isDark ? CorpoColors.primary800 : CorpoColors.primary100)
-            : null,
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+        color: selected ? tokens.primaryColor.withOpacity(0.1) : null,
       ),
       child: ListTile(
         leading: icon != null
             ? Icon(
                 icon,
-                color: selected
-                    ? (isDark ? CorpoColors.primary300 : CorpoColors.primary600)
-                    : (isDark
-                          ? CorpoColors.neutral400
-                          : CorpoColors.neutral600),
+                color: selected ? tokens.primaryColor : tokens.textSecondary,
                 size: 20,
               )
             : null,
         title: title != null
             ? Text(
                 title!,
-                style: CorpoTypography.bodyMedium.copyWith(
-                  color: selected
-                      ? (isDark
-                            ? CorpoColors.primary300
-                            : CorpoColors.primary600)
-                      : (isDark
-                            ? CorpoColors.neutralWhite
-                            : CorpoColors.neutral900),
+                style: TextStyle(
+                  fontSize: tokens.baseFontSize,
+                  fontFamily: tokens.fontFamily,
+                  color: selected ? tokens.primaryColor : tokens.textPrimary,
                   fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                 ),
               )
@@ -344,10 +333,10 @@ class CorpoDrawerItem extends StatelessWidget {
         subtitle: subtitle != null
             ? Text(
                 subtitle!,
-                style: CorpoTypography.bodySmall.copyWith(
-                  color: isDark
-                      ? CorpoColors.neutral400
-                      : CorpoColors.neutral600,
+                style: TextStyle(
+                  fontSize: tokens.fontSizeSmall,
+                  fontFamily: tokens.fontFamily,
+                  color: tokens.textSecondary,
                 ),
               )
             : null,
@@ -361,21 +350,22 @@ class CorpoDrawerItem extends StatelessWidget {
   }
 
   Widget _buildSection(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: CorpoSpacing.medium,
-            vertical: CorpoSpacing.small,
+          padding: EdgeInsets.symmetric(
+            horizontal: tokens.spacing4x,
+            vertical: tokens.spacing2x,
           ),
           child: Text(
             title ?? '',
-            style: CorpoTypography.labelSmall.copyWith(
-              color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral600,
+            style: TextStyle(
+              fontSize: tokens.fontSizeSmall,
+              fontFamily: tokens.fontFamily,
+              color: tokens.textSecondary,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
             ),
@@ -387,16 +377,15 @@ class CorpoDrawerItem extends StatelessWidget {
   }
 
   Widget _buildDivider(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: CorpoSpacing.small),
+      margin: EdgeInsets.symmetric(vertical: tokens.spacing2x),
       child: Divider(
-        color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
+        color: tokens.textSecondary.withOpacity(0.2),
         thickness: 1,
-        indent: CorpoSpacing.medium,
-        endIndent: CorpoSpacing.medium,
+        indent: tokens.spacing4x,
+        endIndent: tokens.spacing4x,
       ),
     );
   }

@@ -27,9 +27,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Individual breadcrumb item configuration.
 class CorpoBreadcrumbItem {
@@ -65,7 +63,8 @@ class CorpoBreadcrumbItem {
 class CorpoBreadcrumb extends StatelessWidget {
   /// Creates a Corpo UI breadcrumb navigation.
   const CorpoBreadcrumb({
-    required this.items, super.key,
+    required this.items,
+    super.key,
     this.separator = '/',
     this.maxItems,
     this.overflowText = '...',
@@ -101,12 +100,13 @@ class CorpoBreadcrumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     final List<CorpoBreadcrumbItem> displayItems = _getDisplayItems();
 
-    return Wrap(children: _buildBreadcrumbItems(displayItems, isDark));
+    return Wrap(children: _buildBreadcrumbItems(displayItems, tokens, isDark));
   }
 
   List<CorpoBreadcrumbItem> _getDisplayItems() {
@@ -138,6 +138,7 @@ class CorpoBreadcrumb extends StatelessWidget {
 
   List<Widget> _buildBreadcrumbItems(
     List<CorpoBreadcrumbItem> displayItems,
+    CorpoDesignTokens tokens,
     bool isDark,
   ) {
     final List<Widget> widgets = <Widget>[];
@@ -146,32 +147,30 @@ class CorpoBreadcrumb extends StatelessWidget {
       final CorpoBreadcrumbItem item = displayItems[i];
 
       // Add the breadcrumb item
-      widgets.add(_buildBreadcrumbItem(item, isDark));
+      widgets.add(_buildBreadcrumbItem(item, tokens, isDark));
 
       // Add separator if not the last item
       if (i < displayItems.length - 1) {
-        widgets.add(_buildSeparator(isDark));
+        widgets.add(_buildSeparator(tokens, isDark));
       }
     }
 
     return widgets;
   }
 
-  Widget _buildBreadcrumbItem(CorpoBreadcrumbItem item, bool isDark) {
+  Widget _buildBreadcrumbItem(
+    CorpoBreadcrumbItem item,
+    CorpoDesignTokens tokens,
+    bool isDark,
+  ) {
     Color textColor;
 
     if (!item.enabled) {
-      textColor =
-          disabledColor ??
-          (isDark ? CorpoColors.neutral600 : CorpoColors.neutral400);
+      textColor = disabledColor ?? tokens.textSecondary.withOpacity(0.5);
     } else if (item.isCurrentPage) {
-      textColor =
-          currentPageColor ??
-          (isDark ? CorpoColors.neutralWhite : CorpoColors.neutral900);
+      textColor = currentPageColor ?? tokens.textPrimary;
     } else {
-      textColor =
-          itemColor ??
-          (isDark ? CorpoColors.primary400 : CorpoColors.primary500);
+      textColor = itemColor ?? tokens.primaryColor;
     }
 
     final Widget child = Row(
@@ -179,11 +178,13 @@ class CorpoBreadcrumb extends StatelessWidget {
       children: <Widget>[
         if (item.icon != null) ...<Widget>[
           Icon(item.icon, size: 16, color: textColor),
-          const SizedBox(width: CorpoSpacing.extraSmall),
+          SizedBox(width: tokens.spacing1x),
         ],
         Text(
           item.text,
-          style: CorpoTypography.bodySmall.copyWith(
+          style: TextStyle(
+            fontSize: tokens.fontSizeSmall,
+            fontFamily: tokens.fontFamily,
             color: textColor,
             fontWeight: item.isCurrentPage ? FontWeight.w600 : FontWeight.w400,
             decoration: item.enabled && !item.isCurrentPage
@@ -198,10 +199,10 @@ class CorpoBreadcrumb extends StatelessWidget {
     if (item.enabled && !item.isCurrentPage && item.onTap != null) {
       return InkWell(
         onTap: item.onTap,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: CorpoSpacing.extraSmall,
+          padding: EdgeInsets.symmetric(
+            horizontal: tokens.spacing1x,
             vertical: 2,
           ),
           child: child,
@@ -210,23 +211,20 @@ class CorpoBreadcrumb extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.extraSmall,
-        vertical: 2,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: tokens.spacing1x, vertical: 2),
       child: child,
     );
   }
 
-  Widget _buildSeparator(bool isDark) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: CorpoSpacing.extraSmall),
-      child: Text(
-        separator,
-        style: CorpoTypography.bodySmall.copyWith(
-          color:
-              separatorColor ??
-              (isDark ? CorpoColors.neutral500 : CorpoColors.neutral400),
-        ),
+  Widget _buildSeparator(CorpoDesignTokens tokens, bool isDark) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: tokens.spacing1x),
+    child: Text(
+      separator,
+      style: TextStyle(
+        fontSize: tokens.fontSizeSmall,
+        fontFamily: tokens.fontFamily,
+        color: separatorColor ?? tokens.textSecondary,
       ),
-    );
+    ),
+  );
 }

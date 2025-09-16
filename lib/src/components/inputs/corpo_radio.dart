@@ -29,9 +29,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Size variants for different layout contexts.
 enum CorpoRadioSize {
@@ -99,6 +97,7 @@ class CorpoRadio<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final double radioSize = _getRadioSize(size);
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -112,10 +111,10 @@ class CorpoRadio<T> extends StatelessWidget {
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         visualDensity: VisualDensity.compact,
         activeColor: isEnabled
-            ? CorpoColors.primary500
-            : _getDisabledColor(isDark),
-        focusColor: CorpoColors.primary100,
-        hoverColor: CorpoColors.primary50,
+            ? tokens.primaryColor
+            : _getDisabledColor(isDark, tokens),
+        focusColor: tokens.primaryColor.withOpacity(0.1),
+        hoverColor: tokens.primaryColor.withOpacity(0.05),
       ),
     );
 
@@ -136,7 +135,7 @@ class CorpoRadio<T> extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             radioWidget,
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,16 +143,16 @@ class CorpoRadio<T> extends StatelessWidget {
                   if (label != null)
                     Text(
                       label!,
-                      style: _getLabelStyle(
-                        size,
-                      ).copyWith(color: _getLabelColor(isDark, isEnabled)),
+                      style: _getLabelStyle(size, tokens).copyWith(
+                        color: _getLabelColor(isDark, isEnabled, tokens),
+                      ),
                     ),
                   if (description != null) ...<Widget>[
-                    const SizedBox(height: CorpoSpacing.extraSmall),
+                    SizedBox(height: tokens.spacing1x),
                     Text(
                       description!,
-                      style: _getDescriptionStyle(size).copyWith(
-                        color: _getDescriptionColor(isDark, isEnabled),
+                      style: _getDescriptionStyle(size, tokens).copyWith(
+                        color: _getDescriptionColor(isDark, isEnabled, tokens),
                       ),
                     ),
                   ],
@@ -179,44 +178,61 @@ class CorpoRadio<T> extends StatelessWidget {
   }
 
   /// Gets the label text style for the given size variant.
-  TextStyle _getLabelStyle(CorpoRadioSize size) {
+  TextStyle _getLabelStyle(CorpoRadioSize size, CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoRadioSize.small:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoRadioSize.medium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoRadioSize.large:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontWeight: FontWeight.w500,
+        );
     }
   }
 
   /// Gets the description text style for the given size variant.
-  TextStyle _getDescriptionStyle(CorpoRadioSize size) {
+  TextStyle _getDescriptionStyle(
+    CorpoRadioSize size,
+    CorpoDesignTokens tokens,
+  ) {
     switch (size) {
       case CorpoRadioSize.small:
-        return CorpoTypography.caption;
+        return TextStyle(fontSize: tokens.fontSizeSmall * 0.85);
       case CorpoRadioSize.medium:
       case CorpoRadioSize.large:
-        return CorpoTypography.bodySmall;
+        return TextStyle(fontSize: tokens.fontSizeSmall);
     }
   }
 
   /// Gets the label color based on theme and enabled state.
-  Color _getLabelColor(bool isDark, bool isEnabled) {
+  Color _getLabelColor(bool isDark, bool isEnabled, CorpoDesignTokens tokens) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return tokens.textSecondary.withOpacity(0.6);
     }
-    return isDark ? CorpoColors.neutral200 : CorpoColors.neutral700;
+    return tokens.textPrimary;
   }
 
   /// Gets the description color based on theme and enabled state.
-  Color _getDescriptionColor(bool isDark, bool isEnabled) {
+  Color _getDescriptionColor(
+    bool isDark,
+    bool isEnabled,
+    CorpoDesignTokens tokens,
+  ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral700 : CorpoColors.neutral300;
+      return tokens.textSecondary.withOpacity(0.5);
     }
-    return isDark ? CorpoColors.neutral400 : CorpoColors.neutral600;
+    return tokens.textSecondary;
   }
 
   /// Gets the disabled color for the radio button.
-  Color _getDisabledColor(bool isDark) => isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+  Color _getDisabledColor(bool isDark, CorpoDesignTokens tokens) =>
+      tokens.textSecondary.withOpacity(0.4);
 }

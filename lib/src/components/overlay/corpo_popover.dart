@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the preferred position of the popover relative to its anchor.
 enum CorpoPopoverPosition {
@@ -118,7 +118,7 @@ class CorpoPopover extends StatefulWidget {
     this.height,
     this.constraints,
     this.padding,
-    this.margin = const EdgeInsets.all(8),
+    EdgeInsetsGeometry? margin,
     this.backgroundColor,
     this.borderRadius,
     this.elevation = 8.0,

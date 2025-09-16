@@ -30,9 +30,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Outlined button variants for different use cases.
 enum CorpoOutlinedButtonVariant {
@@ -131,11 +129,12 @@ class CorpoOutlinedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final bool isEnabled = onPressed != null;
 
     Widget button = OutlinedButton(
       onPressed: onPressed,
-      style: _getButtonStyle(context, variant, size, isEnabled),
+      style: _getButtonStyle(context, variant, size, isEnabled, tokens),
       child: child,
     );
 
@@ -157,26 +156,30 @@ class CorpoOutlinedButton extends StatelessWidget {
     CorpoOutlinedButtonVariant variant,
     CorpoOutlinedButtonSize size,
     bool isEnabled,
+    CorpoDesignTokens tokens,
   ) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    final EdgeInsets padding = _getPadding(size);
-    final TextStyle textStyle = _getTextStyle(size);
-    final BorderSide borderSide = _getBorderSide(variant, isEnabled, isDark);
+    final EdgeInsets padding = _getPadding(size, tokens);
+    final TextStyle textStyle = _getTextStyle(size, tokens);
+    final BorderSide borderSide = _getBorderSide(
+      variant,
+      isEnabled,
+      isDark,
+      tokens,
+    );
 
     return OutlinedButton.styleFrom(
-      foregroundColor: _getForegroundColor(variant, isEnabled, isDark),
-      disabledForegroundColor: isDark
-          ? CorpoColors.neutral600
-          : CorpoColors.neutral400,
+      foregroundColor: _getForegroundColor(variant, isEnabled, isDark, tokens),
+      disabledForegroundColor: tokens.textSecondary,
       backgroundColor: Colors.transparent,
       disabledBackgroundColor: Colors.transparent,
       side: borderSide,
       padding: padding,
       textStyle: textStyle,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
       ),
-      minimumSize: _getMinimumSize(size),
+      minimumSize: _getMinimumSize(size, tokens),
     );
   }
 
@@ -185,18 +188,19 @@ class CorpoOutlinedButton extends StatelessWidget {
     CorpoOutlinedButtonVariant variant,
     bool isEnabled,
     bool isDark,
+    CorpoDesignTokens tokens,
   ) {
     if (!isEnabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral400;
+      return tokens.textSecondary;
     }
 
     switch (variant) {
       case CorpoOutlinedButtonVariant.standard:
-        return isDark ? CorpoColors.neutral200 : CorpoColors.neutral700;
+        return tokens.textPrimary;
       case CorpoOutlinedButtonVariant.primary:
-        return CorpoColors.primary500;
+        return tokens.primaryColor;
       case CorpoOutlinedButtonVariant.danger:
-        return CorpoColors.error;
+        return tokens.errorColor;
     }
   }
 
@@ -205,23 +209,22 @@ class CorpoOutlinedButton extends StatelessWidget {
     CorpoOutlinedButtonVariant variant,
     bool isEnabled,
     bool isDark,
+    CorpoDesignTokens tokens,
   ) {
     if (!isEnabled) {
-      return BorderSide(
-        color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral300,
-      );
+      return BorderSide(color: tokens.textSecondary.withValues(alpha: 0.5));
     }
 
     Color borderColor;
     switch (variant) {
       case CorpoOutlinedButtonVariant.standard:
-        borderColor = isDark ? CorpoColors.neutral400 : CorpoColors.neutral400;
+        borderColor = tokens.textSecondary;
         break;
       case CorpoOutlinedButtonVariant.primary:
-        borderColor = CorpoColors.primary500;
+        borderColor = tokens.primaryColor;
         break;
       case CorpoOutlinedButtonVariant.danger:
-        borderColor = CorpoColors.error;
+        borderColor = tokens.errorColor;
         break;
     }
 
@@ -229,47 +232,74 @@ class CorpoOutlinedButton extends StatelessWidget {
   }
 
   /// Gets the padding for the size variant.
-  EdgeInsets _getPadding(CorpoOutlinedButtonSize size) {
+  EdgeInsets _getPadding(
+    CorpoOutlinedButtonSize size,
+    CorpoDesignTokens tokens,
+  ) {
     switch (size) {
       case CorpoOutlinedButtonSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.medium,
-          vertical: CorpoSpacing.small,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing2x,
         );
       case CorpoOutlinedButtonSize.medium:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.large,
-          vertical: CorpoSpacing.medium,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing6x,
+          vertical: tokens.spacing4x,
         );
       case CorpoOutlinedButtonSize.large:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.extraLarge,
-          vertical: CorpoSpacing.large,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing8x,
+          vertical: tokens.spacing6x,
         );
     }
   }
 
   /// Gets the text style for the size variant.
-  TextStyle _getTextStyle(CorpoOutlinedButtonSize size) {
+  TextStyle _getTextStyle(
+    CorpoOutlinedButtonSize size,
+    CorpoDesignTokens tokens,
+  ) {
     switch (size) {
       case CorpoOutlinedButtonSize.small:
-        return CorpoTypography.buttonSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoOutlinedButtonSize.medium:
-        return CorpoTypography.buttonMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
       case CorpoOutlinedButtonSize.large:
-        return CorpoTypography.buttonLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600,
+        );
     }
   }
 
   /// Gets the minimum size for the size variant.
-  Size _getMinimumSize(CorpoOutlinedButtonSize size) {
+  Size _getMinimumSize(CorpoOutlinedButtonSize size, CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoOutlinedButtonSize.small:
-        return const Size(80, 32);
+        return Size(
+          tokens.spacing16x + tokens.spacing4x,
+          tokens.spacing8x,
+        ); // 80px x 32px
       case CorpoOutlinedButtonSize.medium:
-        return const Size(100, 40);
+        return Size(
+          tokens.spacing16x + tokens.spacing8x + tokens.spacing1x,
+          tokens.spacing8x + tokens.spacing2x,
+        ); // ~100px x 40px
       case CorpoOutlinedButtonSize.large:
-        return const Size(120, 48);
+        return Size(
+          tokens.spacing16x + tokens.spacing16x + tokens.spacing2x,
+          tokens.spacing12x,
+        ); // 120px x 48px
     }
   }
 }
