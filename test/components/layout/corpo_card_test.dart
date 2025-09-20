@@ -60,9 +60,7 @@ void main() {
       testWidgets('applies elevated variant', (WidgetTester tester) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          const CorpoCard.elevated(
-            child: Text('Elevated Card'),
-          ),
+          const CorpoCard.elevated(child: Text('Elevated Card')),
         );
 
         final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
@@ -215,9 +213,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          const CorpoCard(
-            child: Text('Medium Elevation'),
-          ),
+          const CorpoCard(child: Text('Medium Elevation')),
         );
 
         final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));

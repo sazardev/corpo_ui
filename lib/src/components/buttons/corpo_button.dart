@@ -412,120 +412,110 @@ class CorpoButton extends StatelessWidget {
     CorpoDesignTokens tokens,
     bool isDark,
     bool isEnabled,
-  ) {
-    return ElevatedButton.styleFrom(
-      backgroundColor: isEnabled
-          ? tokens.primaryColor
-          : tokens.secondaryColor.withValues(alpha: 0.3),
-      foregroundColor: isEnabled
-          ? tokens.getTextColorFor(tokens.primaryColor)
-          : tokens.textSecondary,
-      disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
-      disabledForegroundColor: tokens.textSecondary,
-      elevation: isEnabled ? 2 : 0,
-      shadowColor: tokens.primaryColor.withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(tokens.borderRadius),
-      ),
-      textStyle: TextStyle(
-        fontFamily: tokens.fontFamily,
-        fontSize: _getFontSize(tokens),
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
+  ) => ElevatedButton.styleFrom(
+    backgroundColor: isEnabled
+        ? tokens.primaryColor
+        : tokens.secondaryColor.withValues(alpha: 0.3),
+    foregroundColor: isEnabled
+        ? tokens.getTextColorFor(tokens.primaryColor)
+        : tokens.textSecondary,
+    disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
+    disabledForegroundColor: tokens.textSecondary,
+    elevation: isEnabled ? 2 : 0,
+    shadowColor: tokens.primaryColor.withValues(alpha: 0.3),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
+    ),
+    textStyle: TextStyle(
+      fontFamily: tokens.fontFamily,
+      fontSize: _getFontSize(tokens),
+      fontWeight: FontWeight.w600,
+    ),
+  );
 
   /// Gets the secondary button style using design tokens.
   ButtonStyle _getSecondaryButtonStyle(
     CorpoDesignTokens tokens,
     bool isDark,
     bool isEnabled,
-  ) {
-    return OutlinedButton.styleFrom(
-      backgroundColor: Colors.transparent,
-      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
-      disabledForegroundColor: tokens.textSecondary,
-      side: BorderSide(
-        color: isEnabled
-            ? tokens.primaryColor
-            : tokens.secondaryColor.withValues(alpha: 0.3),
-        width: 1.5,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(tokens.borderRadius),
-      ),
-      textStyle: TextStyle(
-        fontFamily: tokens.fontFamily,
-        fontSize: _getFontSize(tokens),
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
+  ) => OutlinedButton.styleFrom(
+    backgroundColor: Colors.transparent,
+    foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+    disabledForegroundColor: tokens.textSecondary,
+    side: BorderSide(
+      color: isEnabled
+          ? tokens.primaryColor
+          : tokens.secondaryColor.withValues(alpha: 0.3),
+      width: 1.5,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
+    ),
+    textStyle: TextStyle(
+      fontFamily: tokens.fontFamily,
+      fontSize: _getFontSize(tokens),
+      fontWeight: FontWeight.w600,
+    ),
+  );
 
   /// Gets the tertiary button style using design tokens.
   ButtonStyle _getTertiaryButtonStyle(
     CorpoDesignTokens tokens,
     bool isDark,
     bool isEnabled,
-  ) {
-    return TextButton.styleFrom(
-      backgroundColor: Colors.transparent,
-      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
-      disabledForegroundColor: tokens.textSecondary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(tokens.borderRadius),
-      ),
-      textStyle: TextStyle(
-        fontFamily: tokens.fontFamily,
-        fontSize: _getFontSize(tokens),
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
+  ) => TextButton.styleFrom(
+    backgroundColor: Colors.transparent,
+    foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+    disabledForegroundColor: tokens.textSecondary,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
+    ),
+    textStyle: TextStyle(
+      fontFamily: tokens.fontFamily,
+      fontSize: _getFontSize(tokens),
+      fontWeight: FontWeight.w600,
+    ),
+  );
 
   /// Gets the danger button style using design tokens.
   ButtonStyle _getDangerButtonStyle(
     CorpoDesignTokens tokens,
     bool isDark,
     bool isEnabled,
-  ) {
-    return ElevatedButton.styleFrom(
-      backgroundColor: isEnabled
-          ? tokens.errorColor
-          : tokens.secondaryColor.withValues(alpha: 0.3),
-      foregroundColor: isEnabled
-          ? tokens.getTextColorFor(tokens.errorColor)
-          : tokens.textSecondary,
-      disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
-      disabledForegroundColor: tokens.textSecondary,
-      elevation: isEnabled ? 2 : 0,
-      shadowColor: tokens.errorColor.withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(tokens.borderRadius),
-      ),
-      textStyle: TextStyle(
-        fontFamily: tokens.fontFamily,
-        fontSize: _getFontSize(tokens),
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
+  ) => ElevatedButton.styleFrom(
+    backgroundColor: isEnabled
+        ? tokens.errorColor
+        : tokens.secondaryColor.withValues(alpha: 0.3),
+    foregroundColor: isEnabled
+        ? tokens.getTextColorFor(tokens.errorColor)
+        : tokens.textSecondary,
+    disabledBackgroundColor: tokens.secondaryColor.withValues(alpha: 0.3),
+    disabledForegroundColor: tokens.textSecondary,
+    elevation: isEnabled ? 2 : 0,
+    shadowColor: tokens.errorColor.withValues(alpha: 0.3),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(tokens.borderRadius),
+    ),
+    textStyle: TextStyle(
+      fontFamily: tokens.fontFamily,
+      fontSize: _getFontSize(tokens),
+      fontWeight: FontWeight.w600,
+    ),
+  );
 
   /// Gets the icon button style using design tokens.
   ButtonStyle _getIconButtonStyle(
     CorpoDesignTokens tokens,
     bool isDark,
     bool isEnabled,
-  ) {
-    return IconButton.styleFrom(
-      backgroundColor: Colors.transparent,
-      foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
-      disabledForegroundColor: tokens.textSecondary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
-      ),
-    );
-  }
+  ) => IconButton.styleFrom(
+    backgroundColor: Colors.transparent,
+    foregroundColor: isEnabled ? tokens.primaryColor : tokens.textSecondary,
+    disabledForegroundColor: tokens.textSecondary,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(tokens.borderRadiusSmall),
+    ),
+  );
 
   /// Gets the font size based on button size and design tokens.
   double _getFontSize(CorpoDesignTokens tokens) {

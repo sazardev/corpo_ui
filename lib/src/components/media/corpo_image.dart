@@ -320,8 +320,9 @@ class _CorpoImageState extends State<CorpoImage>
                   return child;
                 },
             errorBuilder:
-                (BuildContext context, Object error, StackTrace? stackTrace) => _handleErrorBuilder(context, error, stackTrace) ??
-                      const SizedBox.shrink(),
+                (BuildContext context, Object error, StackTrace? stackTrace) =>
+                    _handleErrorBuilder(context, error, stackTrace) ??
+                    const SizedBox.shrink(),
           ),
         ),
       ],
@@ -432,21 +433,21 @@ class _CorpoImageState extends State<CorpoImage>
   }
 
   Widget _buildSkeletonLoader(BuildContext context) => Container(
-      width: widget.width,
-      height: widget.height,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            Colors.grey.shade300,
-            Colors.grey.shade100,
-            Colors.grey.shade300,
-          ],
-          stops: const <double>[0, 0.5, 1],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+    width: widget.width,
+    height: widget.height,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: <Color>[
+          Colors.grey.shade300,
+          Colors.grey.shade100,
+          Colors.grey.shade300,
+        ],
+        stops: const <double>[0, 0.5, 1],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
-    );
+    ),
+  );
 
   Widget _buildProgressiveLoader(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -460,27 +461,27 @@ class _CorpoImageState extends State<CorpoImage>
   }
 
   ImageProvider _getImageProvider() => switch (widget._imageType) {
-      _CorpoImageType.network => NetworkImage(widget.imageUrl!),
-      _CorpoImageType.asset => AssetImage(widget.assetPath!),
-      _CorpoImageType.memory => MemoryImage(widget.imageData!),
-      _CorpoImageType.provider => widget.imageProvider!,
-    };
+    _CorpoImageType.network => NetworkImage(widget.imageUrl!),
+    _CorpoImageType.asset => AssetImage(widget.assetPath!),
+    _CorpoImageType.memory => MemoryImage(widget.imageData!),
+    _CorpoImageType.provider => widget.imageProvider!,
+  };
 
   BoxFit _mapImageFit(CorpoImageFit fit) => switch (fit) {
-      CorpoImageFit.cover => BoxFit.cover,
-      CorpoImageFit.contain => BoxFit.contain,
-      CorpoImageFit.fill => BoxFit.fill,
-      CorpoImageFit.fitWidth => BoxFit.fitWidth,
-      CorpoImageFit.fitHeight => BoxFit.fitHeight,
-      CorpoImageFit.none => BoxFit.none,
-      CorpoImageFit.scaleDown => BoxFit.scaleDown,
-    };
+    CorpoImageFit.cover => BoxFit.cover,
+    CorpoImageFit.contain => BoxFit.contain,
+    CorpoImageFit.fill => BoxFit.fill,
+    CorpoImageFit.fitWidth => BoxFit.fitWidth,
+    CorpoImageFit.fitHeight => BoxFit.fitHeight,
+    CorpoImageFit.none => BoxFit.none,
+    CorpoImageFit.scaleDown => BoxFit.scaleDown,
+  };
 
   BorderRadius? _getDefaultBorderRadius() => switch (widget.shape) {
-      CorpoImageShape.rounded => BorderRadius.circular(8),
-      CorpoImageShape.rectangle => null,
-      CorpoImageShape.circle => null,
-    };
+    CorpoImageShape.rounded => BorderRadius.circular(8),
+    CorpoImageShape.rectangle => null,
+    CorpoImageShape.circle => null,
+  };
 
   Widget? _handleFrameBuilder(
     BuildContext context,

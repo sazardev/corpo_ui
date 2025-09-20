@@ -124,7 +124,6 @@ enum CorpoSortDirection {
 /// This component provides enterprise-grade data display with sorting,
 /// selection, and pagination capabilities.
 class CorpoDataTable<T> extends StatefulWidget {
-
   /// Creates a Corpo UI data table.
   factory CorpoDataTable({
     required List<CorpoDataColumn<T>> columns,
@@ -147,31 +146,33 @@ class CorpoDataTable<T> extends StatefulWidget {
     TextStyle? dataTextStyle,
     Key? key,
   }) => CorpoDataTable._(
-      columns: columns,
-      rows: rows,
-      sortColumnKey: sortColumnKey,
-      sortDirection: sortDirection,
-      onSort: onSort,
-      selectable: selectable,
-      selectedRows: selectedRows ?? <T>{},
-      onSelectionChanged: onSelectionChanged,
-      onRowTap: onRowTap,
-      loading: loading,
-      emptyWidget: emptyWidget,
-      headerHeight: headerHeight,
-      rowHeight: rowHeight,
-      horizontalMargin: horizontalMargin,
-      columnSpacing: columnSpacing,
-      showCheckboxColumn: showCheckboxColumn,
-      headingTextStyle: headingTextStyle,
-      dataTextStyle: dataTextStyle,
-      key: key,
-    );
+    columns: columns,
+    rows: rows,
+    sortColumnKey: sortColumnKey,
+    sortDirection: sortDirection,
+    onSort: onSort,
+    selectable: selectable,
+    selectedRows: selectedRows ?? <T>{},
+    onSelectionChanged: onSelectionChanged,
+    onRowTap: onRowTap,
+    loading: loading,
+    emptyWidget: emptyWidget,
+    headerHeight: headerHeight,
+    rowHeight: rowHeight,
+    horizontalMargin: horizontalMargin,
+    columnSpacing: columnSpacing,
+    showCheckboxColumn: showCheckboxColumn,
+    headingTextStyle: headingTextStyle,
+    dataTextStyle: dataTextStyle,
+    key: key,
+  );
+
   /// Creates a Corpo UI data table.
   const CorpoDataTable._({
     required this.columns,
     required this.rows,
-    required this.selectedRows, this.sortColumnKey,
+    required this.selectedRows,
+    this.sortColumnKey,
     this.sortDirection = CorpoSortDirection.ascending,
     this.onSort,
     this.selectable = false,
@@ -266,33 +267,33 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
 
   /// Builds the loading state.
   Widget _buildLoadingState() => Container(
-      height: 200,
-      alignment: Alignment.center,
-      child: const CircularProgressIndicator(),
-    );
+    height: 200,
+    alignment: Alignment.center,
+    child: const CircularProgressIndicator(),
+  );
 
   /// Builds the empty state.
   Widget _buildEmptyState(bool isDark) => Container(
-      height: 200,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            Icons.table_chart_outlined,
-            size: 48,
+    height: 200,
+    alignment: Alignment.center,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(
+          Icons.table_chart_outlined,
+          size: 48,
+          color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+        ),
+        const SizedBox(height: CorpoSpacing.medium),
+        Text(
+          'No data available',
+          style: CorpoTypography.bodyLarge.copyWith(
             color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
           ),
-          const SizedBox(height: CorpoSpacing.medium),
-          Text(
-            'No data available',
-            style: CorpoTypography.bodyLarge.copyWith(
-              color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   /// Builds the main data table.
   Widget _buildDataTable(bool isDark) {
@@ -321,7 +322,9 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
         headingRowColor: WidgetStateProperty.all(
           isDark ? CorpoColors.neutral800 : CorpoColors.neutral50,
         ),
-        dataRowColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+        dataRowColor: WidgetStateProperty.resolveWith((
+          Set<WidgetState> states,
+        ) {
           if (states.contains(WidgetState.selected)) {
             return isDark ? CorpoColors.primary800 : CorpoColors.primary100;
           }
@@ -335,41 +338,47 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   }
 
   /// Builds data column definitions.
-  List<DataColumn> _buildDataColumns(bool isDark) => widget.columns.map((CorpoDataColumn<T> column) => DataColumn(
-        label:
-            column.headerBuilder?.call(context) ??
-            Text(column.label, style: _getHeadingStyle(isDark)),
-        onSort: column.sortable && widget.onSort != null
-            ? (int columnIndex, bool ascending) {
-                final CorpoSortDirection direction = ascending
-                    ? CorpoSortDirection.ascending
-                    : CorpoSortDirection.descending;
-                widget.onSort!(column.key, direction);
-              }
-            : null,
-      )).toList();
+  List<DataColumn> _buildDataColumns(bool isDark) => widget.columns
+      .map(
+        (CorpoDataColumn<T> column) => DataColumn(
+          label:
+              column.headerBuilder?.call(context) ??
+              Text(column.label, style: _getHeadingStyle(isDark)),
+          onSort: column.sortable && widget.onSort != null
+              ? (int columnIndex, bool ascending) {
+                  final CorpoSortDirection direction = ascending
+                      ? CorpoSortDirection.ascending
+                      : CorpoSortDirection.descending;
+                  widget.onSort!(column.key, direction);
+                }
+              : null,
+        ),
+      )
+      .toList();
 
   /// Builds data row definitions.
-  List<DataRow> _buildDataRows(bool isDark) => widget.rows.map((CorpoDataRow<T> row) {
-      final bool isSelected = widget.selectedRows.contains(row.data);
+  List<DataRow> _buildDataRows(bool isDark) =>
+      widget.rows.map((CorpoDataRow<T> row) {
+        final bool isSelected = widget.selectedRows.contains(row.data);
 
-      return DataRow(
-        cells: widget.columns.map((CorpoDataColumn<T> column) {
-          final dynamic cellValue = row.cells[column.key];
+        return DataRow(
+          cells: widget.columns.map((CorpoDataColumn<T> column) {
+            final dynamic cellValue = row.cells[column.key];
 
-          return DataCell(
-            column.cellBuilder?.call(context, row.data) ??
-                _buildDefaultCell(cellValue, isDark),
-            onTap: row.onTap ?? () => widget.onRowTap?.call(row.data),
-          );
-        }).toList(),
-        selected: isSelected,
-        onSelectChanged: widget.selectable && row.selectable
-            ? (bool? selected) => _handleRowSelection(row.data, selected ?? false)
-            : null,
-        color: row.color != null ? WidgetStateProperty.all(row.color) : null,
-      );
-    }).toList();
+            return DataCell(
+              column.cellBuilder?.call(context, row.data) ??
+                  _buildDefaultCell(cellValue, isDark),
+              onTap: row.onTap ?? () => widget.onRowTap?.call(row.data),
+            );
+          }).toList(),
+          selected: isSelected,
+          onSelectChanged: widget.selectable && row.selectable
+              ? (bool? selected) =>
+                    _handleRowSelection(row.data, selected ?? false)
+              : null,
+          color: row.color != null ? WidgetStateProperty.all(row.color) : null,
+        );
+      }).toList();
 
   /// Builds a default cell widget.
   Widget _buildDefaultCell(dynamic value, bool isDark) {
@@ -421,13 +430,14 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   }
 
   /// Gets the heading text style.
-  TextStyle _getHeadingStyle(bool isDark) => CorpoTypography.labelMedium.copyWith(
-      fontWeight: CorpoFontWeight.semiBold,
-      color: isDark ? CorpoColors.neutral300 : CorpoColors.neutral700,
-    );
+  TextStyle _getHeadingStyle(bool isDark) =>
+      CorpoTypography.labelMedium.copyWith(
+        fontWeight: CorpoFontWeight.semiBold,
+        color: isDark ? CorpoColors.neutral300 : CorpoColors.neutral700,
+      );
 
   /// Gets the data text style.
   TextStyle _getDataStyle(bool isDark) => CorpoTypography.bodyMedium.copyWith(
-      color: isDark ? CorpoColors.neutral200 : CorpoColors.neutral800,
-    );
+    color: isDark ? CorpoColors.neutral200 : CorpoColors.neutral800,
+  );
 }

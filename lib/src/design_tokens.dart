@@ -24,11 +24,10 @@ import 'package:flutter/material.dart';
 /// This class implements ShadCN's philosophy: change here, update everywhere.
 /// Every Corpo UI component reads from these tokens for complete consistency.
 class CorpoDesignTokens {
-  static CorpoDesignTokens _instance = CorpoDesignTokens._internal();
-
   factory CorpoDesignTokens() => _instance;
 
   CorpoDesignTokens._internal();
+  static final CorpoDesignTokens _instance = CorpoDesignTokens._internal();
 
   // ==========================================
   // CORE COLORS - Change these to rebrand your entire app
@@ -70,14 +69,14 @@ class CorpoDesignTokens {
 
   /// Base spacing unit - multiply by factors for consistent spacing
   /// Default: 4.0 (so 1x=4px, 2x=8px, 4x=16px, etc.)
-  double _baseSpacing = 4.0;
+  double _baseSpacing = 4;
 
   // ==========================================
   // TYPOGRAPHY SYSTEM - Control all text styles
   // ==========================================
 
   /// Base font size for body text
-  double _baseFontSize = 14.0;
+  double _baseFontSize = 14;
 
   /// Font family for the entire app
   String _fontFamily = 'Inter';
@@ -87,13 +86,13 @@ class CorpoDesignTokens {
   // ==========================================
 
   /// Default border radius for components
-  double _borderRadius = 8.0;
+  double _borderRadius = 8;
 
   /// Small border radius for subtle rounding
-  double _borderRadiusSmall = 4.0;
+  double _borderRadiusSmall = 4;
 
   /// Large border radius for prominent components
-  double _borderRadiusLarge = 16.0;
+  double _borderRadiusLarge = 16;
 
   // ==========================================
   // PUBLIC GETTERS - Components read these values
@@ -183,7 +182,7 @@ class CorpoDesignTokens {
     double? borderRadiusSmall,
     double? borderRadiusLarge,
   }) {
-    final instance = CorpoDesignTokens();
+    final CorpoDesignTokens instance = CorpoDesignTokens();
 
     // Update colors
     if (primaryColor != null) instance._primaryColor = primaryColor;
@@ -205,10 +204,12 @@ class CorpoDesignTokens {
 
     // Update border radius
     if (borderRadius != null) instance._borderRadius = borderRadius;
-    if (borderRadiusSmall != null)
+    if (borderRadiusSmall != null) {
       instance._borderRadiusSmall = borderRadiusSmall;
-    if (borderRadiusLarge != null)
+    }
+    if (borderRadiusLarge != null) {
       instance._borderRadiusLarge = borderRadiusLarge;
+    }
   }
 
   /// Generate color variations automatically (lighter/darker shades)
@@ -228,7 +229,7 @@ class CorpoDesignTokens {
   /// Generate accessible text color based on background
   /// Ensures WCAG compliance automatically
   Color getTextColorFor(Color backgroundColor) {
-    final luminance = backgroundColor.computeLuminance();
+    final double luminance = backgroundColor.computeLuminance();
     return luminance > 0.5 ? _textPrimary : Colors.white;
   }
 
@@ -240,8 +241,8 @@ class CorpoDesignTokens {
   static void applyCorporateTheme() {
     configure(
       primaryColor: const Color(0xFF3182CE),
-      borderRadius: 8.0,
-      baseSpacing: 4.0,
+      borderRadius: 8,
+      baseSpacing: 4,
       fontFamily: 'Inter',
     );
   }
@@ -251,8 +252,8 @@ class CorpoDesignTokens {
     configure(
       primaryColor: const Color(0xFF7C3AED),
       secondaryColor: const Color(0xFF8B5CF6),
-      borderRadius: 12.0,
-      baseSpacing: 6.0,
+      borderRadius: 12,
+      baseSpacing: 6,
       fontFamily: 'SF Pro Display',
     );
   }
@@ -262,8 +263,8 @@ class CorpoDesignTokens {
     configure(
       primaryColor: const Color(0xFFEA580C),
       successColor: const Color(0xFF16A34A),
-      borderRadius: 16.0,
-      baseSpacing: 8.0,
+      borderRadius: 16,
+      baseSpacing: 8,
       fontFamily: 'Poppins',
     );
   }
@@ -273,8 +274,8 @@ class CorpoDesignTokens {
     configure(
       primaryColor: const Color(0xFF000000),
       secondaryColor: const Color(0xFF6B7280),
-      borderRadius: 4.0,
-      baseSpacing: 4.0,
+      borderRadius: 4,
+      baseSpacing: 4,
       fontFamily: 'SF Mono',
     );
   }

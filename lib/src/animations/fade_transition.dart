@@ -289,14 +289,17 @@ abstract final class CorpoFadeAnimations {
     Duration duration = CorpoAnimationDurations.standard,
     CorpoFadeType fadeType = CorpoFadeType.fadeInUp,
   }) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(children.length, (int index) => CorpoFadeTransition(
-          duration: duration,
-          fadeType: fadeType,
-          delay: Duration(milliseconds: interval.inMilliseconds * index),
-          child: children[index],
-        )),
-    );
+    mainAxisSize: MainAxisSize.min,
+    children: List.generate(
+      children.length,
+      (int index) => CorpoFadeTransition(
+        duration: duration,
+        fadeType: fadeType,
+        delay: Duration(milliseconds: interval.inMilliseconds * index),
+        child: children[index],
+      ),
+    ),
+  );
 
   /// Creates a fade animation controller for manual control.
   static AnimationController createController({
@@ -311,7 +314,7 @@ abstract final class CorpoFadeAnimations {
     double begin = 0.0,
     double end = 1.0,
   }) => Tween<double>(
-      begin: begin,
-      end: end,
-    ).animate(CurvedAnimation(parent: controller, curve: curve));
+    begin: begin,
+    end: end,
+  ).animate(CurvedAnimation(parent: controller, curve: curve));
 }

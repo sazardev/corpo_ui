@@ -90,12 +90,12 @@ export 'src/components/typography/corpo_code.dart';
 export 'src/components/typography/corpo_heading.dart';
 export 'src/components/typography/corpo_label.dart';
 export 'src/components/typography/corpo_text.dart';
-// Design Tokens - ShadCN-style configuration system
-export 'src/design_tokens.dart';
 // Design Tokens
 export 'src/constants/colors.dart';
 export 'src/constants/spacing.dart';
 export 'src/constants/typography.dart';
+// Design Tokens - ShadCN-style configuration system
+export 'src/design_tokens.dart';
 // Responsive System (Phase 5.2)
 export 'src/responsive/adaptive_components.dart';
 export 'src/responsive/layout_grid.dart';

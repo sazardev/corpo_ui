@@ -159,19 +159,19 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
   }
 
   EdgeInsetsGeometry _getPadding() => switch (widget.density) {
-      CorpoExpansionPanelDensity.compact => const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.small,
-        vertical: CorpoSpacing.extraSmall,
-      ),
-      CorpoExpansionPanelDensity.comfortable => const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.large,
-        vertical: CorpoSpacing.medium,
-      ),
-      CorpoExpansionPanelDensity.standard => const EdgeInsets.symmetric(
-        horizontal: CorpoSpacing.medium,
-        vertical: CorpoSpacing.small,
-      ),
-    };
+    CorpoExpansionPanelDensity.compact => const EdgeInsets.symmetric(
+      horizontal: CorpoSpacing.small,
+      vertical: CorpoSpacing.extraSmall,
+    ),
+    CorpoExpansionPanelDensity.comfortable => const EdgeInsets.symmetric(
+      horizontal: CorpoSpacing.large,
+      vertical: CorpoSpacing.medium,
+    ),
+    CorpoExpansionPanelDensity.standard => const EdgeInsets.symmetric(
+      horizontal: CorpoSpacing.medium,
+      vertical: CorpoSpacing.small,
+    ),
+  };
 
   double _getElevation() {
     if (widget.elevation != null) return widget.elevation!;
@@ -200,9 +200,9 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
 
       return ExpansionPanel(
         headerBuilder: (BuildContext context, bool isExpanded) => Padding(
-            padding: padding,
-            child: item.headerBuilder(context, isExpanded),
-          ),
+          padding: padding,
+          child: item.headerBuilder(context, isExpanded),
+        ),
         body: Container(
           width: double.infinity,
           padding: padding,
@@ -235,9 +235,7 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
     return switch (widget.variant) {
       CorpoExpansionPanelVariant.outlined => Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: colorScheme.outline.withValues(alpha: 0.3),
-          ),
+          border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
           borderRadius: BorderRadius.circular(8),
         ),
         child: expansionPanelList,

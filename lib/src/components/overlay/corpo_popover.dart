@@ -130,7 +130,7 @@ class CorpoPopover extends StatefulWidget {
     this.onShow,
     this.onHide,
     super.key,
-  }) : margin = margin ?? const EdgeInsets.all(8.0);
+  }) : margin = margin ?? const EdgeInsets.all(8);
 
   /// The widget that triggers the popover.
   final Widget child;

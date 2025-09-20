@@ -133,17 +133,19 @@ class CorpoScreenSize {
   });
 
   /// Creates a screen size from MediaQueryData.
-  factory CorpoScreenSize.fromMediaQuery(MediaQueryData mediaQuery) => CorpoScreenSize(
-      size: mediaQuery.size,
-      devicePixelRatio: mediaQuery.devicePixelRatio,
-      textScaleFactor: mediaQuery.textScaler.scale(1),
-      padding: mediaQuery.padding,
-      viewInsets: mediaQuery.viewInsets,
-      viewPadding: mediaQuery.viewPadding,
-    );
+  factory CorpoScreenSize.fromMediaQuery(MediaQueryData mediaQuery) =>
+      CorpoScreenSize(
+        size: mediaQuery.size,
+        devicePixelRatio: mediaQuery.devicePixelRatio,
+        textScaleFactor: mediaQuery.textScaler.scale(1),
+        padding: mediaQuery.padding,
+        viewInsets: mediaQuery.viewInsets,
+        viewPadding: mediaQuery.viewPadding,
+      );
 
   /// Gets the screen size information from the current context.
-  static CorpoScreenSize of(BuildContext context) => CorpoScreenSize.fromMediaQuery(MediaQuery.of(context));
+  static CorpoScreenSize of(BuildContext context) =>
+      CorpoScreenSize.fromMediaQuery(MediaQuery.of(context));
 
   /// The logical size of the screen.
   final Size size;
@@ -233,7 +235,8 @@ class CorpoScreenSize {
   bool get isSquare => orientation == CorpoOrientation.square;
 
   /// Checks if the screen width is at least the given breakpoint.
-  bool isAtLeast(CorpoBreakpoint breakpoint) => width >= CorpoBreakpoints.getBreakpointWidth(breakpoint);
+  bool isAtLeast(CorpoBreakpoint breakpoint) =>
+      width >= CorpoBreakpoints.getBreakpointWidth(breakpoint);
 
   /// Checks if the screen width is at most the given breakpoint.
   bool isAtMost(CorpoBreakpoint breakpoint) {
@@ -243,11 +246,13 @@ class CorpoScreenSize {
   }
 
   /// Checks if the screen width is between two breakpoints.
-  bool isBetween(CorpoBreakpoint min, CorpoBreakpoint max) => isAtLeast(min) && isAtMost(max);
+  bool isBetween(CorpoBreakpoint min, CorpoBreakpoint max) =>
+      isAtLeast(min) && isAtMost(max);
 
   /// Selects a value based on the current breakpoint.
   T select<T>({
-    required T fallback, T? xs,
+    required T fallback,
+    T? xs,
     T? sm,
     T? md,
     T? lg,
@@ -272,7 +277,8 @@ class CorpoScreenSize {
 
   /// Selects a value based on device type.
   T selectByDevice<T>({
-    required T fallback, T? mobile,
+    required T fallback,
+    T? mobile,
     T? tablet,
     T? desktop,
     T? ultrawide,
@@ -291,7 +297,8 @@ class CorpoScreenSize {
 
   /// Selects a value based on orientation.
   T selectByOrientation<T>({
-    required T fallback, T? portrait,
+    required T fallback,
+    T? portrait,
     T? landscape,
     T? square,
   }) {
@@ -338,12 +345,13 @@ class CorpoScreenSize {
   }
 
   @override
-  String toString() => 'CorpoScreenSize('
-        'size: $size, '
-        'breakpoint: $currentBreakpoint, '
-        'deviceType: $deviceType, '
-        'orientation: $orientation'
-        ')';
+  String toString() =>
+      'CorpoScreenSize('
+      'size: $size, '
+      'breakpoint: $currentBreakpoint, '
+      'deviceType: $deviceType, '
+      'orientation: $orientation'
+      ')';
 
   @override
   bool operator ==(Object other) {
@@ -359,13 +367,13 @@ class CorpoScreenSize {
 
   @override
   int get hashCode => Object.hash(
-      size,
-      devicePixelRatio,
-      textScaleFactor,
-      padding,
-      viewInsets,
-      viewPadding,
-    );
+    size,
+    devicePixelRatio,
+    textScaleFactor,
+    padding,
+    viewInsets,
+    viewPadding,
+  );
 }
 
 /// Extension methods for convenient screen size access.

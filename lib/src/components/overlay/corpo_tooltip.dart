@@ -123,7 +123,7 @@ class CorpoTooltip extends StatefulWidget {
     this.onShow,
     this.onHide,
     super.key,
-  }) : margin = margin ?? const EdgeInsets.all(8.0);
+  }) : margin = margin ?? const EdgeInsets.all(8);
 
   /// The widget that the tooltip is attached to.
   final Widget child;

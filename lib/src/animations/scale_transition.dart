@@ -393,16 +393,27 @@ class CorpoScalePageRoute<T> extends PageRouteBuilder<T> {
     this.curve = CorpoScaleCurves.smoothScale,
     super.settings,
   }) : super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          transitionDuration: duration,
          reverseTransitionDuration: duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => CorpoScalePageTransition(
-             animation: animation,
-             type: type,
-             origin: origin,
-             curve: curve,
-             child: child,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => CorpoScalePageTransition(
+               animation: animation,
+               type: type,
+               origin: origin,
+               curve: curve,
+               child: child,
+             ),
        );
 
   /// The page widget to display.
@@ -511,15 +522,18 @@ abstract final class CorpoScaleAnimations {
     Duration interval = const Duration(milliseconds: 100),
     Duration duration = CorpoAnimationDurations.standard,
   }) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(children.length, (int index) => CorpoScaleTransition(
-          type: type,
-          origin: origin,
-          duration: duration,
-          delay: Duration(milliseconds: interval.inMilliseconds * index),
-          child: children[index],
-        )),
-    );
+    mainAxisSize: MainAxisSize.min,
+    children: List.generate(
+      children.length,
+      (int index) => CorpoScaleTransition(
+        type: type,
+        origin: origin,
+        duration: duration,
+        delay: Duration(milliseconds: interval.inMilliseconds * index),
+        child: children[index],
+      ),
+    ),
+  );
 
   /// Creates a scale animation controller for manual control.
   static AnimationController createController({
@@ -571,11 +585,11 @@ abstract final class CorpoScaleAnimations {
     double scaleMin = 0.95,
     double scaleMax = 1.05,
   }) => CorpoScaleTransition(
-      type: CorpoScaleType.pulse,
-      duration: duration,
-      scaleBegin: scaleMin,
-      scaleEnd: scaleMax,
-      repeat: true,
-      child: child,
-    );
+    type: CorpoScaleType.pulse,
+    duration: duration,
+    scaleBegin: scaleMin,
+    scaleEnd: scaleMax,
+    repeat: true,
+    child: child,
+  );
 }

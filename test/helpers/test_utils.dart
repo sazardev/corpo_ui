@@ -29,10 +29,10 @@ abstract final class CorpoTestUtils {
     bool darkMode = false,
     Locale? locale,
   }) => MaterialApp(
-      theme: theme ?? (darkMode ? CorpoTheme.dark() : CorpoTheme.light()),
-      locale: locale,
-      home: Scaffold(body: child),
-    );
+    theme: theme ?? (darkMode ? CorpoTheme.dark() : CorpoTheme.light()),
+    locale: locale,
+    home: Scaffold(body: child),
+  );
 
   /// Pumps a widget with Corpo UI theme setup.
   static Future<void> pumpWithTheme(
@@ -151,13 +151,16 @@ abstract final class CorpoTestUtils {
 /// Custom matchers for Corpo UI testing.
 abstract final class CorpoMatchers {
   /// Matcher to verify Corpo UI color values.
-  static Matcher hasCorpoColor(Color expectedColor) => _HasCorpoColor(expectedColor);
+  static Matcher hasCorpoColor(Color expectedColor) =>
+      _HasCorpoColor(expectedColor);
 
   /// Matcher to verify proper spacing values.
-  static Matcher hasCorpoSpacing(double expectedSpacing) => _HasCorpoSpacing(expectedSpacing);
+  static Matcher hasCorpoSpacing(double expectedSpacing) =>
+      _HasCorpoSpacing(expectedSpacing);
 
   /// Matcher to verify typography styles.
-  static Matcher hasCorpoTypography(TextStyle expectedStyle) => _HasCorpoTypography(expectedStyle);
+  static Matcher hasCorpoTypography(TextStyle expectedStyle) =>
+      _HasCorpoTypography(expectedStyle);
 }
 
 class _HasCorpoColor extends Matcher {
@@ -173,7 +176,8 @@ class _HasCorpoColor extends Matcher {
   }
 
   @override
-  Description describe(Description description) => description.add('has Corpo color $expectedColor');
+  Description describe(Description description) =>
+      description.add('has Corpo color $expectedColor');
 }
 
 class _HasCorpoSpacing extends Matcher {
@@ -188,7 +192,8 @@ class _HasCorpoSpacing extends Matcher {
   }
 
   @override
-  Description describe(Description description) => description.add('has Corpo spacing $expectedSpacing');
+  Description describe(Description description) =>
+      description.add('has Corpo spacing $expectedSpacing');
 }
 
 class _HasCorpoTypography extends Matcher {
@@ -203,5 +208,6 @@ class _HasCorpoTypography extends Matcher {
   }
 
   @override
-  Description describe(Description description) => description.add('has Corpo typography $expectedStyle');
+  Description describe(Description description) =>
+      description.add('has Corpo typography $expectedStyle');
 }

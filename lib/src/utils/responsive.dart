@@ -200,12 +200,12 @@ abstract final class CorpoResponsive {
     int smallDesktopColumns = 3,
     int desktopColumns = 4,
   }) => value<int>(
-      context: context,
-      mobile: mobileColumns,
-      tablet: tabletColumns,
-      smallDesktop: smallDesktopColumns,
-      desktop: desktopColumns,
-    );
+    context: context,
+    mobile: mobileColumns,
+    tablet: tabletColumns,
+    smallDesktop: smallDesktopColumns,
+    desktop: desktopColumns,
+  );
 
   /// Gets responsive padding based on screen size.
   static EdgeInsets getResponsivePadding(
@@ -215,12 +215,12 @@ abstract final class CorpoResponsive {
     EdgeInsets? smallDesktop,
     EdgeInsets? desktop,
   }) => value<EdgeInsets>(
-      context: context,
-      mobile: mobile ?? const EdgeInsets.all(16),
-      tablet: tablet ?? const EdgeInsets.all(24),
-      smallDesktop: smallDesktop ?? const EdgeInsets.all(32),
-      desktop: desktop ?? const EdgeInsets.all(40),
-    );
+    context: context,
+    mobile: mobile ?? const EdgeInsets.all(16),
+    tablet: tablet ?? const EdgeInsets.all(24),
+    smallDesktop: smallDesktop ?? const EdgeInsets.all(32),
+    desktop: desktop ?? const EdgeInsets.all(40),
+  );
 
   /// Gets responsive margin based on screen size.
   static EdgeInsets getResponsiveMargin(
@@ -230,12 +230,12 @@ abstract final class CorpoResponsive {
     EdgeInsets? smallDesktop,
     EdgeInsets? desktop,
   }) => value<EdgeInsets>(
-      context: context,
-      mobile: mobile ?? const EdgeInsets.all(8),
-      tablet: tablet ?? const EdgeInsets.all(12),
-      smallDesktop: smallDesktop ?? const EdgeInsets.all(16),
-      desktop: desktop ?? const EdgeInsets.all(20),
-    );
+    context: context,
+    mobile: mobile ?? const EdgeInsets.all(8),
+    tablet: tablet ?? const EdgeInsets.all(12),
+    smallDesktop: smallDesktop ?? const EdgeInsets.all(16),
+    desktop: desktop ?? const EdgeInsets.all(20),
+  );
 
   /// Gets responsive font size based on screen size.
   static double getResponsiveFontSize(
@@ -245,12 +245,12 @@ abstract final class CorpoResponsive {
     double? smallDesktop,
     double? desktop,
   }) => value<double>(
-      context: context,
-      mobile: mobile ?? 14,
-      tablet: tablet ?? 16,
-      smallDesktop: smallDesktop ?? 16,
-      desktop: desktop ?? 18,
-    );
+    context: context,
+    mobile: mobile ?? 14,
+    tablet: tablet ?? 16,
+    smallDesktop: smallDesktop ?? 16,
+    desktop: desktop ?? 18,
+  );
 
   /// Creates a responsive container with adaptive constraints.
   static Widget container({

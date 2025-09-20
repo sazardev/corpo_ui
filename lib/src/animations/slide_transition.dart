@@ -275,16 +275,27 @@ class CorpoSlidePageRoute<T> extends PageRouteBuilder<T> {
     this.curve = CorpoAnimationCurves.standard,
     super.settings,
   }) : super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          transitionDuration: duration,
          reverseTransitionDuration: duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => CorpoSlidePageTransition(
-             animation: animation,
-             secondaryAnimation: secondaryAnimation,
-             direction: direction,
-             curve: curve,
-             child: child,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => CorpoSlidePageTransition(
+               animation: animation,
+               secondaryAnimation: secondaryAnimation,
+               direction: direction,
+               curve: curve,
+               child: child,
+             ),
        );
 
   /// The page widget to display.
@@ -389,15 +400,18 @@ abstract final class CorpoSlideAnimations {
     Duration duration = CorpoAnimationDurations.standard,
     CorpoSlideType type = CorpoSlideType.slideWithFade,
   }) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(children.length, (int index) => CorpoSlideTransition(
-          direction: direction,
-          type: type,
-          duration: duration,
-          delay: Duration(milliseconds: interval.inMilliseconds * index),
-          child: children[index],
-        )),
-    );
+    mainAxisSize: MainAxisSize.min,
+    children: List.generate(
+      children.length,
+      (int index) => CorpoSlideTransition(
+        direction: direction,
+        type: type,
+        duration: duration,
+        delay: Duration(milliseconds: interval.inMilliseconds * index),
+        child: children[index],
+      ),
+    ),
+  );
 
   /// Creates a slide animation controller for manual control.
   static AnimationController createController({

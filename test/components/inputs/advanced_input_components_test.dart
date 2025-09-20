@@ -32,7 +32,9 @@ void main() {
         expect(find.text('Test Checkbox'), findsOneWidget);
         expect(find.byType(Checkbox), findsOneWidget);
 
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.value, isFalse);
       });
 
@@ -53,7 +55,9 @@ void main() {
         await tester.tap(find.byType(CorpoCheckbox));
         await tester.pumpAndSettle();
 
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.value, isTrue);
       });
 
@@ -73,7 +77,9 @@ void main() {
         );
 
         // Initial state: null (indeterminate)
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.value, isNull);
         expect(checkbox.tristate, isTrue);
 
@@ -81,7 +87,9 @@ void main() {
         await tester.tap(find.byType(CorpoCheckbox));
         await tester.pumpAndSettle();
 
-        final Checkbox checkbox2 = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox2 = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox2.value, isTrue);
       });
 
@@ -114,7 +122,9 @@ void main() {
           ),
         );
 
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.onChanged, isNull);
       });
     });
@@ -178,7 +188,9 @@ void main() {
           ),
         );
 
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.autofocus, isFalse);
       });
 
@@ -193,7 +205,9 @@ void main() {
           ),
         );
 
-        final Checkbox checkbox = tester.widget<Checkbox>(find.byType(Checkbox));
+        final Checkbox checkbox = tester.widget<Checkbox>(
+          find.byType(Checkbox),
+        );
         expect(checkbox.autofocus, isTrue);
       });
     });
@@ -248,7 +262,9 @@ void main() {
         expect(find.text('Radio Option 1'), findsOneWidget);
         expect(find.byType(Radio<String>), findsOneWidget);
 
-        final Radio<String> radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
+        final Radio<String> radio = tester.widget<Radio<String>>(
+          find.byType(Radio<String>),
+        );
         expect(radio.value, equals('option1'));
         expect(radio.groupValue, equals('option1'));
       });
@@ -264,13 +280,15 @@ void main() {
                 CorpoRadio<String>(
                   value: 'option1',
                   groupValue: groupValue,
-                  onChanged: (String? value) => setState(() => groupValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => groupValue = value),
                   label: 'Option 1',
                 ),
                 CorpoRadio<String>(
                   value: 'option2',
                   groupValue: groupValue,
-                  onChanged: (String? value) => setState(() => groupValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => groupValue = value),
                   label: 'Option 2',
                 ),
               ],
@@ -326,7 +344,9 @@ void main() {
           ),
         );
 
-        final Radio<String> radio = tester.widget<Radio<String>>(find.byType(Radio<String>));
+        final Radio<String> radio = tester.widget<Radio<String>>(
+          find.byType(Radio<String>),
+        );
         expect(radio.onChanged, isNull);
       });
     });
@@ -413,7 +433,9 @@ void main() {
           ),
         );
 
-        final Radio<int> radio = tester.widget<Radio<int>>(find.byType(Radio<int>));
+        final Radio<int> radio = tester.widget<Radio<int>>(
+          find.byType(Radio<int>),
+        );
         expect(radio.value, equals(1));
         expect(radio.groupValue, equals(1));
       });
@@ -769,9 +791,10 @@ void main() {
           ),
         );
 
-        final DropdownButton<String> dropdown = tester.widget<DropdownButton<String>>(
-          find.byType(DropdownButton<String>),
-        );
+        final DropdownButton<String> dropdown = tester
+            .widget<DropdownButton<String>>(
+              find.byType(DropdownButton<String>),
+            );
         expect(dropdown.onChanged, isNull);
       });
     });
@@ -873,10 +896,7 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          CorpoDropdown<String>(
-            items: items,
-            onChanged: (String? value) {},
-          ),
+          CorpoDropdown<String>(items: items, onChanged: (String? value) {}),
         );
 
         expect(find.byType(CorpoDropdown<String>), findsOneWidget);
@@ -913,10 +933,11 @@ void main() {
       bool switchValue = false;
       String? dropdownValue;
 
-      final List<CorpoDropdownItem<String>> dropdownItems = <CorpoDropdownItem<String>>[
-        const CorpoDropdownItem(value: 'choice1', child: Text('Choice 1')),
-        const CorpoDropdownItem(value: 'choice2', child: Text('Choice 2')),
-      ];
+      final List<CorpoDropdownItem<String>> dropdownItems =
+          <CorpoDropdownItem<String>>[
+            const CorpoDropdownItem(value: 'choice1', child: Text('Choice 1')),
+            const CorpoDropdownItem(value: 'choice2', child: Text('Choice 2')),
+          ];
 
       await CorpoTestUtils.pumpWithTheme(
         tester,
@@ -932,13 +953,15 @@ void main() {
               CorpoRadio<String>(
                 value: 'option1',
                 groupValue: radioValue,
-                onChanged: (String? value) => setState(() => radioValue = value),
+                onChanged: (String? value) =>
+                    setState(() => radioValue = value),
                 label: 'Radio Option 1',
               ),
               CorpoRadio<String>(
                 value: 'option2',
                 groupValue: radioValue,
-                onChanged: (String? value) => setState(() => radioValue = value),
+                onChanged: (String? value) =>
+                    setState(() => radioValue = value),
                 label: 'Radio Option 2',
               ),
               CorpoSwitch(
@@ -949,7 +972,8 @@ void main() {
               CorpoDropdown<String>(
                 items: dropdownItems,
                 value: dropdownValue,
-                onChanged: (String? value) => setState(() => dropdownValue = value),
+                onChanged: (String? value) =>
+                    setState(() => dropdownValue = value),
                 label: 'Dropdown Selection',
               ),
             ],
@@ -1008,9 +1032,11 @@ void main() {
                     ),
                   ],
                   value: dropdownValue,
-                  onChanged: (String? value) => setState(() => dropdownValue = value),
+                  onChanged: (String? value) =>
+                      setState(() => dropdownValue = value),
                   label: 'Required Selection',
-                  validator: (String? value) => value == null ? 'Required' : null,
+                  validator: (String? value) =>
+                      value == null ? 'Required' : null,
                 ),
               ],
             ),

@@ -232,7 +232,8 @@ class CorpoColumnSpan {
   int getFlex(CorpoScreenSize screenSize) => getSpan(screenSize);
 
   /// Gets the width percentage (span / 12).
-  double getWidthPercentage(CorpoScreenSize screenSize) => getSpan(screenSize) / 12.0;
+  double getWidthPercentage(CorpoScreenSize screenSize) =>
+      getSpan(screenSize) / 12.0;
 }
 
 /// A responsive column that adapts its width based on screen size.
@@ -459,7 +460,8 @@ abstract final class CorpoResponsiveUtils {
   /// Creates a responsive value selector.
   static T select<T>(
     BuildContext context, {
-    required T fallback, T? xs,
+    required T fallback,
+    T? xs,
     T? sm,
     T? md,
     T? lg,
@@ -481,72 +483,76 @@ abstract final class CorpoResponsiveUtils {
   /// Creates a responsive padding selector.
   static EdgeInsetsGeometry selectPadding(
     BuildContext context, {
-    required EdgeInsetsGeometry fallback, EdgeInsetsGeometry? xs,
+    required EdgeInsetsGeometry fallback,
+    EdgeInsetsGeometry? xs,
     EdgeInsetsGeometry? sm,
     EdgeInsetsGeometry? md,
     EdgeInsetsGeometry? lg,
     EdgeInsetsGeometry? xl,
     EdgeInsetsGeometry? xxl,
   }) => select<EdgeInsetsGeometry>(
-      context,
-      xs: xs,
-      sm: sm,
-      md: md,
-      lg: lg,
-      xl: xl,
-      xxl: xxl,
-      fallback: fallback,
-    );
+    context,
+    xs: xs,
+    sm: sm,
+    md: md,
+    lg: lg,
+    xl: xl,
+    xxl: xxl,
+    fallback: fallback,
+  );
 
   /// Creates a responsive margin selector.
   static EdgeInsetsGeometry selectMargin(
     BuildContext context, {
-    required EdgeInsetsGeometry fallback, EdgeInsetsGeometry? xs,
+    required EdgeInsetsGeometry fallback,
+    EdgeInsetsGeometry? xs,
     EdgeInsetsGeometry? sm,
     EdgeInsetsGeometry? md,
     EdgeInsetsGeometry? lg,
     EdgeInsetsGeometry? xl,
     EdgeInsetsGeometry? xxl,
   }) => select<EdgeInsetsGeometry>(
-      context,
-      xs: xs,
-      sm: sm,
-      md: md,
-      lg: lg,
-      xl: xl,
-      xxl: xxl,
-      fallback: fallback,
-    );
+    context,
+    xs: xs,
+    sm: sm,
+    md: md,
+    lg: lg,
+    xl: xl,
+    xxl: xxl,
+    fallback: fallback,
+  );
 
   /// Creates a responsive font size selector.
   static double selectFontSize(
     BuildContext context, {
-    required double fallback, double? xs,
+    required double fallback,
+    double? xs,
     double? sm,
     double? md,
     double? lg,
     double? xl,
     double? xxl,
   }) => select<double>(
-      context,
-      xs: xs,
-      sm: sm,
-      md: md,
-      lg: lg,
-      xl: xl,
-      xxl: xxl,
-      fallback: fallback,
-    );
+    context,
+    xs: xs,
+    sm: sm,
+    md: md,
+    lg: lg,
+    xl: xl,
+    xxl: xxl,
+    fallback: fallback,
+  );
 
   /// Gets standard container max widths for breakpoints.
-  static double? getContainerMaxWidth(CorpoScreenSize screenSize) => screenSize.select<double?>(
-      sm: 540,
-      md: 720,
-      lg: 960,
-      xl: 1140,
-      xxl: 1320,
-      fallback: null,
-    );
+  static double? getContainerMaxWidth(CorpoScreenSize screenSize) =>
+      screenSize.select<double?>(
+        sm: 540,
+        md: 720,
+        lg: 960,
+        xl: 1140,
+        xxl: 1320,
+        fallback: null,
+      );
 
   /// Creates a responsive container with standard max widths.
   static Widget container({
@@ -555,10 +561,10 @@ abstract final class CorpoResponsiveUtils {
     EdgeInsetsGeometry? margin,
     AlignmentGeometry? alignment,
   }) => CorpoResponsiveContainer(
-      maxWidth: getContainerMaxWidth,
-      padding: padding != null ? (_) => padding : null,
-      margin: margin != null ? (_) => margin : null,
-      alignment: alignment,
-      child: child,
-    );
+    maxWidth: getContainerMaxWidth,
+    padding: padding != null ? (_) => padding : null,
+    margin: margin != null ? (_) => margin : null,
+    alignment: alignment,
+    child: child,
+  );
 }

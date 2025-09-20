@@ -44,7 +44,9 @@ void main() {
         expect(find.byType(RichText), findsWidgets);
         expect(
           find.byWidgetPredicate(
-            (Widget widget) => hasRichTextContent('Email Address').matches(widget, <dynamic, dynamic>{}),
+            (Widget widget) => hasRichTextContent(
+              'Email Address',
+            ).matches(widget, <dynamic, dynamic>{}),
           ),
           findsOneWidget,
         );
@@ -275,8 +277,9 @@ void main() {
         // Verify the label exists in RichText widget
         expect(
           find.byWidgetPredicate(
-            (Widget widget) =>
-                hasRichTextContent('Accessible Field').matches(widget, <dynamic, dynamic>{}),
+            (Widget widget) => hasRichTextContent(
+              'Accessible Field',
+            ).matches(widget, <dynamic, dynamic>{}),
           ),
           findsOneWidget,
         );

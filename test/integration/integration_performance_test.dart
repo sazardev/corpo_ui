@@ -21,6 +21,7 @@ void main() {
         String? radioValue = 'option1';
         bool checkboxValue = false;
         bool switchValue = false;
+        // ignore: unused_local_variable
         String textFieldValue = '';
 
         await CorpoTestUtils.pumpWithTheme(

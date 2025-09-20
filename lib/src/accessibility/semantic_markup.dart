@@ -178,23 +178,23 @@ class CorpoSemanticStructure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-      container: true,
-      label: label,
-      hint: hint,
-      value: value,
-      sortKey: sortKey,
-      button: semanticRole == CorpoSemanticRole.button,
-      link: semanticRole == CorpoSemanticRole.link,
-      header:
-          semanticRole == CorpoSemanticRole.heading ||
-          semanticRole == CorpoSemanticRole.banner,
-      textField: false, // Handled by specific form components
-      image: semanticRole == CorpoSemanticRole.image,
-      liveRegion:
-          semanticRole == CorpoSemanticRole.alert ||
-          semanticRole == CorpoSemanticRole.status,
-      child: child,
-    );
+    container: true,
+    label: label,
+    hint: hint,
+    value: value,
+    sortKey: sortKey,
+    button: semanticRole == CorpoSemanticRole.button,
+    link: semanticRole == CorpoSemanticRole.link,
+    header:
+        semanticRole == CorpoSemanticRole.heading ||
+        semanticRole == CorpoSemanticRole.banner,
+    textField: false, // Handled by specific form components
+    image: semanticRole == CorpoSemanticRole.image,
+    liveRegion:
+        semanticRole == CorpoSemanticRole.alert ||
+        semanticRole == CorpoSemanticRole.status,
+    child: child,
+  );
 }
 
 /// A widget that provides semantic heading structure.
@@ -221,11 +221,11 @@ class CorpoSemanticHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.heading,
-      label: text,
-      sortKey: OrdinalSortKey(level.level.toDouble()),
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.heading,
+    label: text,
+    sortKey: OrdinalSortKey(level.level.toDouble()),
+    child: child,
+  );
 }
 
 /// A widget that provides semantic list structure.
@@ -256,23 +256,23 @@ class CorpoSemanticList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.list,
-      label: label,
-      hint: hint,
-      child: Column(
-        children: children.asMap().entries.map((MapEntry<int, Widget> entry) {
-          final int index = entry.key;
-          final Widget child = entry.value;
+    semanticRole: CorpoSemanticRole.list,
+    label: label,
+    hint: hint,
+    child: Column(
+      children: children.asMap().entries.map((MapEntry<int, Widget> entry) {
+        final int index = entry.key;
+        final Widget child = entry.value;
 
-          return CorpoSemanticListItem(
-            index: index + 1,
-            total: children.length,
-            isOrdered: isOrdered,
-            child: child,
-          );
-        }).toList(),
-      ),
-    );
+        return CorpoSemanticListItem(
+          index: index + 1,
+          total: children.length,
+          isOrdered: isOrdered,
+          child: child,
+        );
+      }).toList(),
+    ),
+  );
 }
 
 /// A widget that provides semantic list item structure.
@@ -357,13 +357,13 @@ class CorpoSemanticForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.form,
-      label: label,
-      hint: hasErrors && errorMessage != null
-          ? '$hint. Error: $errorMessage'
-          : hint,
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.form,
+    label: label,
+    hint: hasErrors && errorMessage != null
+        ? '$hint. Error: $errorMessage'
+        : hint,
+    child: child,
+  );
 }
 
 /// A widget that provides semantic navigation structure.
@@ -389,11 +389,11 @@ class CorpoSemanticNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.navigation,
-      label: label ?? 'Navigation',
-      hint: hint,
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.navigation,
+    label: label ?? 'Navigation',
+    hint: hint,
+    child: child,
+  );
 }
 
 /// A widget that provides semantic tab structure.
@@ -466,14 +466,14 @@ class CorpoSemanticTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-      button: true,
-      selected: isSelected,
-      label: label,
-      hint: isSelected ? 'Selected tab' : 'Tap to select tab',
-      sortKey: index != null ? OrdinalSortKey(index!.toDouble()) : null,
-      onTap: onTap,
-      child: child,
-    );
+    button: true,
+    selected: isSelected,
+    label: label,
+    hint: isSelected ? 'Selected tab' : 'Tap to select tab',
+    sortKey: index != null ? OrdinalSortKey(index!.toDouble()) : null,
+    onTap: onTap,
+    child: child,
+  );
 }
 
 /// A widget that provides semantic dialog structure.
@@ -501,11 +501,11 @@ class CorpoSemanticDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.dialog,
-      label: label,
-      hint: hint,
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.dialog,
+    label: label,
+    hint: hint,
+    child: child,
+  );
 }
 
 /// Utility class for creating semantic markup.
@@ -518,13 +518,13 @@ abstract final class CorpoSemanticUtils {
     bool isEnabled = true,
     VoidCallback? onTap,
   }) => Semantics(
-      button: true,
-      enabled: isEnabled,
-      label: label,
-      hint: hint,
-      onTap: onTap,
-      child: child,
-    );
+    button: true,
+    enabled: isEnabled,
+    label: label,
+    hint: hint,
+    onTap: onTap,
+    child: child,
+  );
 
   /// Creates a semantic link.
   static Widget link({
@@ -533,12 +533,12 @@ abstract final class CorpoSemanticUtils {
     String? hint,
     VoidCallback? onTap,
   }) => Semantics(
-      link: true,
-      label: label,
-      hint: hint,
-      onTap: onTap,
-      child: child,
-    );
+    link: true,
+    label: label,
+    hint: hint,
+    onTap: onTap,
+    child: child,
+  );
 
   /// Creates a semantic image.
   static Widget image({
@@ -558,14 +558,14 @@ abstract final class CorpoSemanticUtils {
     bool hasError = false,
     String? errorText,
   }) => Semantics(
-      textField: true,
-      label: label,
-      hint: hasError && errorText != null ? '$hint. Error: $errorText' : hint,
-      value: value,
-      obscured: isPassword,
-      readOnly: isReadOnly,
-      child: child,
-    );
+    textField: true,
+    label: label,
+    hint: hasError && errorText != null ? '$hint. Error: $errorText' : hint,
+    value: value,
+    obscured: isPassword,
+    readOnly: isReadOnly,
+    child: child,
+  );
 
   /// Creates a semantic slider.
   static Widget slider({
@@ -578,16 +578,16 @@ abstract final class CorpoSemanticUtils {
     VoidCallback? onIncrease,
     VoidCallback? onDecrease,
   }) => Semantics(
-      slider: true,
-      label: label,
-      value: value,
-      hint: hint,
-      increasedValue: increasedValue,
-      decreasedValue: decreasedValue,
-      onIncrease: onIncrease,
-      onDecrease: onDecrease,
-      child: child,
-    );
+    slider: true,
+    label: label,
+    value: value,
+    hint: hint,
+    increasedValue: increasedValue,
+    decreasedValue: decreasedValue,
+    onIncrease: onIncrease,
+    onDecrease: onDecrease,
+    child: child,
+  );
 
   /// Creates a semantic progress indicator.
   static Widget progressBar({
@@ -596,12 +596,12 @@ abstract final class CorpoSemanticUtils {
     String? value,
     String? hint,
   }) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.progressbar,
-      label: label,
-      value: value,
-      hint: hint,
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.progressbar,
+    label: label,
+    value: value,
+    hint: hint,
+    child: child,
+  );
 
   /// Creates a semantic status indicator.
   static Widget status({
@@ -610,11 +610,11 @@ abstract final class CorpoSemanticUtils {
     String? hint,
     bool isLiveRegion = true,
   }) => Semantics(
-      label: label,
-      hint: hint,
-      liveRegion: isLiveRegion,
-      child: child,
-    );
+    label: label,
+    hint: hint,
+    liveRegion: isLiveRegion,
+    child: child,
+  );
 
   /// Creates a semantic alert.
   static Widget alert({
@@ -622,11 +622,11 @@ abstract final class CorpoSemanticUtils {
     required String message,
     String? hint,
   }) => CorpoSemanticStructure(
-      semanticRole: CorpoSemanticRole.alert,
-      label: message,
-      hint: hint,
-      child: child,
-    );
+    semanticRole: CorpoSemanticRole.alert,
+    label: message,
+    hint: hint,
+    child: child,
+  );
 
   /// Gets the appropriate semantic label for a widget.
   static String getSemanticLabel(CorpoSemanticRole role, String? customLabel) {

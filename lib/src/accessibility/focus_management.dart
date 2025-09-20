@@ -134,11 +134,11 @@ class _CorpoFocusManagerState extends State<CorpoFocusManager> {
 
   @override
   Widget build(BuildContext context) => Focus(
-      focusNode: _focusNode,
-      autofocus: widget.autoFocus,
-      onKeyEvent: _handleKeyEvent,
-      child: widget.child,
-    );
+    focusNode: _focusNode,
+    autofocus: widget.autoFocus,
+    onKeyEvent: _handleKeyEvent,
+    child: widget.child,
+  );
 }
 
 /// A widget that provides keyboard navigation utilities.
@@ -181,7 +181,8 @@ class CorpoKeyboardNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<ShortcutActivator, Intent> shortcutMap = <ShortcutActivator, Intent>{};
+    final Map<ShortcutActivator, Intent> shortcutMap =
+        <ShortcutActivator, Intent>{};
     final Map<Type, Action<Intent>> actionMap = <Type, Action<Intent>>{};
 
     // Add arrow key shortcuts
@@ -199,7 +200,8 @@ class CorpoKeyboardNavigator extends StatelessWidget {
 
     // Add Enter key shortcut
     if (onEnterKey != null) {
-      shortcutMap[LogicalKeySet(LogicalKeyboardKey.enter)] = const _EnterKeyIntent();
+      shortcutMap[LogicalKeySet(LogicalKeyboardKey.enter)] =
+          const _EnterKeyIntent();
       actionMap[_EnterKeyIntent] = _CallbackAction(onEnterKey!);
     }
 
@@ -212,7 +214,9 @@ class CorpoKeyboardNavigator extends StatelessWidget {
 
     // Add Tab key shortcuts
     if (onTabKey != null) {
-      shortcutMap[LogicalKeySet(LogicalKeyboardKey.tab)] = const _TabKeyIntent(false);
+      shortcutMap[LogicalKeySet(LogicalKeyboardKey.tab)] = const _TabKeyIntent(
+        false,
+      );
       shortcutMap[LogicalKeySet(
         LogicalKeyboardKey.shift,
         LogicalKeyboardKey.tab,
@@ -224,12 +228,14 @@ class CorpoKeyboardNavigator extends StatelessWidget {
 
     // Add Space key shortcut
     if (onSpaceKey != null) {
-      shortcutMap[LogicalKeySet(LogicalKeyboardKey.space)] = const _SpaceKeyIntent();
+      shortcutMap[LogicalKeySet(LogicalKeyboardKey.space)] =
+          const _SpaceKeyIntent();
       actionMap[_SpaceKeyIntent] = _CallbackAction(onSpaceKey!);
     }
 
     // Add custom shortcuts
-    for (final MapEntry<ShortcutActivator, VoidCallback> entry in shortcuts.entries) {
+    for (final MapEntry<ShortcutActivator, VoidCallback> entry
+        in shortcuts.entries) {
       final _CustomIntent intent = _CustomIntent(entry.value);
       shortcutMap[entry.key] = intent;
       actionMap[_CustomIntent] = _CallbackAction(entry.value);
@@ -270,11 +276,11 @@ class CorpoFocusTraversalGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FocusTraversalGroup(
-      policy: policy ?? OrderedTraversalPolicy(),
-      descendantsAreFocusable: descendantsAreFocusable,
-      descendantsAreTraversable: descendantsAreTraversable,
-      child: child,
-    );
+    policy: policy ?? OrderedTraversalPolicy(),
+    descendantsAreFocusable: descendantsAreFocusable,
+    descendantsAreTraversable: descendantsAreTraversable,
+    child: child,
+  );
 }
 
 /// A widget that provides focus restoration capabilities.
@@ -324,16 +330,16 @@ class _CorpoFocusRestorerState extends State<CorpoFocusRestorer>
 
   @override
   Widget build(BuildContext context) => Focus(
-      onFocusChange: (bool focused) {
-        _hasFocus.value = focused;
+    onFocusChange: (bool focused) {
+      _hasFocus.value = focused;
+    },
+    child: Builder(
+      builder: (BuildContext context) {
+        _focusNode = Focus.of(context);
+        return widget.child;
       },
-      child: Builder(
-        builder: (BuildContext context) {
-          _focusNode = Focus.of(context);
-          return widget.child;
-        },
-      ),
-    );
+    ),
+  );
 
   @override
   void dispose() {
@@ -365,7 +371,8 @@ abstract final class CorpoFocusUtils {
   }
 
   /// Gets the currently focused widget.
-  static FocusNode? getCurrentFocus(BuildContext context) => FocusScope.of(context).focusedChild;
+  static FocusNode? getCurrentFocus(BuildContext context) =>
+      FocusScope.of(context).focusedChild;
 
   /// Checks if a widget has focus.
   static bool hasFocus(FocusNode focusNode) => focusNode.hasFocus;
@@ -376,13 +383,14 @@ abstract final class CorpoFocusUtils {
     bool skipTraversal = false,
     bool canRequestFocus = true,
   }) => FocusNode(
-      debugLabel: debugLabel,
-      skipTraversal: skipTraversal,
-      canRequestFocus: canRequestFocus,
-    );
+    debugLabel: debugLabel,
+    skipTraversal: skipTraversal,
+    canRequestFocus: canRequestFocus,
+  );
 
   /// Creates a focus traversal policy for corporate applications.
-  static FocusTraversalPolicy createCorporateTraversalPolicy() => OrderedTraversalPolicy();
+  static FocusTraversalPolicy createCorporateTraversalPolicy() =>
+      OrderedTraversalPolicy();
 }
 
 // Intent classes for keyboard navigation

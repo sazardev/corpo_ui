@@ -19,24 +19,20 @@ import '../../design_tokens.dart';
 /// the component library.
 abstract final class CorpoButtonStyle {
   /// Helper method to darken a color by a given factor.
-  static Color _darkenColor(Color color, double factor) {
-    return Color.fromARGB(
-      color.alpha,
-      (color.red * (1 - factor)).round(),
-      (color.green * (1 - factor)).round(),
-      (color.blue * (1 - factor)).round(),
-    );
-  }
+  static Color _darkenColor(Color color, double factor) => Color.fromARGB(
+    color.alpha,
+    (color.red * (1 - factor)).round(),
+    (color.green * (1 - factor)).round(),
+    (color.blue * (1 - factor)).round(),
+  );
 
   /// Helper method to lighten a color by a given factor.
-  static Color _lightenColor(Color color, double factor) {
-    return Color.fromARGB(
-      color.alpha,
-      (color.red + ((255 - color.red) * factor)).round(),
-      (color.green + ((255 - color.green) * factor)).round(),
-      (color.blue + ((255 - color.blue) * factor)).round(),
-    );
-  }
+  static Color _lightenColor(Color color, double factor) => Color.fromARGB(
+    color.alpha,
+    (color.red + ((255 - color.red) * factor)).round(),
+    (color.green + ((255 - color.green) * factor)).round(),
+    (color.blue + ((255 - color.blue) * factor)).round(),
+  );
 
   /// Creates the primary button style.
   ///

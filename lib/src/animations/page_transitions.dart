@@ -76,20 +76,31 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
     this.fullscreenDialog = false,
     super.settings,
   }) : super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          maintainState: maintainState,
          fullscreenDialog: fullscreenDialog,
          transitionDuration: duration,
          reverseTransitionDuration: reverseDuration ?? duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => _buildTransition(
-             context: context,
-             animation: animation,
-             secondaryAnimation: secondaryAnimation,
-             child: child,
-             type: type,
-             curve: curve,
-             reverseCurve: reverseCurve ?? curve,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => _buildTransition(
+               context: context,
+               animation: animation,
+               secondaryAnimation: secondaryAnimation,
+               child: child,
+               type: type,
+               curve: curve,
+               reverseCurve: reverseCurve ?? curve,
+             ),
        );
 
   /// Creates a fade page transition.
@@ -104,20 +115,31 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
        curve = CorpoAnimationCurves.subtle,
        reverseCurve = CorpoAnimationCurves.sharp,
        super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          maintainState: maintainState,
          fullscreenDialog: fullscreenDialog,
          transitionDuration: duration,
          reverseTransitionDuration: reverseDuration ?? duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => _buildTransition(
-             context: context,
-             animation: animation,
-             secondaryAnimation: secondaryAnimation,
-             child: child,
-             type: CorpoPageTransitionType.fade,
-             curve: CorpoAnimationCurves.subtle,
-             reverseCurve: CorpoAnimationCurves.sharp,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => _buildTransition(
+               context: context,
+               animation: animation,
+               secondaryAnimation: secondaryAnimation,
+               child: child,
+               type: CorpoPageTransitionType.fade,
+               curve: CorpoAnimationCurves.subtle,
+               reverseCurve: CorpoAnimationCurves.sharp,
+             ),
        );
 
   /// Creates a corporate standard page transition.
@@ -132,20 +154,31 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
        curve = CorpoAnimationCurves.standard,
        reverseCurve = CorpoAnimationCurves.standard,
        super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          maintainState: maintainState,
          fullscreenDialog: fullscreenDialog,
          transitionDuration: duration,
          reverseTransitionDuration: reverseDuration ?? duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => _buildTransition(
-             context: context,
-             animation: animation,
-             secondaryAnimation: secondaryAnimation,
-             child: child,
-             type: CorpoPageTransitionType.corporate,
-             curve: CorpoAnimationCurves.standard,
-             reverseCurve: CorpoAnimationCurves.standard,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => _buildTransition(
+               context: context,
+               animation: animation,
+               secondaryAnimation: secondaryAnimation,
+               child: child,
+               type: CorpoPageTransitionType.corporate,
+               curve: CorpoAnimationCurves.standard,
+               reverseCurve: CorpoAnimationCurves.standard,
+             ),
        );
 
   /// Creates a modal-style page transition (slide from bottom).
@@ -160,20 +193,31 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
        reverseCurve = CorpoAnimationCurves.sharp,
        fullscreenDialog = true,
        super(
-         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => child,
+         pageBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+             ) => child,
          maintainState: maintainState,
          fullscreenDialog: true,
          transitionDuration: duration,
          reverseTransitionDuration: reverseDuration ?? duration,
-         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => _buildTransition(
-             context: context,
-             animation: animation,
-             secondaryAnimation: secondaryAnimation,
-             child: child,
-             type: CorpoPageTransitionType.slideFromBottom,
-             curve: CorpoAnimationCurves.subtle,
-             reverseCurve: CorpoAnimationCurves.sharp,
-           ),
+         transitionsBuilder:
+             (
+               BuildContext context,
+               Animation<double> animation,
+               Animation<double> secondaryAnimation,
+               Widget child,
+             ) => _buildTransition(
+               context: context,
+               animation: animation,
+               secondaryAnimation: secondaryAnimation,
+               child: child,
+               type: CorpoPageTransitionType.slideFromBottom,
+               curve: CorpoAnimationCurves.subtle,
+               reverseCurve: CorpoAnimationCurves.sharp,
+             ),
        );
 
   /// The page widget to display.
@@ -228,11 +272,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.slideFromRight:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -244,11 +285,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.slideFromLeft:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(-1, 0),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -260,11 +298,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.slideFromBottom:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(0, 1),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -276,11 +311,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.slideFromTop:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(0, -1),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(0, -1), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -304,11 +336,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.fadeSlide:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(0.3, 0),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(0.3, 0), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -327,11 +356,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.professional:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: curve,
@@ -364,21 +390,23 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
               ),
             );
 
-        final Animation<double> fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-          CurvedAnimation(
-            parent: animation,
-            curve: Interval(0, 0.8, curve: curve),
-            reverseCurve: Interval(0.2, 1, curve: reverseCurve),
-          ),
-        );
+        final Animation<double> fadeAnimation = Tween<double>(begin: 0, end: 1)
+            .animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(0, 0.8, curve: curve),
+                reverseCurve: Interval(0.2, 1, curve: reverseCurve),
+              ),
+            );
 
-        final Animation<double> scaleAnimation = Tween<double>(begin: 0.98, end: 1).animate(
-          CurvedAnimation(
-            parent: animation,
-            curve: curve,
-            reverseCurve: reverseCurve,
-          ),
-        );
+        final Animation<double> scaleAnimation =
+            Tween<double>(begin: 0.98, end: 1).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: curve,
+                reverseCurve: reverseCurve,
+              ),
+            );
 
         return SlideTransition(
           position: slideAnimation,
@@ -390,11 +418,8 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
 
       case CorpoPageTransitionType.cupertino:
         return SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(
                 CurvedAnimation(
                   parent: animation,
                   curve: Curves.linearToEaseOut,
@@ -436,23 +461,23 @@ class CorpoPageTransition<T> extends PageRouteBuilder<T> {
     required Curve curve,
     required Curve reverseCurve,
   }) => SlideTransition(
-      position: Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero)
-          .animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: curve,
-              reverseCurve: reverseCurve,
-            ),
+    position: Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: animation,
+            curve: curve,
+            reverseCurve: reverseCurve,
           ),
-      child: FadeTransition(
-        opacity: CurvedAnimation(
-          parent: animation,
-          curve: curve,
-          reverseCurve: reverseCurve,
         ),
-        child: child,
+    child: FadeTransition(
+      opacity: CurvedAnimation(
+        parent: animation,
+        curve: curve,
+        reverseCurve: reverseCurve,
       ),
-    );
+      child: child,
+    ),
+  );
 }
 
 /// Extension methods for Navigator to use Corpo page transitions.
@@ -464,13 +489,13 @@ extension CorpoNavigator on NavigatorState {
     Duration? duration,
     RouteSettings? settings,
   }) => push<T>(
-      CorpoPageTransition<T>(
-        child: page,
-        type: type,
-        duration: duration ?? CorpoAnimationDurations.standard,
-        settings: settings,
-      ),
-    );
+    CorpoPageTransition<T>(
+      child: page,
+      type: type,
+      duration: duration ?? CorpoAnimationDurations.standard,
+      settings: settings,
+    ),
+  );
 
   /// Pushes a page with fade transition.
   Future<T?> pushFade<T extends Object?>(
@@ -478,12 +503,12 @@ extension CorpoNavigator on NavigatorState {
     Duration? duration,
     RouteSettings? settings,
   }) => push<T>(
-      CorpoPageTransition<T>.fade(
-        child: page,
-        duration: duration ?? CorpoAnimationDurations.quick,
-        settings: settings,
-      ),
-    );
+    CorpoPageTransition<T>.fade(
+      child: page,
+      duration: duration ?? CorpoAnimationDurations.quick,
+      settings: settings,
+    ),
+  );
 
   /// Pushes a modal page with slide from bottom.
   Future<T?> pushModal<T extends Object?>(
@@ -491,12 +516,12 @@ extension CorpoNavigator on NavigatorState {
     Duration? duration,
     RouteSettings? settings,
   }) => push<T>(
-      CorpoPageTransition<T>.modal(
-        child: page,
-        duration: duration ?? CorpoAnimationDurations.standard,
-        settings: settings,
-      ),
-    );
+    CorpoPageTransition<T>.modal(
+      child: page,
+      duration: duration ?? CorpoAnimationDurations.standard,
+      settings: settings,
+    ),
+  );
 
   /// Pushes a page with corporate transition.
   Future<T?> pushCorporate<T extends Object?>(
@@ -504,12 +529,12 @@ extension CorpoNavigator on NavigatorState {
     Duration? duration,
     RouteSettings? settings,
   }) => push<T>(
-      CorpoPageTransition<T>.corporate(
-        child: page,
-        duration: duration ?? CorpoAnimationDurations.standard,
-        settings: settings,
-      ),
-    );
+    CorpoPageTransition<T>.corporate(
+      child: page,
+      duration: duration ?? CorpoAnimationDurations.standard,
+      settings: settings,
+    ),
+  );
 }
 
 /// Utility class for page transition helpers.
@@ -522,12 +547,12 @@ abstract final class CorpoPageTransitions {
     Curve? curve,
     RouteSettings? settings,
   }) => CorpoPageTransition<T>(
-      child: page,
-      type: type,
-      duration: duration ?? CorpoAnimationDurations.standard,
-      curve: curve ?? CorpoAnimationCurves.standard,
-      settings: settings,
-    );
+    child: page,
+    type: type,
+    duration: duration ?? CorpoAnimationDurations.standard,
+    curve: curve ?? CorpoAnimationCurves.standard,
+    settings: settings,
+  );
 
   /// Gets the default transition type for the platform.
   static CorpoPageTransitionType getDefaultTransition(TargetPlatform platform) {
@@ -545,9 +570,10 @@ abstract final class CorpoPageTransitions {
   }
 
   /// Creates a no-animation route for instant navigation.
-  static Route<T> noAnimation<T>(Widget page, [RouteSettings? settings]) => CorpoPageTransition<T>(
-      child: page,
-      type: CorpoPageTransitionType.none,
-      settings: settings,
-    );
+  static Route<T> noAnimation<T>(Widget page, [RouteSettings? settings]) =>
+      CorpoPageTransition<T>(
+        child: page,
+        type: CorpoPageTransitionType.none,
+        settings: settings,
+      );
 }

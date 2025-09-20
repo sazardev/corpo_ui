@@ -31,9 +31,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Avatar size variants for different contexts.
 ///
@@ -100,7 +98,8 @@ class CorpoAvatar extends StatelessWidget {
   /// The [name] parameter is used for initials and accessibility.
   /// The [imageUrl] parameter provides the avatar image source.
   const CorpoAvatar({
-    required this.name, super.key,
+    required this.name,
+    super.key,
     this.imageUrl,
     this.size = CorpoAvatarSize.medium,
     this.shape = CorpoAvatarShape.circle,
@@ -130,7 +129,9 @@ class CorpoAvatar extends StatelessWidget {
   /// Displays an avatar with a visible status indicator overlay
   /// for user presence and availability information.
   const CorpoAvatar.withStatus({
-    required this.name, required this.status, super.key,
+    required this.name,
+    required this.status,
+    super.key,
     this.imageUrl,
     this.size = CorpoAvatarSize.medium,
     this.shape = CorpoAvatarShape.circle,
@@ -171,6 +172,7 @@ class CorpoAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final double avatarSize = _getAvatarSize();
     final Widget avatarContent = _buildAvatarContent(context);
 
@@ -182,14 +184,14 @@ class CorpoAvatar extends StatelessWidget {
 
     // Add status indicator if provided
     if (status != null) {
-      avatar = _buildAvatarWithStatus(avatar, avatarSize);
+      avatar = _buildAvatarWithStatus(avatar, avatarSize, tokens);
     }
 
     // Add interactive behavior if onTap is provided
     if (onTap != null) {
       avatar = InkWell(
         onTap: onTap,
-        borderRadius: _getBorderRadius(avatarSize),
+        borderRadius: _getBorderRadius(avatarSize, tokens),
         child: avatar,
       );
     }
@@ -200,7 +202,8 @@ class CorpoAvatar extends StatelessWidget {
   /// Builds the main avatar content (image or initials).
   Widget _buildAvatarContent(BuildContext context) {
     final double avatarSize = _getAvatarSize();
-    final BorderRadius borderRadius = _getBorderRadius(avatarSize);
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    final BorderRadius borderRadius = _getBorderRadius(avatarSize, tokens);
 
     // Try to display image if URL is provided
     if (imageUrl != null && imageUrl!.isNotEmpty) {
@@ -214,7 +217,12 @@ class CorpoAvatar extends StatelessWidget {
           errorBuilder:
               (BuildContext context, Object error, StackTrace? stackTrace) {
                 // Fallback to initials on image load error
-                return _buildInitialsAvatar(context, avatarSize, borderRadius);
+                return _buildInitialsAvatar(
+                  context,
+                  avatarSize,
+                  borderRadius,
+                  tokens,
+                );
               },
           loadingBuilder:
               (
@@ -226,14 +234,18 @@ class CorpoAvatar extends StatelessWidget {
                   return child;
                 }
                 // Show loading placeholder
-                return _buildLoadingPlaceholder(avatarSize, borderRadius);
+                return _buildLoadingPlaceholder(
+                  avatarSize,
+                  borderRadius,
+                  tokens,
+                );
               },
         ),
       );
     }
 
     // Display initials avatar
-    return _buildInitialsAvatar(context, avatarSize, borderRadius);
+    return _buildInitialsAvatar(context, avatarSize, borderRadius, tokens);
   }
 
   /// Builds an initials-based avatar.
@@ -241,13 +253,15 @@ class CorpoAvatar extends StatelessWidget {
     BuildContext context,
     double avatarSize,
     BorderRadius borderRadius,
+    CorpoDesignTokens tokens,
   ) {
     final String initials = _generateInitials(name);
     final Color effectiveBackgroundColor =
-        backgroundColor ?? _generateBackgroundColor(name);
+        backgroundColor ?? _generateBackgroundColor(name, tokens);
     final Color effectiveForegroundColor =
-        foregroundColor ?? _getContrastingColor(effectiveBackgroundColor);
-    final TextStyle textStyle = _getInitialsTextStyle(avatarSize);
+        foregroundColor ??
+        _getContrastingColor(effectiveBackgroundColor, tokens);
+    final TextStyle textStyle = _getInitialsTextStyle(avatarSize, tokens);
 
     return Container(
       width: avatarSize,
@@ -270,20 +284,25 @@ class CorpoAvatar extends StatelessWidget {
   Widget _buildLoadingPlaceholder(
     double avatarSize,
     BorderRadius borderRadius,
+    CorpoDesignTokens tokens,
   ) => Container(
-      width: avatarSize,
-      height: avatarSize,
-      decoration: BoxDecoration(
-        color: CorpoColors.neutral200,
-        borderRadius: borderRadius,
-      ),
-      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-    );
+    width: avatarSize,
+    height: avatarSize,
+    decoration: BoxDecoration(
+      color: tokens.textSecondary.withValues(alpha: 0.2),
+      borderRadius: borderRadius,
+    ),
+    child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+  );
 
   /// Builds an avatar with status indicator overlay.
-  Widget _buildAvatarWithStatus(Widget avatar, double avatarSize) {
+  Widget _buildAvatarWithStatus(
+    Widget avatar,
+    double avatarSize,
+    CorpoDesignTokens tokens,
+  ) {
     final double statusSize = _getStatusIndicatorSize(avatarSize);
-    final Color statusColor = _getStatusColor(status!);
+    final Color statusColor = _getStatusColor(status!, tokens);
 
     return Stack(
       children: <Widget>[
@@ -297,7 +316,7 @@ class CorpoAvatar extends StatelessWidget {
             decoration: BoxDecoration(
               color: statusColor,
               shape: BoxShape.circle,
-              border: Border.all(color: CorpoColors.neutralWhite, width: 2),
+              border: Border.all(color: tokens.surfaceColor, width: 2),
             ),
           ),
         ),
@@ -324,32 +343,40 @@ class CorpoAvatar extends StatelessWidget {
   }
 
   /// Gets the border radius based on shape and size.
-  BorderRadius _getBorderRadius(double avatarSize) {
+  BorderRadius _getBorderRadius(double avatarSize, CorpoDesignTokens tokens) {
     switch (shape) {
       case CorpoAvatarShape.circle:
         return BorderRadius.circular(avatarSize / 2);
       case CorpoAvatarShape.square:
-        return BorderRadius.circular(CorpoSpacing.small);
+        return BorderRadius.circular(tokens.borderRadius);
     }
   }
 
   /// Gets the text style for initials based on avatar size.
-  TextStyle _getInitialsTextStyle(double avatarSize) {
+  TextStyle _getInitialsTextStyle(double avatarSize, CorpoDesignTokens tokens) {
     if (avatarSize <= 32) {
-      return CorpoTypography.labelSmall.copyWith(
-        fontWeight: CorpoFontWeight.semiBold,
+      return TextStyle(
+        fontSize: tokens.fontSizeSmall,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600,
       );
     } else if (avatarSize <= 56) {
-      return CorpoTypography.labelMedium.copyWith(
-        fontWeight: CorpoFontWeight.semiBold,
+      return TextStyle(
+        fontSize: tokens.baseFontSize,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600,
       );
     } else if (avatarSize <= 80) {
-      return CorpoTypography.labelLarge.copyWith(
-        fontWeight: CorpoFontWeight.semiBold,
+      return TextStyle(
+        fontSize: tokens.fontSizeLarge,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600,
       );
     } else {
-      return CorpoTypography.heading4.copyWith(
-        fontWeight: CorpoFontWeight.semiBold,
+      return TextStyle(
+        fontSize: tokens.fontSizeXLarge,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600,
       );
     }
   }
@@ -392,16 +419,16 @@ class CorpoAvatar extends StatelessWidget {
   }
 
   /// Generates a background color based on the name for consistency.
-  Color _generateBackgroundColor(String name) {
+  Color _generateBackgroundColor(String name, CorpoDesignTokens tokens) {
     final List<Color> colors = <Color>[
-      CorpoColors.primary500,
-      CorpoColors.secondary500,
-      CorpoColors.success,
-      CorpoColors.info,
-      CorpoColors.warning,
-      CorpoColors.neutral500,
-      CorpoColors.primary600,
-      CorpoColors.secondary600,
+      tokens.primaryColor,
+      tokens.secondaryColor,
+      tokens.successColor,
+      tokens.infoColor,
+      tokens.warningColor,
+      tokens.textSecondary,
+      tokens.primaryColor.withValues(alpha: 0.8),
+      tokens.secondaryColor.withValues(alpha: 0.8),
     ];
 
     // Use hash code to consistently generate the same color for the same name
@@ -411,27 +438,27 @@ class CorpoAvatar extends StatelessWidget {
   }
 
   /// Gets a contrasting color for text based on background color.
-  Color _getContrastingColor(Color backgroundColor) {
+  Color _getContrastingColor(Color backgroundColor, CorpoDesignTokens tokens) {
     // Calculate relative luminance
     final double luminance = backgroundColor.computeLuminance();
 
     // Return white text for dark backgrounds, dark text for light backgrounds
-    return luminance > 0.5 ? CorpoColors.neutral800 : CorpoColors.neutralWhite;
+    return luminance > 0.5 ? tokens.textPrimary : tokens.surfaceColor;
   }
 
   /// Gets the color for a status indicator.
-  Color _getStatusColor(CorpoAvatarStatus status) {
+  Color _getStatusColor(CorpoAvatarStatus status, CorpoDesignTokens tokens) {
     switch (status) {
       case CorpoAvatarStatus.online:
-        return CorpoColors.success;
+        return tokens.successColor;
       case CorpoAvatarStatus.away:
-        return CorpoColors.warning;
+        return tokens.warningColor;
       case CorpoAvatarStatus.busy:
-        return CorpoColors.error;
+        return tokens.errorColor;
       case CorpoAvatarStatus.offline:
-        return CorpoColors.neutral400;
+        return tokens.textSecondary;
       case CorpoAvatarStatus.doNotDisturb:
-        return CorpoColors.error;
+        return tokens.errorColor;
     }
   }
 }

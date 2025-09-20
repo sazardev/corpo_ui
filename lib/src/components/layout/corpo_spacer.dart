@@ -108,14 +108,14 @@ class CorpoSpacer extends StatelessWidget {
       _size = CorpoSpacerSize.xxxLarge;
 
   /// Creates a horizontal spacer with the specified size.
-  CorpoSpacer.horizontal(CorpoSpacerSize size, {super.key})
+  const CorpoSpacer.horizontal(CorpoSpacerSize size, {super.key})
     : width = null,
       height = 0,
       flex = null,
       _size = size;
 
   /// Creates a vertical spacer with the specified size.
-  CorpoSpacer.vertical(CorpoSpacerSize size, {super.key})
+  const CorpoSpacer.vertical(CorpoSpacerSize size, {super.key})
     : width = 0,
       height = null,
       flex = null,

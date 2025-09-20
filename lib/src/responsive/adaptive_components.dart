@@ -121,11 +121,11 @@ abstract final class CorpoAdaptive {
     Widget? cupertino,
     TargetPlatform? platform,
   }) => select<Widget>(
-      corporate: corporate,
-      material: material,
-      cupertino: cupertino,
-      platform: platform,
-    );
+    corporate: corporate,
+    material: material,
+    cupertino: cupertino,
+    platform: platform,
+  );
 }
 
 /// An adaptive button that adjusts its appearance based on platform.
@@ -205,7 +205,11 @@ class CorpoAdaptiveButton extends StatelessWidget {
     if (icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[Icon(icon, size: 16), const SizedBox(width: 8), child],
+        children: <Widget>[
+          Icon(icon, size: 16),
+          const SizedBox(width: 8),
+          child,
+        ],
       );
     }
     return child;
@@ -259,23 +263,24 @@ class CorpoAdaptiveAppBar extends StatelessWidget
     }
   }
 
-  Widget _buildCupertinoNavigationBar(BuildContext context) => CupertinoNavigationBar(
-      middle: title,
-      leading: leading,
-      trailing: actions?.isNotEmpty == true
-          ? Row(mainAxisSize: MainAxisSize.min, children: actions!)
-          : null,
-      backgroundColor: backgroundColor,
-    );
+  Widget _buildCupertinoNavigationBar(BuildContext context) =>
+      CupertinoNavigationBar(
+        middle: title,
+        leading: leading,
+        trailing: actions?.isNotEmpty == true
+            ? Row(mainAxisSize: MainAxisSize.min, children: actions!)
+            : null,
+        backgroundColor: backgroundColor,
+      );
 
   Widget _buildMaterialAppBar(BuildContext context) => AppBar(
-      title: title,
-      leading: leading,
-      actions: actions,
-      backgroundColor: backgroundColor,
-      elevation: elevation,
-      centerTitle: centerTitle,
-    );
+    title: title,
+    leading: leading,
+    actions: actions,
+    backgroundColor: backgroundColor,
+    elevation: elevation,
+    centerTitle: centerTitle,
+  );
 }
 
 /// An adaptive scaffold that adjusts its behavior based on platform.
@@ -351,15 +356,15 @@ class CorpoAdaptiveScaffold extends StatelessWidget {
   }
 
   Widget _buildMaterialScaffold(BuildContext context) => Scaffold(
-      appBar: appBar,
-      body: body,
-      drawer: drawer,
-      endDrawer: endDrawer,
-      bottomNavigationBar: bottomNavigationBar,
-      floatingActionButton: floatingActionButton,
-      backgroundColor: backgroundColor,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-    );
+    appBar: appBar,
+    body: body,
+    drawer: drawer,
+    endDrawer: endDrawer,
+    bottomNavigationBar: bottomNavigationBar,
+    floatingActionButton: floatingActionButton,
+    backgroundColor: backgroundColor,
+    resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+  );
 }
 
 /// An adaptive switch that adjusts its appearance based on platform.
@@ -512,37 +517,35 @@ class CorpoAdaptiveAlertDialog extends StatelessWidget {
     Widget? content,
     List<Widget>? actions,
   }) => showDialog<T>(
-      context: context,
-      builder: (BuildContext context) => CorpoAdaptiveAlertDialog(
-        title: title,
-        content: content,
-        actions: actions,
-      ),
-    );
+    context: context,
+    builder: (BuildContext context) => CorpoAdaptiveAlertDialog(
+      title: title,
+      content: content,
+      actions: actions,
+    ),
+  );
 }
 
 /// Utility class for creating platform-adaptive components.
 abstract final class CorpoAdaptiveUtils {
   /// Gets the appropriate border radius for the platform.
-  static BorderRadius getPlatformBorderRadius() => CorpoAdaptive.select<BorderRadius>(
-      corporate: BorderRadius.circular(8),
-      material: BorderRadius.circular(4),
-      cupertino: BorderRadius.circular(8),
-    );
+  static BorderRadius getPlatformBorderRadius() =>
+      CorpoAdaptive.select<BorderRadius>(
+        corporate: BorderRadius.circular(8),
+        material: BorderRadius.circular(4),
+        cupertino: BorderRadius.circular(8),
+      );
 
   /// Gets the appropriate elevation for the platform.
-  static double getPlatformElevation() => CorpoAdaptive.select<double>(
-      corporate: 2,
-      material: 2,
-      cupertino: 0,
-    );
+  static double getPlatformElevation() =>
+      CorpoAdaptive.select<double>(corporate: 2, material: 2, cupertino: 0);
 
   /// Gets the appropriate padding for the platform.
   static EdgeInsets getPlatformPadding() => CorpoAdaptive.select<EdgeInsets>(
-      corporate: const EdgeInsets.all(16),
-      material: const EdgeInsets.all(16),
-      cupertino: const EdgeInsets.all(16),
-    );
+    corporate: const EdgeInsets.all(16),
+    material: const EdgeInsets.all(16),
+    cupertino: const EdgeInsets.all(16),
+  );
 
   /// Shows a platform-appropriate date picker.
   static Future<DateTime?> showDatePicker(

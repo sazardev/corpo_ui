@@ -199,28 +199,26 @@ class _CorpoStepperState extends State<CorpoStepper> {
   }
 
   EdgeInsetsGeometry _getContentPadding() => switch (widget.density) {
-      CorpoStepperDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
-      CorpoStepperDensity.comfortable => const EdgeInsets.all(
-        CorpoSpacing.large,
-      ),
-      CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.medium),
-    };
+    CorpoStepperDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
+    CorpoStepperDensity.comfortable => const EdgeInsets.all(CorpoSpacing.large),
+    CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.medium),
+  };
 
   EdgeInsetsGeometry _getDefaultMargin() => switch (widget.density) {
-      CorpoStepperDensity.compact => EdgeInsets.zero,
-      CorpoStepperDensity.comfortable => const EdgeInsets.all(
-        CorpoSpacing.medium,
-      ),
-      CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.small),
-    };
+    CorpoStepperDensity.compact => EdgeInsets.zero,
+    CorpoStepperDensity.comfortable => const EdgeInsets.all(
+      CorpoSpacing.medium,
+    ),
+    CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.small),
+  };
 
   StepState _mapStepState(CorpoStepState state, int index) => switch (state) {
-      CorpoStepState.disabled => StepState.disabled,
-      CorpoStepState.indexed => StepState.indexed,
-      CorpoStepState.complete => StepState.complete,
-      CorpoStepState.error => StepState.error,
-      CorpoStepState.editing => StepState.editing,
-    };
+    CorpoStepState.disabled => StepState.disabled,
+    CorpoStepState.indexed => StepState.indexed,
+    CorpoStepState.complete => StepState.complete,
+    CorpoStepState.error => StepState.error,
+    CorpoStepState.editing => StepState.editing,
+  };
 
   void _handleLinearStepTapped(int step) {
     // In linear mode, only allow navigation to completed steps or the next step
@@ -338,7 +336,7 @@ class CorpoStepContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: padding ?? const EdgeInsets.all(CorpoSpacing.medium),
-      child: child,
-    );
+    padding: padding ?? const EdgeInsets.all(CorpoSpacing.medium),
+    child: child,
+  );
 }

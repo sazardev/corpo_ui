@@ -120,7 +120,9 @@ class CorpoLayoutGrid extends StatelessWidget {
     final CorpoScreenSize screenSize = CorpoScreenSize.of(context);
 
     // Get responsive values
-    final int effectiveCrossAxisCount = _getResponsiveCrossAxisCount(screenSize);
+    final int effectiveCrossAxisCount = _getResponsiveCrossAxisCount(
+      screenSize,
+    );
     final double effectiveGap = _getResponsiveGap(screenSize);
 
     return GridView.builder(
@@ -140,7 +142,8 @@ class CorpoLayoutGrid extends StatelessWidget {
 
   int _getResponsiveCrossAxisCount(CorpoScreenSize screenSize) {
     if (responsiveCrossAxisCount != null) {
-      for (final CorpoBreakpoint breakpoint in CorpoBreakpoint.values.reversed) {
+      for (final CorpoBreakpoint breakpoint
+          in CorpoBreakpoint.values.reversed) {
         if (screenSize.isAtLeast(breakpoint) &&
             responsiveCrossAxisCount!.containsKey(breakpoint)) {
           return responsiveCrossAxisCount![breakpoint]!;
@@ -152,7 +155,8 @@ class CorpoLayoutGrid extends StatelessWidget {
 
   double _getResponsiveGap(CorpoScreenSize screenSize) {
     if (responsiveGap != null) {
-      for (final CorpoBreakpoint breakpoint in CorpoBreakpoint.values.reversed) {
+      for (final CorpoBreakpoint breakpoint
+          in CorpoBreakpoint.values.reversed) {
         if (screenSize.isAtLeast(breakpoint) &&
             responsiveGap!.containsKey(breakpoint)) {
           return responsiveGap![breakpoint]!;
@@ -196,10 +200,15 @@ class CorpoStaggeredGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CorpoScreenSize screenSize = CorpoScreenSize.of(context);
-    final int effectiveCrossAxisCount = _getResponsiveCrossAxisCount(screenSize);
+    final int effectiveCrossAxisCount = _getResponsiveCrossAxisCount(
+      screenSize,
+    );
 
     // Create columns
-    final List<List<Widget>> columns = List.generate(effectiveCrossAxisCount, (_) => <Widget>[]);
+    final List<List<Widget>> columns = List.generate(
+      effectiveCrossAxisCount,
+      (_) => <Widget>[],
+    );
 
     // Distribute children across columns
     for (int i = 0; i < children.length; i++) {
@@ -209,7 +218,9 @@ class CorpoStaggeredGrid extends StatelessWidget {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: columns.asMap().entries.map((MapEntry<int, List<Widget>> entry) {
+      children: columns.asMap().entries.map((
+        MapEntry<int, List<Widget>> entry,
+      ) {
         final int columnIndex = entry.key;
         final List<Widget> columnChildren = entry.value;
 
@@ -221,7 +232,9 @@ class CorpoStaggeredGrid extends StatelessWidget {
                   : 0,
             ),
             child: Column(
-              children: columnChildren.asMap().entries.map((MapEntry<int, Widget> childEntry) {
+              children: columnChildren.asMap().entries.map((
+                MapEntry<int, Widget> childEntry,
+              ) {
                 final int childIndex = childEntry.key;
                 final Widget child = childEntry.value;
 
@@ -243,7 +256,8 @@ class CorpoStaggeredGrid extends StatelessWidget {
 
   int _getResponsiveCrossAxisCount(CorpoScreenSize screenSize) {
     if (responsiveCrossAxisCount != null) {
-      for (final CorpoBreakpoint breakpoint in CorpoBreakpoint.values.reversed) {
+      for (final CorpoBreakpoint breakpoint
+          in CorpoBreakpoint.values.reversed) {
         if (screenSize.isAtLeast(breakpoint) &&
             responsiveCrossAxisCount!.containsKey(breakpoint)) {
           return responsiveCrossAxisCount![breakpoint]!;
@@ -282,18 +296,19 @@ class CorpoMasonryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoStaggeredGrid(
-      crossAxisCount: _getEffectiveCrossAxisCount(context),
-      mainAxisSpacing: spacing,
-      crossAxisSpacing: spacing,
-      responsiveCrossAxisCount: responsiveCrossAxisCount,
-      children: children,
-    );
+    crossAxisCount: _getEffectiveCrossAxisCount(context),
+    mainAxisSpacing: spacing,
+    crossAxisSpacing: spacing,
+    responsiveCrossAxisCount: responsiveCrossAxisCount,
+    children: children,
+  );
 
   int _getEffectiveCrossAxisCount(BuildContext context) {
     final CorpoScreenSize screenSize = CorpoScreenSize.of(context);
 
     if (responsiveCrossAxisCount != null) {
-      for (final CorpoBreakpoint breakpoint in CorpoBreakpoint.values.reversed) {
+      for (final CorpoBreakpoint breakpoint
+          in CorpoBreakpoint.values.reversed) {
         if (screenSize.isAtLeast(breakpoint) &&
             responsiveCrossAxisCount!.containsKey(breakpoint)) {
           return responsiveCrossAxisCount![breakpoint]!;
@@ -315,16 +330,16 @@ abstract final class CorpoGridUtils {
     double gap = 16,
     double childAspectRatio = 1.0,
   }) => CorpoLayoutGrid(
-      crossAxisCount: mobileColumns,
-      responsiveCrossAxisCount: <CorpoBreakpoint, int>{
-        CorpoBreakpoint.xs: mobileColumns,
-        CorpoBreakpoint.md: tabletColumns,
-        CorpoBreakpoint.lg: desktopColumns,
-      },
-      gap: gap,
-      childAspectRatio: childAspectRatio,
-      children: children,
-    );
+    crossAxisCount: mobileColumns,
+    responsiveCrossAxisCount: <CorpoBreakpoint, int>{
+      CorpoBreakpoint.xs: mobileColumns,
+      CorpoBreakpoint.md: tabletColumns,
+      CorpoBreakpoint.lg: desktopColumns,
+    },
+    gap: gap,
+    childAspectRatio: childAspectRatio,
+    children: children,
+  );
 
   /// Creates a card grid layout.
   static Widget cardGrid({
@@ -333,62 +348,63 @@ abstract final class CorpoGridUtils {
     double gap = 16,
     double cardAspectRatio = 1.2,
   }) => CorpoResponsiveBuilder(
-      builder: (BuildContext context, CorpoScreenSize screenSize) {
-        final double availableWidth = screenSize.width - gap;
-        final int columns = (availableWidth / (minCardWidth + gap)).floor().clamp(
-          1,
-          cards.length,
-        );
+    builder: (BuildContext context, CorpoScreenSize screenSize) {
+      final double availableWidth = screenSize.width - gap;
+      final int columns = (availableWidth / (minCardWidth + gap)).floor().clamp(
+        1,
+        cards.length,
+      );
 
-        return CorpoLayoutGrid(
-          crossAxisCount: columns,
-          gap: gap,
-          childAspectRatio: cardAspectRatio,
-          children: cards,
-        );
-      },
-    );
+      return CorpoLayoutGrid(
+        crossAxisCount: columns,
+        gap: gap,
+        childAspectRatio: cardAspectRatio,
+        children: cards,
+      );
+    },
+  );
 
   /// Creates a dashboard-style layout.
   static Widget dashboardLayout({
-    required Widget content, Widget? header,
+    required Widget content,
+    Widget? header,
     Widget? sidebar,
     Widget? footer,
     double gap = 16,
   }) => CorpoResponsiveBuilder(
-      builder: (BuildContext context, CorpoScreenSize screenSize) {
-        if (screenSize.isMobile) {
-          // Mobile: stack vertically
-          return Column(
-            children: <Widget>[
-              if (header != null) ...<Widget>[header, SizedBox(height: gap)],
-              if (sidebar != null) ...<Widget>[sidebar, SizedBox(height: gap)],
-              Expanded(child: content),
-              if (footer != null) ...<Widget>[SizedBox(height: gap), footer],
-            ],
-          );
-        } else {
-          // Desktop: sidebar layout
-          return Column(
-            children: <Widget>[
-              if (header != null) ...<Widget>[header, SizedBox(height: gap)],
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    if (sidebar != null) ...<Widget>[
-                      SizedBox(width: 250, child: sidebar),
-                      SizedBox(width: gap),
-                    ],
-                    Expanded(child: content),
+    builder: (BuildContext context, CorpoScreenSize screenSize) {
+      if (screenSize.isMobile) {
+        // Mobile: stack vertically
+        return Column(
+          children: <Widget>[
+            if (header != null) ...<Widget>[header, SizedBox(height: gap)],
+            if (sidebar != null) ...<Widget>[sidebar, SizedBox(height: gap)],
+            Expanded(child: content),
+            if (footer != null) ...<Widget>[SizedBox(height: gap), footer],
+          ],
+        );
+      } else {
+        // Desktop: sidebar layout
+        return Column(
+          children: <Widget>[
+            if (header != null) ...<Widget>[header, SizedBox(height: gap)],
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  if (sidebar != null) ...<Widget>[
+                    SizedBox(width: 250, child: sidebar),
+                    SizedBox(width: gap),
                   ],
-                ),
+                  Expanded(child: content),
+                ],
               ),
-              if (footer != null) ...<Widget>[SizedBox(height: gap), footer],
-            ],
-          );
-        }
-      },
-    );
+            ),
+            if (footer != null) ...<Widget>[SizedBox(height: gap), footer],
+          ],
+        );
+      }
+    },
+  );
 
   /// Creates a responsive masonry layout.
   static Widget masonryLayout({
@@ -398,15 +414,15 @@ abstract final class CorpoGridUtils {
     int desktopColumns = 3,
     double spacing = 16,
   }) => CorpoMasonryGrid(
-      crossAxisCount: mobileColumns,
-      responsiveCrossAxisCount: <CorpoBreakpoint, int>{
-        CorpoBreakpoint.xs: mobileColumns,
-        CorpoBreakpoint.md: tabletColumns,
-        CorpoBreakpoint.lg: desktopColumns,
-      },
-      spacing: spacing,
-      children: children,
-    );
+    crossAxisCount: mobileColumns,
+    responsiveCrossAxisCount: <CorpoBreakpoint, int>{
+      CorpoBreakpoint.xs: mobileColumns,
+      CorpoBreakpoint.md: tabletColumns,
+      CorpoBreakpoint.lg: desktopColumns,
+    },
+    spacing: spacing,
+    children: children,
+  );
 
   /// Creates a hero section layout.
   static Widget heroSection({
@@ -414,42 +430,42 @@ abstract final class CorpoGridUtils {
     List<Widget> features = const <Widget>[],
     double gap = 32,
   }) => CorpoResponsiveBuilder(
-      builder: (BuildContext context, CorpoScreenSize screenSize) {
-        if (screenSize.isMobile) {
-          return Column(
-            children: <Widget>[
-              hero,
-              if (features.isNotEmpty) ...<Widget>[
-                SizedBox(height: gap),
-                ...features.map(
-                  (Widget feature) => Padding(
-                    padding: EdgeInsets.only(bottom: gap),
-                    child: feature,
-                  ),
-                ),
-              ],
-            ],
-          );
-        } else {
-          return Row(
-            children: <Widget>[
-              Expanded(flex: 2, child: hero),
-              SizedBox(width: gap),
-              Expanded(
-                child: Column(
-                  children: features
-                      .map(
-                        (Widget feature) => Padding(
-                          padding: EdgeInsets.only(bottom: gap),
-                          child: feature,
-                        ),
-                      )
-                      .toList(),
+    builder: (BuildContext context, CorpoScreenSize screenSize) {
+      if (screenSize.isMobile) {
+        return Column(
+          children: <Widget>[
+            hero,
+            if (features.isNotEmpty) ...<Widget>[
+              SizedBox(height: gap),
+              ...features.map(
+                (Widget feature) => Padding(
+                  padding: EdgeInsets.only(bottom: gap),
+                  child: feature,
                 ),
               ),
             ],
-          );
-        }
-      },
-    );
+          ],
+        );
+      } else {
+        return Row(
+          children: <Widget>[
+            Expanded(flex: 2, child: hero),
+            SizedBox(width: gap),
+            Expanded(
+              child: Column(
+                children: features
+                    .map(
+                      (Widget feature) => Padding(
+                        padding: EdgeInsets.only(bottom: gap),
+                        child: feature,
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        );
+      }
+    },
+  );
 }

@@ -253,27 +253,27 @@ class CorpoTimeline extends StatelessWidget {
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
   ) => IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          _buildIndicatorColumn(
-            context,
-            item,
-            isFirst,
-            isLast,
-            indicatorColor,
-            lineColor,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        _buildIndicatorColumn(
+          context,
+          item,
+          isFirst,
+          isLast,
+          indicatorColor,
+          lineColor,
+        ),
+        const SizedBox(width: CorpoSpacing.medium),
+        Expanded(
+          child: Padding(
+            padding: itemPadding,
+            child: _buildContentCard(context, item.content),
           ),
-          const SizedBox(width: CorpoSpacing.medium),
-          Expanded(
-            child: Padding(
-              padding: itemPadding,
-              child: _buildContentCard(context, item.content),
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 
   Widget _buildRightAlignedItem(
     BuildContext context,
@@ -284,27 +284,27 @@ class CorpoTimeline extends StatelessWidget {
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
   ) => IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: itemPadding,
-              child: _buildContentCard(context, item.content),
-            ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: itemPadding,
+            child: _buildContentCard(context, item.content),
           ),
-          const SizedBox(width: CorpoSpacing.medium),
-          _buildIndicatorColumn(
-            context,
-            item,
-            isFirst,
-            isLast,
-            indicatorColor,
-            lineColor,
-          ),
-        ],
-      ),
-    );
+        ),
+        const SizedBox(width: CorpoSpacing.medium),
+        _buildIndicatorColumn(
+          context,
+          item,
+          isFirst,
+          isLast,
+          indicatorColor,
+          lineColor,
+        ),
+      ],
+    ),
+  );
 
   Widget _buildCenterAlignedItem(
     BuildContext context,
@@ -315,37 +315,37 @@ class CorpoTimeline extends StatelessWidget {
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
   ) => IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (item.oppositeContent != null) ...<Widget>[
-            Expanded(
-              child: Padding(
-                padding: itemPadding,
-                child: _buildContentCard(context, item.oppositeContent!),
-              ),
-            ),
-            const SizedBox(width: CorpoSpacing.small),
-          ] else
-            const Spacer(),
-          _buildIndicatorColumn(
-            context,
-            item,
-            isFirst,
-            isLast,
-            indicatorColor,
-            lineColor,
-          ),
-          const SizedBox(width: CorpoSpacing.small),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        if (item.oppositeContent != null) ...<Widget>[
           Expanded(
             child: Padding(
               padding: itemPadding,
-              child: _buildContentCard(context, item.content),
+              child: _buildContentCard(context, item.oppositeContent!),
             ),
           ),
-        ],
-      ),
-    );
+          const SizedBox(width: CorpoSpacing.small),
+        ] else
+          const Spacer(),
+        _buildIndicatorColumn(
+          context,
+          item,
+          isFirst,
+          isLast,
+          indicatorColor,
+          lineColor,
+        ),
+        const SizedBox(width: CorpoSpacing.small),
+        Expanded(
+          child: Padding(
+            padding: itemPadding,
+            child: _buildContentCard(context, item.content),
+          ),
+        ),
+      ],
+    ),
+  );
 
   Widget _buildIndicatorColumn(
     BuildContext context,
@@ -355,27 +355,27 @@ class CorpoTimeline extends StatelessWidget {
     Color indicatorColor,
     Color lineColor,
   ) => SizedBox(
-      width: indicatorSize,
-      child: Column(
-        children: <Widget>[
-          if (!isFirst)
-            Expanded(
-              child: Container(
-                width: lineWidth,
-                color: item.lineColor ?? lineColor,
-              ),
+    width: indicatorSize,
+    child: Column(
+      children: <Widget>[
+        if (!isFirst)
+          Expanded(
+            child: Container(
+              width: lineWidth,
+              color: item.lineColor ?? lineColor,
             ),
-          _buildIndicator(context, item, item.indicatorColor ?? indicatorColor),
-          if (!isLast)
-            Expanded(
-              child: Container(
-                width: lineWidth,
-                color: item.lineColor ?? lineColor,
-              ),
+          ),
+        _buildIndicator(context, item, item.indicatorColor ?? indicatorColor),
+        if (!isLast)
+          Expanded(
+            child: Container(
+              width: lineWidth,
+              color: item.lineColor ?? lineColor,
             ),
-        ],
-      ),
-    );
+          ),
+      ],
+    ),
+  );
 
   Widget _buildIndicator(
     BuildContext context,
@@ -404,45 +404,46 @@ class CorpoTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildContentCard(BuildContext context, Widget content) => switch (variant) {
-      CorpoTimelineVariant.card => Card(
-        margin: EdgeInsets.zero,
-        child: Padding(padding: _getContentPadding(), child: content),
-      ),
-      CorpoTimelineVariant.outlined => Container(
-        padding: _getContentPadding(),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-          ),
-          borderRadius: BorderRadius.circular(8),
+  Widget _buildContentCard(BuildContext context, Widget content) =>
+      switch (variant) {
+        CorpoTimelineVariant.card => Card(
+          margin: EdgeInsets.zero,
+          child: Padding(padding: _getContentPadding(), child: content),
         ),
-        child: content,
-      ),
-      _ => Padding(padding: _getContentPadding(), child: content),
-    };
+        CorpoTimelineVariant.outlined => Container(
+          padding: _getContentPadding(),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.3),
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: content,
+        ),
+        _ => Padding(padding: _getContentPadding(), child: content),
+      };
 
   EdgeInsetsGeometry _getItemPadding() => switch (density) {
-      CorpoTimelineDensity.compact => const EdgeInsets.symmetric(
-        vertical: CorpoSpacing.extraSmall,
-      ),
-      CorpoTimelineDensity.comfortable => const EdgeInsets.symmetric(
-        vertical: CorpoSpacing.large,
-      ),
-      CorpoTimelineDensity.standard => const EdgeInsets.symmetric(
-        vertical: CorpoSpacing.small,
-      ),
-    };
+    CorpoTimelineDensity.compact => const EdgeInsets.symmetric(
+      vertical: CorpoSpacing.extraSmall,
+    ),
+    CorpoTimelineDensity.comfortable => const EdgeInsets.symmetric(
+      vertical: CorpoSpacing.large,
+    ),
+    CorpoTimelineDensity.standard => const EdgeInsets.symmetric(
+      vertical: CorpoSpacing.small,
+    ),
+  };
 
   EdgeInsetsGeometry _getContentPadding() => switch (density) {
-      CorpoTimelineDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
-      CorpoTimelineDensity.comfortable => const EdgeInsets.all(
-        CorpoSpacing.large,
-      ),
-      CorpoTimelineDensity.standard => const EdgeInsets.all(
-        CorpoSpacing.medium,
-      ),
-    };
+    CorpoTimelineDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
+    CorpoTimelineDensity.comfortable => const EdgeInsets.all(
+      CorpoSpacing.large,
+    ),
+    CorpoTimelineDensity.standard => const EdgeInsets.all(CorpoSpacing.medium),
+  };
 }
 
 /// A builder widget for creating timeline content with consistent styling.

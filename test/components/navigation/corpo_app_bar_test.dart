@@ -146,14 +146,12 @@ void main() {
       ) async {
         await CorpoTestUtils.pumpWithTheme(
           tester,
-          const Scaffold(
-            appBar: CorpoAppBar(
-              title: Text('Standard'),
-            ),
-          ),
+          const Scaffold(appBar: CorpoAppBar(title: Text('Standard'))),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.variant, equals(CorpoAppBarVariant.standard));
         expect(appBar.preferredSize.height, equals(56));
       });
@@ -169,7 +167,9 @@ void main() {
           ),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.variant, equals(CorpoAppBarVariant.large));
         expect(appBar.preferredSize.height, equals(96));
       });
@@ -187,7 +187,9 @@ void main() {
           ),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.variant, equals(CorpoAppBarVariant.compact));
         expect(appBar.preferredSize.height, equals(48));
       });
@@ -196,14 +198,13 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           const Scaffold(
-            appBar: CorpoAppBar(
-              title: Text('Custom Elevation'),
-              elevation: 8,
-            ),
+            appBar: CorpoAppBar(title: Text('Custom Elevation'), elevation: 8),
           ),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.elevation, equals(8.0));
       });
 
@@ -219,7 +220,9 @@ void main() {
           ),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.backgroundColor, equals(CorpoColors.primary500));
         expect(appBar.foregroundColor, equals(CorpoColors.neutralWhite));
       });
@@ -281,7 +284,9 @@ void main() {
           ),
         );
 
-        final IconButton iconButton = tester.widget<IconButton>(find.byType(IconButton));
+        final IconButton iconButton = tester.widget<IconButton>(
+          find.byType(IconButton),
+        );
         expect(iconButton.tooltip, equals('Search'));
       });
     });
@@ -383,7 +388,9 @@ void main() {
           ),
         );
 
-        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(find.byType(CorpoAppBar));
+        final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
+          find.byType(CorpoAppBar),
+        );
         expect(appBar.centerTitle, isTrue);
       });
     });

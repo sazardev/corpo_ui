@@ -115,35 +115,35 @@ class CorpoSemanticLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-      label: label,
-      hint: hint,
-      value: value,
-      increasedValue: increasedValue,
-      decreasedValue: decreasedValue,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      onScrollLeft: onScrollLeft,
-      onScrollRight: onScrollRight,
-      onScrollUp: onScrollUp,
-      onScrollDown: onScrollDown,
-      onIncrease: onIncrease,
-      onDecrease: onDecrease,
-      onCopy: onCopy,
-      onCut: onCut,
-      onPaste: onPaste,
-      button: isButton,
-      textField: isTextField,
-      readOnly: isReadOnly,
-      selected: isSelected,
-      enabled: isEnabled,
-      hidden: isHidden,
-      header: isHeader,
-      link: isLink,
-      image: isImage,
-      liveRegion: isLiveRegion,
-      container: !isButton && !isTextField && !isLink && !isImage,
-      child: child,
-    );
+    label: label,
+    hint: hint,
+    value: value,
+    increasedValue: increasedValue,
+    decreasedValue: decreasedValue,
+    onTap: onTap,
+    onLongPress: onLongPress,
+    onScrollLeft: onScrollLeft,
+    onScrollRight: onScrollRight,
+    onScrollUp: onScrollUp,
+    onScrollDown: onScrollDown,
+    onIncrease: onIncrease,
+    onDecrease: onDecrease,
+    onCopy: onCopy,
+    onCut: onCut,
+    onPaste: onPaste,
+    button: isButton,
+    textField: isTextField,
+    readOnly: isReadOnly,
+    selected: isSelected,
+    enabled: isEnabled,
+    hidden: isHidden,
+    header: isHeader,
+    link: isLink,
+    image: isImage,
+    liveRegion: isLiveRegion,
+    container: !isButton && !isTextField && !isLink && !isImage,
+    child: child,
+  );
 }
 
 /// A widget that provides live region announcements.
@@ -200,7 +200,8 @@ class _CorpoLiveRegionState extends State<CorpoLiveRegion> {
   }
 
   @override
-  Widget build(BuildContext context) => Semantics(liveRegion: true, container: true, child: widget.child);
+  Widget build(BuildContext context) =>
+      Semantics(liveRegion: true, container: true, child: widget.child);
 }
 
 /// A widget that provides semantic navigation landmarks.
@@ -227,12 +228,12 @@ class CorpoLandmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CorpoSemanticLabel(
-      label: label ?? type.defaultLabel,
-      isHeader:
-          type == CorpoLandmarkType.banner ||
-          type == CorpoLandmarkType.contentInfo,
-      child: child,
-    );
+    label: label ?? type.defaultLabel,
+    isHeader:
+        type == CorpoLandmarkType.banner ||
+        type == CorpoLandmarkType.contentInfo,
+    child: child,
+  );
 }
 
 /// Types of semantic landmarks.
@@ -287,14 +288,14 @@ class CorpoReadingOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      children: children.asMap().entries.map((MapEntry<int, Widget> entry) {
-        final int index = entry.key;
-        final Widget child = entry.value;
-        final int semanticIndex = semanticIndexOverrides[index] ?? index;
+    children: children.asMap().entries.map((MapEntry<int, Widget> entry) {
+      final int index = entry.key;
+      final Widget child = entry.value;
+      final int semanticIndex = semanticIndexOverrides[index] ?? index;
 
-        return IndexedSemantics(index: semanticIndex, child: child);
-      }).toList(),
-    );
+      return IndexedSemantics(index: semanticIndex, child: child);
+    }).toList(),
+  );
 }
 
 /// A widget that excludes content from semantic tree.
@@ -316,7 +317,8 @@ class CorpoExcludeSemantics extends StatelessWidget {
   final bool excluding;
 
   @override
-  Widget build(BuildContext context) => ExcludeSemantics(excluding: excluding, child: child);
+  Widget build(BuildContext context) =>
+      ExcludeSemantics(excluding: excluding, child: child);
 }
 
 /// A widget that merges semantic information from children.
@@ -354,7 +356,8 @@ abstract final class CorpoScreenReaderUtils {
   }
 
   /// Creates a semantic button action.
-  static SemanticsAction createButtonAction(VoidCallback onPressed) => SemanticsAction.tap;
+  static SemanticsAction createButtonAction(VoidCallback onPressed) =>
+      SemanticsAction.tap;
 
   /// Creates semantic properties for a text field.
   static SemanticsProperties createTextFieldSemantics({
@@ -365,14 +368,14 @@ abstract final class CorpoScreenReaderUtils {
     bool isMultiline = false,
     bool isReadOnly = false,
   }) => SemanticsProperties(
-      label: label,
-      hint: hint,
-      value: value,
-      textField: true,
-      obscured: isPassword,
-      multiline: isMultiline,
-      readOnly: isReadOnly,
-    );
+    label: label,
+    hint: hint,
+    value: value,
+    textField: true,
+    obscured: isPassword,
+    multiline: isMultiline,
+    readOnly: isReadOnly,
+  );
 
   /// Creates semantic properties for a button.
   static SemanticsProperties createButtonSemantics({
@@ -380,11 +383,11 @@ abstract final class CorpoScreenReaderUtils {
     String? hint,
     bool isEnabled = true,
   }) => SemanticsProperties(
-      label: label,
-      hint: hint,
-      button: true,
-      enabled: isEnabled,
-    );
+    label: label,
+    hint: hint,
+    button: true,
+    enabled: isEnabled,
+  );
 
   /// Creates semantic properties for a slider.
   static SemanticsProperties createSliderSemantics({
@@ -394,13 +397,13 @@ abstract final class CorpoScreenReaderUtils {
     String? increasedValue,
     String? decreasedValue,
   }) => SemanticsProperties(
-      label: label,
-      value: value,
-      hint: hint,
-      increasedValue: increasedValue,
-      decreasedValue: decreasedValue,
-      slider: true,
-    );
+    label: label,
+    value: value,
+    hint: hint,
+    increasedValue: increasedValue,
+    decreasedValue: decreasedValue,
+    slider: true,
+  );
 
   /// Creates semantic properties for a list item.
   static SemanticsProperties createListItemSemantics({
@@ -409,21 +412,25 @@ abstract final class CorpoScreenReaderUtils {
     bool isSelected = false,
     int? index,
   }) => SemanticsProperties(
-      label: label,
-      hint: hint,
-      selected: isSelected,
-      sortKey: index != null ? OrdinalSortKey(index.toDouble()) : null,
-    );
+    label: label,
+    hint: hint,
+    selected: isSelected,
+    sortKey: index != null ? OrdinalSortKey(index.toDouble()) : null,
+  );
 
   /// Checks if screen reader is active.
-  static bool isScreenReaderActive(BuildContext context) => MediaQuery.of(context).accessibleNavigation;
+  static bool isScreenReaderActive(BuildContext context) =>
+      MediaQuery.of(context).accessibleNavigation;
 
   /// Gets the text scale factor for accessibility.
-  static double getTextScaleFactor(BuildContext context) => MediaQuery.of(context).textScaler.scale(1);
+  static double getTextScaleFactor(BuildContext context) =>
+      MediaQuery.of(context).textScaler.scale(1);
 
   /// Checks if high contrast is enabled.
-  static bool isHighContrastEnabled(BuildContext context) => MediaQuery.of(context).highContrast;
+  static bool isHighContrastEnabled(BuildContext context) =>
+      MediaQuery.of(context).highContrast;
 
   /// Checks if animations should be reduced.
-  static bool shouldReduceAnimations(BuildContext context) => MediaQuery.of(context).disableAnimations;
+  static bool shouldReduceAnimations(BuildContext context) =>
+      MediaQuery.of(context).disableAnimations;
 }

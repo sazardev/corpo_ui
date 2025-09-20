@@ -256,7 +256,8 @@ class CorpoListTile extends StatelessWidget {
   }
 
   /// Gets the selected tile color.
-  Color _getSelectedColor(bool isDark) => isDark ? CorpoColors.primary800 : CorpoColors.primary100;
+  Color _getSelectedColor(bool isDark) =>
+      isDark ? CorpoColors.primary800 : CorpoColors.primary100;
 
   /// Gets the title color based on state and theme.
   Color _getTitleColor(bool isDark) {

@@ -187,185 +187,189 @@ abstract final class CorpoTheme {
 
   /// Builds the text theme with Corpo UI typography.
   static TextTheme _buildTextTheme(Color defaultColor) => TextTheme(
-      // Display styles
-      displayLarge: CorpoTypography.displayLarge.copyWith(color: defaultColor),
-      displayMedium: CorpoTypography.displayMedium.copyWith(
-        color: defaultColor,
-      ),
-      displaySmall: CorpoTypography.displaySmall.copyWith(color: defaultColor),
+    // Display styles
+    displayLarge: CorpoTypography.displayLarge.copyWith(color: defaultColor),
+    displayMedium: CorpoTypography.displayMedium.copyWith(color: defaultColor),
+    displaySmall: CorpoTypography.displaySmall.copyWith(color: defaultColor),
 
-      // Headline styles
-      headlineLarge: CorpoTypography.heading1.copyWith(color: defaultColor),
-      headlineMedium: CorpoTypography.heading2.copyWith(color: defaultColor),
-      headlineSmall: CorpoTypography.heading3.copyWith(color: defaultColor),
+    // Headline styles
+    headlineLarge: CorpoTypography.heading1.copyWith(color: defaultColor),
+    headlineMedium: CorpoTypography.heading2.copyWith(color: defaultColor),
+    headlineSmall: CorpoTypography.heading3.copyWith(color: defaultColor),
 
-      // Title styles
-      titleLarge: CorpoTypography.heading4.copyWith(color: defaultColor),
-      titleMedium: CorpoTypography.labelLarge.copyWith(color: defaultColor),
-      titleSmall: CorpoTypography.labelMedium.copyWith(color: defaultColor),
+    // Title styles
+    titleLarge: CorpoTypography.heading4.copyWith(color: defaultColor),
+    titleMedium: CorpoTypography.labelLarge.copyWith(color: defaultColor),
+    titleSmall: CorpoTypography.labelMedium.copyWith(color: defaultColor),
 
-      // Body styles
-      bodyLarge: CorpoTypography.bodyLarge.copyWith(color: defaultColor),
-      bodyMedium: CorpoTypography.bodyMedium.copyWith(color: defaultColor),
-      bodySmall: CorpoTypography.bodySmall.copyWith(color: defaultColor),
+    // Body styles
+    bodyLarge: CorpoTypography.bodyLarge.copyWith(color: defaultColor),
+    bodyMedium: CorpoTypography.bodyMedium.copyWith(color: defaultColor),
+    bodySmall: CorpoTypography.bodySmall.copyWith(color: defaultColor),
 
-      // Label styles
-      labelLarge: CorpoTypography.buttonLarge.copyWith(color: defaultColor),
-      labelMedium: CorpoTypography.buttonMedium.copyWith(color: defaultColor),
-      labelSmall: CorpoTypography.buttonSmall.copyWith(color: defaultColor),
-    );
+    // Label styles
+    labelLarge: CorpoTypography.buttonLarge.copyWith(color: defaultColor),
+    labelMedium: CorpoTypography.buttonMedium.copyWith(color: defaultColor),
+    labelSmall: CorpoTypography.buttonSmall.copyWith(color: defaultColor),
+  );
 
   /// Builds the app bar theme.
   static AppBarTheme _buildAppBarTheme(ColorScheme colorScheme) => AppBarTheme(
-      backgroundColor: colorScheme.surface,
-      foregroundColor: colorScheme.onSurface,
-      elevation: 0,
-      centerTitle: false,
-      titleTextStyle: CorpoTypography.heading4.copyWith(
-        color: colorScheme.onSurface,
-      ),
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarBrightness: colorScheme.brightness,
-        statusBarIconBrightness: colorScheme.brightness == Brightness.light
-            ? Brightness.dark
-            : Brightness.light,
-      ),
-    );
+    backgroundColor: colorScheme.surface,
+    foregroundColor: colorScheme.onSurface,
+    elevation: 0,
+    centerTitle: false,
+    titleTextStyle: CorpoTypography.heading4.copyWith(
+      color: colorScheme.onSurface,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: colorScheme.brightness,
+      statusBarIconBrightness: colorScheme.brightness == Brightness.light
+          ? Brightness.dark
+          : Brightness.light,
+    ),
+  );
 
   /// Builds the card theme.
-  static CardThemeData _buildCardTheme(ColorScheme colorScheme) => CardThemeData(
-      color: colorScheme.surface,
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: colorScheme.outline),
-      ),
-      margin: CorpoPadding.medium,
-    );
+  static CardThemeData _buildCardTheme(ColorScheme colorScheme) =>
+      CardThemeData(
+        color: colorScheme.surface,
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: colorScheme.outline),
+        ),
+        margin: CorpoPadding.medium,
+      );
 
   /// Builds the elevated button theme.
   static ElevatedButtonThemeData _buildElevatedButtonTheme(
     ColorScheme colorScheme,
   ) => ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-        elevation: 2,
-        padding: CorpoPadding.medium,
-        minimumSize: const Size(88, 44),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        textStyle: CorpoTypography.buttonMedium,
-      ),
-    );
+    style: ElevatedButton.styleFrom(
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
+      elevation: 2,
+      padding: CorpoPadding.medium,
+      minimumSize: const Size(88, 44),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      textStyle: CorpoTypography.buttonMedium,
+    ),
+  );
 
   /// Builds the text button theme.
-  static TextButtonThemeData _buildTextButtonTheme(ColorScheme colorScheme) => TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: colorScheme.primary,
-        padding: CorpoPadding.medium,
-        minimumSize: const Size(88, 44),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        textStyle: CorpoTypography.buttonMedium,
-      ),
-    );
+  static TextButtonThemeData _buildTextButtonTheme(ColorScheme colorScheme) =>
+      TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          padding: CorpoPadding.medium,
+          minimumSize: const Size(88, 44),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: CorpoTypography.buttonMedium,
+        ),
+      );
 
   /// Builds the outlined button theme.
   static OutlinedButtonThemeData _buildOutlinedButtonTheme(
     ColorScheme colorScheme,
   ) => OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: colorScheme.primary,
-        padding: CorpoPadding.medium,
-        minimumSize: const Size(88, 44),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        side: BorderSide(color: colorScheme.outline, width: 1.5),
-        textStyle: CorpoTypography.buttonMedium,
-      ),
-    );
+    style: OutlinedButton.styleFrom(
+      foregroundColor: colorScheme.primary,
+      padding: CorpoPadding.medium,
+      minimumSize: const Size(88, 44),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      side: BorderSide(color: colorScheme.outline, width: 1.5),
+      textStyle: CorpoTypography.buttonMedium,
+    ),
+  );
 
   /// Builds the input decoration theme.
   static InputDecorationTheme _buildInputDecorationTheme(
     ColorScheme colorScheme,
   ) => InputDecorationTheme(
-      filled: true,
-      fillColor: colorScheme.surface,
-      contentPadding: CorpoPadding.medium,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colorScheme.outline),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colorScheme.outline),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colorScheme.primary, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: colorScheme.error),
-      ),
-      labelStyle: CorpoTypography.labelMedium.copyWith(
-        color: colorScheme.onSurfaceVariant,
-      ),
-      hintStyle: CorpoTypography.bodyMedium.copyWith(
-        color: colorScheme.onSurfaceVariant,
-      ),
-    );
+    filled: true,
+    fillColor: colorScheme.surface,
+    contentPadding: CorpoPadding.medium,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: colorScheme.outline),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: colorScheme.outline),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: colorScheme.primary, width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: colorScheme.error),
+    ),
+    labelStyle: CorpoTypography.labelMedium.copyWith(
+      color: colorScheme.onSurfaceVariant,
+    ),
+    hintStyle: CorpoTypography.bodyMedium.copyWith(
+      color: colorScheme.onSurfaceVariant,
+    ),
+  );
 
   /// Builds the divider theme.
-  static DividerThemeData _buildDividerTheme(ColorScheme colorScheme) => DividerThemeData(
-      color: colorScheme.outline,
-      thickness: 1,
-      space: CorpoSpacing.medium,
-    );
+  static DividerThemeData _buildDividerTheme(ColorScheme colorScheme) =>
+      DividerThemeData(
+        color: colorScheme.outline,
+        thickness: 1,
+        space: CorpoSpacing.medium,
+      );
 
   /// Builds the dialog theme.
-  static DialogThemeData _buildDialogTheme(ColorScheme colorScheme) => DialogThemeData(
-      backgroundColor: colorScheme.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 8,
-      titleTextStyle: CorpoTypography.heading3.copyWith(
-        color: colorScheme.onSurface,
-      ),
-      contentTextStyle: CorpoTypography.bodyMedium.copyWith(
-        color: colorScheme.onSurface,
-      ),
-    );
+  static DialogThemeData _buildDialogTheme(ColorScheme colorScheme) =>
+      DialogThemeData(
+        backgroundColor: colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 8,
+        titleTextStyle: CorpoTypography.heading3.copyWith(
+          color: colorScheme.onSurface,
+        ),
+        contentTextStyle: CorpoTypography.bodyMedium.copyWith(
+          color: colorScheme.onSurface,
+        ),
+      );
 
   /// Builds the bottom navigation bar theme.
   static BottomNavigationBarThemeData _buildBottomNavigationBarTheme(
     ColorScheme colorScheme,
   ) => BottomNavigationBarThemeData(
-      backgroundColor: colorScheme.surface,
-      selectedItemColor: colorScheme.primary,
-      unselectedItemColor: colorScheme.onSurfaceVariant,
-      type: BottomNavigationBarType.fixed,
-      elevation: 8,
-    );
+    backgroundColor: colorScheme.surface,
+    selectedItemColor: colorScheme.primary,
+    unselectedItemColor: colorScheme.onSurfaceVariant,
+    type: BottomNavigationBarType.fixed,
+    elevation: 8,
+  );
 
   /// Builds the tab bar theme.
-  static TabBarThemeData _buildTabBarTheme(ColorScheme colorScheme) => TabBarThemeData(
-      labelColor: colorScheme.primary,
-      unselectedLabelColor: colorScheme.onSurfaceVariant,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: colorScheme.primary, width: 2),
-      ),
-      labelStyle: CorpoTypography.labelMedium,
-      unselectedLabelStyle: CorpoTypography.labelMedium,
-    );
+  static TabBarThemeData _buildTabBarTheme(ColorScheme colorScheme) =>
+      TabBarThemeData(
+        labelColor: colorScheme.primary,
+        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+        ),
+        labelStyle: CorpoTypography.labelMedium,
+        unselectedLabelStyle: CorpoTypography.labelMedium,
+      );
 
   /// Builds the chip theme.
-  static ChipThemeData _buildChipTheme(ColorScheme colorScheme) => ChipThemeData(
-      backgroundColor: colorScheme.surfaceContainerHighest,
-      selectedColor: colorScheme.primaryContainer,
-      disabledColor: CorpoColors.surfaceDisabled,
-      deleteIconColor: colorScheme.onSurfaceVariant,
-      labelStyle: CorpoTypography.labelSmall.copyWith(
-        color: colorScheme.onSurfaceVariant,
-      ),
-      padding: CorpoPadding.small,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    );
+  static ChipThemeData _buildChipTheme(ColorScheme colorScheme) =>
+      ChipThemeData(
+        backgroundColor: colorScheme.surfaceContainerHighest,
+        selectedColor: colorScheme.primaryContainer,
+        disabledColor: CorpoColors.surfaceDisabled,
+        deleteIconColor: colorScheme.onSurfaceVariant,
+        labelStyle: CorpoTypography.labelSmall.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        padding: CorpoPadding.small,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      );
 }
