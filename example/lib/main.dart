@@ -8,7 +8,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:corpo_ui/corpo_ui.dart';
-import 'corpo_theme.dart';
+import 'simple_theme_switcher.dart';
 
 void main() {
   runApp(const CorpoUIDemo());
@@ -45,14 +45,6 @@ class _DemoHomePageState extends State<DemoHomePage> {
   bool _notificationsEnabled = true;
   bool _marketingEmails = false;
   double _volume = 75;
-
-  final List<String> _pages = [
-    'Dashboard',
-    'Components',
-    'Forms',
-    'Data Tables',
-    'Settings',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +83,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
       ),
       actions: [
         // Theme Switcher - The MAGIC happens here!
-        CorpoThemeSwitcher(),
+        const ThemeSwitcherButton(),
         CorpoSpacer.small(),
         CorpoIconButton(
           icon: Icons.notifications,
@@ -207,6 +199,10 @@ class _DemoHomePageState extends State<DemoHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 🎨 ShadCN POWER DEMONSTRATION
+          _buildShadCNHero(),
+          CorpoSpacer.large(),
+
           // Welcome Section
           CorpoCard(
             padding: CorpoCardPadding.large,
@@ -222,7 +218,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
                       ),
                       CorpoSpacer.small(),
                       CorpoText(
-                        'Here\'s what\'s happening with your projects today.',
+                        'See how EVERY component adapts to your theme choice!',
                         variant: CorpoTextVariant.bodyLarge,
                         color: tokens.textSecondary,
                       ),
@@ -1106,6 +1102,265 @@ class _DemoHomePageState extends State<DemoHomePage> {
           ],
         ),
         duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  /// 🎨 THE SHADCN POWER DEMONSTRATION
+  /// This showcases how one file controls ALL styling
+  Widget _buildShadCNHero() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+    return CorpoCard(
+      elevation: CorpoCardElevation.high,
+      padding: CorpoCardPadding.large,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with dramatic messaging
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(tokens.spacing3x),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      tokens.primaryColor,
+                      tokens.primaryColor.withOpacity(0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(tokens.borderRadius),
+                ),
+                child: Icon(
+                  Icons.auto_awesome,
+                  color: tokens.getTextColorFor(tokens.primaryColor),
+                  size: 32,
+                ),
+              ),
+              CorpoSpacer.medium(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CorpoHeading(
+                      'The ShadCN of Flutter 🚀',
+                      level: CorpoHeadingLevel.h1,
+                      color: tokens.textPrimary,
+                    ),
+                    CorpoSpacer.small(),
+                    CorpoText(
+                      'Change ONE file, transform your ENTIRE app.',
+                      variant: CorpoTextVariant.bodyLarge,
+                      color: tokens.textSecondary,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          CorpoSpacer.large(),
+
+          // Theme showcase grid
+          Container(
+            padding: EdgeInsets.all(tokens.spacing4x),
+            decoration: BoxDecoration(
+              color: tokens.primaryColor.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(tokens.borderRadius),
+              border: Border.all(
+                color: tokens.primaryColor.withOpacity(0.2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.palette,
+                      color: tokens.primaryColor,
+                      size: 24,
+                    ),
+                    CorpoSpacer.small(),
+                    CorpoHeading(
+                      '12 Dramatic Themes Available',
+                      level: CorpoHeadingLevel.h3,
+                      color: tokens.textPrimary,
+                    ),
+                  ],
+                ),
+                CorpoSpacer.medium(),
+
+                // Theme preview chips
+                Wrap(
+                  spacing: tokens.spacing2x,
+                  runSpacing: tokens.spacing2x,
+                  children: [
+                    _buildQuickThemeChip('🏢', 'Corporate', 'Professional blue',
+                        CorpoDesignTokens.applyCorporateTheme),
+                    _buildQuickThemeChip('🎮', 'Gaming', 'Cyberpunk neon',
+                        CorpoDesignTokens.applyGamingTheme),
+                    _buildQuickThemeChip('🌿', 'Nature', 'Eco-friendly',
+                        CorpoDesignTokens.applyNatureTheme),
+                    _buildQuickThemeChip('✨', 'Luxury', 'Premium gold',
+                        CorpoDesignTokens.applyLuxuryTheme),
+                    _buildQuickThemeChip('🏦', 'Banking', 'Conservative',
+                        CorpoDesignTokens.applyBankingTheme),
+                    _buildQuickThemeChip('🏥', 'Healthcare', 'Medical clean',
+                        CorpoDesignTokens.applyHealthcareTheme),
+                  ],
+                ),
+                CorpoSpacer.large(),
+
+                // Call to action
+                Row(
+                  children: [
+                    Expanded(
+                      child: CorpoButton(
+                        onPressed: () {
+                          // Randomly cycle through themes for demonstration
+                          final List<VoidCallback> themes = [
+                            CorpoDesignTokens.applyGamingTheme,
+                            CorpoDesignTokens.applyNatureTheme,
+                            CorpoDesignTokens.applyLuxuryTheme,
+                            CorpoDesignTokens.applyCreativeTheme,
+                            CorpoDesignTokens.applyCorporateTheme,
+                          ];
+                          themes[(DateTime.now().millisecondsSinceEpoch %
+                              themes.length)]();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  '🎨 Random theme applied! Watch everything change!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        variant: CorpoButtonVariant.primary,
+                        size: CorpoButtonSize.large,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.shuffle, size: 20),
+                            CorpoSpacer.small(),
+                            const CorpoText('🎲 Try Random Theme',
+                                variant: CorpoTextVariant.labelMedium),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          CorpoSpacer.large(),
+
+          // Stats about the power
+          Row(
+            children: [
+              Expanded(
+                child: _buildPowerStatCard(
+                    '49+', 'Components', 'All themed instantly'),
+              ),
+              CorpoSpacer.medium(),
+              Expanded(
+                child: _buildPowerStatCard(
+                    '12', 'Themes', 'Dramatically different'),
+              ),
+              CorpoSpacer.medium(),
+              Expanded(
+                child: _buildPowerStatCard('1', 'File', 'Controls everything'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickThemeChip(
+      String emoji, String name, String description, VoidCallback apply) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+    return GestureDetector(
+      onTap: () {
+        apply();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('🎨 Applied $name theme! Watch the magic happen!'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(tokens.spacing3x),
+        decoration: BoxDecoration(
+          color: tokens.surfaceColor,
+          borderRadius: BorderRadius.circular(tokens.borderRadius),
+          border: Border.all(
+            color: tokens.textSecondary.withOpacity(0.2),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: tokens.primaryColor.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 20)),
+            CorpoSpacer.extraSmall(),
+            CorpoText(
+              name,
+              variant: CorpoTextVariant.labelSmall,
+              color: tokens.textPrimary,
+            ),
+            CorpoText(
+              description,
+              variant: CorpoTextVariant.caption,
+              color: tokens.textSecondary,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPowerStatCard(String number, String label, String description) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+    return Container(
+      padding: EdgeInsets.all(tokens.spacing4x),
+      decoration: BoxDecoration(
+        color: tokens.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(tokens.borderRadius),
+        border: Border.all(
+          color: tokens.primaryColor.withOpacity(0.3),
+        ),
+      ),
+      child: Column(
+        children: [
+          CorpoHeading(
+            number,
+            level: CorpoHeadingLevel.h2,
+            color: tokens.primaryColor,
+          ),
+          CorpoText(
+            label,
+            variant: CorpoTextVariant.labelMedium,
+            color: tokens.textPrimary,
+          ),
+          CorpoText(
+            description,
+            variant: CorpoTextVariant.caption,
+            color: tokens.textSecondary,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

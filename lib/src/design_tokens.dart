@@ -241,6 +241,10 @@ class CorpoDesignTokens {
   static void applyCorporateTheme() {
     configure(
       primaryColor: const Color(0xFF3182CE),
+      secondaryColor: const Color(0xFF4299E1),
+      surfaceColor: const Color(0xFFFFFFFF),
+      textPrimary: const Color(0xFF1A202C),
+      textSecondary: const Color(0xFF4A5568),
       borderRadius: 8,
       baseSpacing: 4,
       fontFamily: 'Inter',
@@ -252,6 +256,9 @@ class CorpoDesignTokens {
     configure(
       primaryColor: const Color(0xFF7C3AED),
       secondaryColor: const Color(0xFF8B5CF6),
+      surfaceColor: const Color(0xFFF8FAFC),
+      textPrimary: const Color(0xFF1E1B4B),
+      textSecondary: const Color(0xFF6366F1),
       borderRadius: 12,
       baseSpacing: 6,
       fontFamily: 'SF Pro Display',
@@ -262,6 +269,10 @@ class CorpoDesignTokens {
   static void applyFriendlyTheme() {
     configure(
       primaryColor: const Color(0xFFEA580C),
+      secondaryColor: const Color(0xFFFB923C),
+      surfaceColor: const Color(0xFFFFFBEB),
+      textPrimary: const Color(0xFF9A3412),
+      textSecondary: const Color(0xFFEA580C),
       successColor: const Color(0xFF16A34A),
       borderRadius: 16,
       baseSpacing: 8,
@@ -274,9 +285,156 @@ class CorpoDesignTokens {
     configure(
       primaryColor: const Color(0xFF000000),
       secondaryColor: const Color(0xFF6B7280),
+      surfaceColor: const Color(0xFFFFFFFF),
+      textPrimary: const Color(0xFF000000),
+      textSecondary: const Color(0xFF6B7280),
       borderRadius: 4,
       baseSpacing: 4,
       fontFamily: 'SF Mono',
+    );
+  }
+
+  /// Apply a cyberpunk/gaming neon theme 🎮
+  static void applyGamingTheme() {
+    configure(
+      primaryColor: const Color(0xFF00FFFF), // Cyan neon
+      secondaryColor: const Color(0xFFFF00FF), // Magenta neon
+      surfaceColor: const Color(0xFF0A0A0A), // Almost black
+      textPrimary: const Color(0xFF00FFFF), // Bright cyan
+      textSecondary: const Color(0xFF9CA3AF), // Gray
+      successColor: const Color(0xFF00FF00), // Bright green
+      errorColor: const Color(0xFFFF0040), // Hot pink
+      warningColor: const Color(0xFFFFFF00), // Bright yellow
+      infoColor: const Color(0xFF0080FF), // Electric blue
+      borderRadius: 2, // Sharp edges for cyber look
+      baseSpacing: 4,
+      fontFamily: 'Orbitron',
+    );
+  }
+
+  /// Apply a nature/eco theme 🌿
+  static void applyNatureTheme() {
+    configure(
+      primaryColor: const Color(0xFF059669), // Forest green
+      secondaryColor: const Color(0xFF34D399), // Light green
+      surfaceColor: const Color(0xFFF0FDF4), // Very light green
+      textPrimary: const Color(0xFF064E3B), // Dark forest
+      textSecondary: const Color(0xFF059669), // Forest green
+      successColor: const Color(0xFF10B981), // Emerald
+      warningColor: const Color(0xFFF59E0B), // Amber
+      errorColor: const Color(0xFFDC2626), // Red
+      infoColor: const Color(0xFF0891B2), // Cyan
+      borderRadius: 20, // Very rounded, organic feel
+      baseSpacing: 6,
+      fontFamily: 'Nunito',
+    );
+  }
+
+  /// Apply a luxury/premium gold theme ✨
+  static void applyLuxuryTheme() {
+    configure(
+      primaryColor: const Color(0xFFD97706), // Amber/gold
+      secondaryColor: const Color(0xFFFBBF24), // Light gold
+      surfaceColor: const Color(0xFF1C1917), // Dark brown/black
+      textPrimary: const Color(0xFFFBBF24), // Gold text
+      textSecondary: const Color(0xFFA16207), // Darker gold
+      successColor: const Color(0xFF059669), // Emerald
+      warningColor: const Color(0xFFEAB308), // Yellow
+      errorColor: const Color(0xFFDC2626), // Red
+      infoColor: const Color(0xFF0284C7), // Sky blue
+      borderRadius: 0, // Sharp, luxury edges
+      baseSpacing: 8, // Generous spacing
+      fontFamily: 'Playfair Display',
+    );
+  }
+
+  /// Apply a banking/conservative theme 🏦
+  static void applyBankingTheme() {
+    configure(
+      primaryColor: const Color(0xFF1E3A8A), // Navy blue
+      secondaryColor: const Color(0xFF3B82F6), // Blue
+      surfaceColor: const Color(0xFFF8FAFC), // Off white
+      textPrimary: const Color(0xFF1E293B), // Dark slate
+      textSecondary: const Color(0xFF64748B), // Slate gray
+      successColor: const Color(0xFF059669), // Green
+      warningColor: const Color(0xFFD97706), // Orange
+      errorColor: const Color(0xFFDC2626), // Red
+      infoColor: const Color(0xFF0284C7), // Blue
+      borderRadius: 6, // Conservative rounding
+      baseSpacing: 4, // Tight, professional spacing
+      fontFamily: 'Times New Roman',
+    );
+  }
+
+  /// Apply a healthcare/medical theme 🏥
+  static void applyHealthcareTheme() {
+    configure(
+      primaryColor: const Color(0xFF0EA5E9), // Medical blue
+      secondaryColor: const Color(0xFF38BDF8), // Light blue
+      surfaceColor: const Color(0xFFFFFFFF), // Pure white
+      textPrimary: const Color(0xFF0F172A), // Near black
+      textSecondary: const Color(0xFF475569), // Dark gray
+      successColor: const Color(0xFF22C55E), // Health green
+      warningColor: const Color(0xFFF59E0B), // Warning amber
+      errorColor: const Color(0xFFEF4444), // Alert red
+      infoColor: const Color(0xFF06B6D4), // Info cyan
+      borderRadius: 8, // Clean, medical
+      baseSpacing: 5, // Clean spacing
+      fontFamily: 'Open Sans',
+    );
+  }
+
+  /// Apply a creative/artistic theme 🎨
+  static void applyCreativeTheme() {
+    configure(
+      primaryColor: const Color(0xFFEC4899), // Hot pink
+      secondaryColor: const Color(0xFF8B5CF6), // Purple
+      surfaceColor: const Color(0xFFFDF2F8), // Light pink
+      textPrimary: const Color(0xFF831843), // Dark pink
+      textSecondary: const Color(0xFFBE185D), // Medium pink
+      successColor: const Color(0xFF10B981), // Emerald
+      warningColor: const Color(0xFFF59E0B), // Amber
+      errorColor: const Color(0xFFEF4444), // Red
+      infoColor: const Color(0xFF3B82F6), // Blue
+      borderRadius: 24, // Very rounded, playful
+      baseSpacing: 7, // Generous, creative spacing
+      fontFamily: 'Fredoka One',
+    );
+  }
+
+  /// Apply a sunset/warm theme 🌅
+  static void applySunsetTheme() {
+    configure(
+      primaryColor: const Color(0xFFDC2626), // Red
+      secondaryColor: const Color(0xFFF97316), // Orange
+      surfaceColor: const Color(0xFFFFF7ED), // Warm cream
+      textPrimary: const Color(0xFF7C2D12), // Dark orange
+      textSecondary: const Color(0xFFEA580C), // Orange
+      successColor: const Color(0xFF65A30D), // Lime
+      warningColor: const Color(0xFFFBBF24), // Yellow
+      errorColor: const Color(0xFFDC2626), // Red
+      infoColor: const Color(0xFF0284C7), // Sky
+      borderRadius: 14, // Warm rounding
+      baseSpacing: 6,
+      fontFamily: 'Montserrat',
+    );
+  }
+
+  /// Apply an ocean/aquatic theme 🌊
+  static void applyOceanTheme() {
+    configure(
+      primaryColor: const Color(0xFF0891B2), // Cyan
+      secondaryColor: const Color(0xFF06B6D4), // Light cyan
+      surfaceColor: const Color(0xFFECFDF5), // Very light blue-green
+      textPrimary: const Color(0xFF164E63), // Deep ocean
+      textSecondary: const Color(0xFF0E7490), // Ocean blue
+      successColor: const Color(0xFF059669), // Sea green
+      warningColor: const Color(0xFFF59E0B), // Amber
+      errorColor: const Color(0xFFDC2626), // Red
+      infoColor: const Color(0xFF0284C7), // Sky blue
+      borderRadius: 18, // Wave-like rounding
+      baseSpacing: 5,
+      fontFamily: 'Roboto',
     );
   }
 }
