@@ -1,4 +1,8 @@
-# CHANGELOG
+# Corpo UI Design System Changelog
+
+## 0.2.0
+
+* Introduce Design Tokens as single source of truth for styling
 
 ## 0.1.2
 
