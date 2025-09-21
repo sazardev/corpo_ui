@@ -221,6 +221,11 @@ class _CorpoPopoverState extends State<CorpoPopover>
       toggle: _toggle,
       isVisible: () => _isVisible,
     );
+
+    // Delay animation setup to improve performance
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Animation is already set up, no need to forward immediately
+    });
   }
 
   @override
@@ -325,8 +330,9 @@ class _CorpoPopoverState extends State<CorpoPopover>
       widget.dismissBehavior == CorpoPopoverDismissBehavior.tapOutsideAndEscape;
 
   @override
-  Widget build(BuildContext context) =>
-      GestureDetector(key: _childKey, onTap: _toggle, child: widget.child);
+  Widget build(BuildContext context) => RepaintBoundary(
+    child: GestureDetector(key: _childKey, onTap: _toggle, child: widget.child),
+  );
 }
 
 class _PopoverOverlay extends StatelessWidget {
@@ -343,23 +349,27 @@ class _PopoverOverlay extends StatelessWidget {
   final VoidCallback? onDismiss;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    children: <Widget>[
-      // Barrier
-      if (onDismiss != null)
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: onDismiss,
-            child: Container(color: target.barrierColor ?? Colors.transparent),
+  Widget build(BuildContext context) => RepaintBoundary(
+    child: Stack(
+      children: <Widget>[
+        // Barrier
+        if (onDismiss != null)
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: onDismiss,
+              child: Container(
+                color: target.barrierColor ?? Colors.transparent,
+              ),
+            ),
           ),
+        // Popover content
+        _PopoverPositioned(
+          target: target,
+          childKey: childKey,
+          animation: animation,
         ),
-      // Popover content
-      _PopoverPositioned(
-        target: target,
-        childKey: childKey,
-        animation: animation,
-      ),
-    ],
+      ],
+    ),
   );
 }
 

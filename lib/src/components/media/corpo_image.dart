@@ -252,6 +252,13 @@ class _CorpoImageState extends State<CorpoImage>
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _fadeController, curve: Curves.easeInOut),
     );
+
+    // Delay animation initialization to improve performance
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _fadeController.forward();
+      }
+    });
   }
 
   @override
@@ -276,15 +283,16 @@ class _CorpoImageState extends State<CorpoImage>
         ? Hero(tag: widget.heroTag!, child: styledImage)
         : styledImage;
 
-    if (widget.onTap != null || widget.onLongPress != null) {
-      return GestureDetector(
-        onTap: widget.onTap,
-        onLongPress: widget.onLongPress,
-        child: finalWidget,
-      );
-    }
+    final Widget result = widget.onTap != null || widget.onLongPress != null
+        ? GestureDetector(
+            onTap: widget.onTap,
+            onLongPress: widget.onLongPress,
+            child: finalWidget,
+          )
+        : finalWidget;
 
-    return finalWidget;
+    // Wrap in RepaintBoundary to isolate animation repaints
+    return RepaintBoundary(child: result);
   }
 
   Widget _buildImageWidget(BuildContext context) {

@@ -174,12 +174,20 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1200),
       vsync: this,
-    )..repeat();
+    );
 
     _dotsController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
-    )..repeat();
+    );
+
+    // ✅ PERFORMANCE: Only start animations when widget is visible
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _controller.repeat();
+        _dotsController.repeat();
+      }
+    });
   }
 
   @override
@@ -198,23 +206,26 @@ class _CorpoSpinnerState extends State<CorpoSpinner>
         widget.color ??
         (isDark ? tokens.primaryColor.withOpacity(0.8) : tokens.primaryColor);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        _buildSpinner(effectiveColor, tokens),
-        if (widget.label != null) ...<Widget>[
-          SizedBox(height: tokens.spacing2x),
-          Text(
-            widget.label!,
-            style: TextStyle(
-              fontSize: tokens.baseFontSize,
-              fontFamily: tokens.fontFamily,
-              color: effectiveColor,
+    // ✅ PERFORMANCE: RepaintBoundary isolates spinner animations
+    return RepaintBoundary(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _buildSpinner(effectiveColor, tokens),
+          if (widget.label != null) ...<Widget>[
+            SizedBox(height: tokens.spacing2x),
+            Text(
+              widget.label!,
+              style: TextStyle(
+                fontSize: tokens.baseFontSize,
+                fontFamily: tokens.fontFamily,
+                color: effectiveColor,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 

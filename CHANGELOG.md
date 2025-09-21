@@ -1,5 +1,12 @@
 # Corpo UI Design System Changelog
 
+## 0.2.1
+
+* Optimize animated components for performance
+  - Introduced `RepaintBoundary` in `CorpoSkeleton` and `CorpoImage` to isolate repaints
+  - Delayed animation starts using `WidgetsBinding.instance.addPostFrameCallback` to improve initial load performance
+  - Reduced number of simultaneous animations in example app (from 3 to 1 spinner)
+
 ## 0.2.0
 
 * Introduce Design Tokens as single source of truth for styling

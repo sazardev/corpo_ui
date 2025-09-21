@@ -161,8 +161,13 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
 
+    // ✅ PERFORMANCE: Delayed animation start
     if (widget.animation != CorpoSkeletonAnimation.none) {
-      _animationController.repeat();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _animationController.repeat();
+        }
+      });
     }
   }
 
@@ -178,11 +183,12 @@ class _CorpoSkeletonState extends State<CorpoSkeleton>
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
-    if (widget.lines != null) {
-      return _buildTextSkeleton(isDark, tokens);
-    }
-
-    return _buildSkeleton(isDark, tokens);
+    // ✅ PERFORMANCE: RepaintBoundary isolates skeleton animations
+    return RepaintBoundary(
+      child: widget.lines != null
+          ? _buildTextSkeleton(isDark, tokens)
+          : _buildSkeleton(isDark, tokens),
+    );
   }
 
   Widget _buildTextSkeleton(bool isDark, CorpoDesignTokens tokens) => Column(

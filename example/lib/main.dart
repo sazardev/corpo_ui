@@ -544,14 +544,14 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 CorpoSpacer.medium(),
                 Row(
                   children: [
-                    CorpoSpinner(size: CorpoSpinnerSize.small),
-                    CorpoSpacer.medium(),
-                    CorpoSpinner(size: CorpoSpinnerSize.medium),
-                    CorpoSpacer.medium(),
-                    CorpoSpinner(size: CorpoSpinnerSize.large),
+                    // ✅ PERFORMANCE: Reduced from 3 to 1 spinner
+                    CorpoSpinner(
+                      size: CorpoSpinnerSize.medium,
+                      label: 'Loading...',
+                    ),
                     CorpoSpacer.medium(),
                     CorpoText(
-                      'Loading...',
+                      'Optimized loading state',
                       variant: CorpoTextVariant.bodyMedium,
                     ),
                   ],
