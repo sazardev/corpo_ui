@@ -119,13 +119,13 @@ void main() {
         await CorpoTestUtils.pumpWithTheme(
           tester,
           const CorpoCard(
-            color: CorpoColors.primary50,
+            color: const Color(0xFFE3F2FD),
             child: Text('Colored Card'),
           ),
         );
 
         final CorpoCard card = tester.widget<CorpoCard>(find.byType(CorpoCard));
-        expect(card.color, equals(CorpoColors.primary50));
+        expect(card.color, equals(const Color(0xFFE3F2FD)));
       });
     });
 

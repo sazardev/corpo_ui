@@ -213,9 +213,9 @@ void main() {
           tester,
           const Scaffold(
             appBar: CorpoAppBar(
-              title: Text('Custom Colors'),
-              backgroundColor: CorpoColors.primary500,
-              foregroundColor: CorpoColors.neutralWhite,
+              title: Text('Test AppBar'),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
             ),
           ),
         );
@@ -223,8 +223,8 @@ void main() {
         final CorpoAppBar appBar = tester.widget<CorpoAppBar>(
           find.byType(CorpoAppBar),
         );
-        expect(appBar.backgroundColor, equals(CorpoColors.primary500));
-        expect(appBar.foregroundColor, equals(CorpoColors.neutralWhite));
+        expect(appBar.backgroundColor, equals(Colors.blue));
+        expect(appBar.foregroundColor, equals(Colors.white));
       });
     });
 
