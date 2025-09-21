@@ -13,7 +13,7 @@
 /// CorpoText(
 ///   'Hello World',
 ///   variant: CorpoTextVariant.headingLarge,
-///   color: CorpoColors.primary500,
+///   color: CorpoDesignTokens().primaryColor,
 /// )
 ///
 /// CorpoText.bodyMedium('Standard body text')

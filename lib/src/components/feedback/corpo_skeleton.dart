@@ -87,7 +87,7 @@ class CorpoSkeleton extends StatefulWidget {
     super.key,
     this.lines = 1,
     this.lineHeight = 16.0,
-    this.spacing = 8.0, // CorpoSpacing.small equivalent
+    this.spacing = 8.0, // CorpoDesignTokens().spacing2x equivalent
     this.animation = CorpoSkeletonAnimation.shimmer,
     this.baseColor,
     this.highlightColor,

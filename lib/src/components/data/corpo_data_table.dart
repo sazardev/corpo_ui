@@ -40,9 +40,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Configuration for a data table column.
 class CorpoDataColumn<T> {
@@ -251,6 +249,7 @@ class CorpoDataTable<T> extends StatefulWidget {
 class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
@@ -259,10 +258,10 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
     }
 
     if (widget.rows.isEmpty) {
-      return widget.emptyWidget ?? _buildEmptyState(isDark);
+      return widget.emptyWidget ?? _buildEmptyState(isDark, tokens);
     }
 
-    return _buildDataTable(isDark);
+    return _buildDataTable(isDark, tokens);
   }
 
   /// Builds the loading state.
@@ -273,7 +272,7 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   );
 
   /// Builds the empty state.
-  Widget _buildEmptyState(bool isDark) => Container(
+  Widget _buildEmptyState(bool isDark, CorpoDesignTokens tokens) => Container(
     height: 200,
     alignment: Alignment.center,
     child: Column(
@@ -282,13 +281,15 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
         Icon(
           Icons.table_chart_outlined,
           size: 48,
-          color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+          color: isDark ? tokens.textSecondary : tokens.textSecondary,
         ),
-        const SizedBox(height: CorpoSpacing.medium),
+        SizedBox(height: tokens.spacing4x),
         Text(
           'No data available',
-          style: CorpoTypography.bodyLarge.copyWith(
-            color: isDark ? CorpoColors.neutral400 : CorpoColors.neutral500,
+          style: TextStyle(
+            fontSize: tokens.fontSizeLarge,
+            fontFamily: tokens.fontFamily,
+            color: isDark ? tokens.textSecondary : tokens.textSecondary,
           ),
         ),
       ],
@@ -296,9 +297,9 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   );
 
   /// Builds the main data table.
-  Widget _buildDataTable(bool isDark) {
-    final List<DataColumn> dataColumns = _buildDataColumns(isDark);
-    final List<DataRow> dataRows = _buildDataRows(isDark);
+  Widget _buildDataTable(bool isDark, CorpoDesignTokens tokens) {
+    final List<DataColumn> dataColumns = _buildDataColumns(isDark, tokens);
+    final List<DataRow> dataRows = _buildDataRows(isDark, tokens);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -317,19 +318,24 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
         horizontalMargin: widget.horizontalMargin,
         columnSpacing: widget.columnSpacing,
         showCheckboxColumn: widget.selectable && widget.showCheckboxColumn,
-        headingTextStyle: widget.headingTextStyle ?? _getHeadingStyle(isDark),
-        dataTextStyle: widget.dataTextStyle ?? _getDataStyle(isDark),
+        headingTextStyle:
+            widget.headingTextStyle ?? _getHeadingStyle(isDark, tokens),
+        dataTextStyle: widget.dataTextStyle ?? _getDataStyle(isDark, tokens),
         headingRowColor: WidgetStateProperty.all(
-          isDark ? CorpoColors.neutral800 : CorpoColors.neutral50,
+          isDark ? tokens.surfaceColor.withOpacity(0.1) : tokens.surfaceColor,
         ),
         dataRowColor: WidgetStateProperty.resolveWith((
           Set<WidgetState> states,
         ) {
           if (states.contains(WidgetState.selected)) {
-            return isDark ? CorpoColors.primary800 : CorpoColors.primary100;
+            return isDark
+                ? tokens.primaryColor.withOpacity(0.3)
+                : tokens.primaryColor.withOpacity(0.1);
           }
           if (states.contains(WidgetState.hovered)) {
-            return isDark ? CorpoColors.neutral700 : CorpoColors.neutral100;
+            return isDark
+                ? tokens.surfaceColor.withOpacity(0.15)
+                : tokens.surfaceColor.withOpacity(0.5);
           }
           return null;
         }),
@@ -338,26 +344,27 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   }
 
   /// Builds data column definitions.
-  List<DataColumn> _buildDataColumns(bool isDark) => widget.columns
-      .map(
-        (CorpoDataColumn<T> column) => DataColumn(
-          label:
-              column.headerBuilder?.call(context) ??
-              Text(column.label, style: _getHeadingStyle(isDark)),
-          onSort: column.sortable && widget.onSort != null
-              ? (int columnIndex, bool ascending) {
-                  final CorpoSortDirection direction = ascending
-                      ? CorpoSortDirection.ascending
-                      : CorpoSortDirection.descending;
-                  widget.onSort!(column.key, direction);
-                }
-              : null,
-        ),
-      )
-      .toList();
+  List<DataColumn> _buildDataColumns(bool isDark, CorpoDesignTokens tokens) =>
+      widget.columns
+          .map(
+            (CorpoDataColumn<T> column) => DataColumn(
+              label:
+                  column.headerBuilder?.call(context) ??
+                  Text(column.label, style: _getHeadingStyle(isDark, tokens)),
+              onSort: column.sortable && widget.onSort != null
+                  ? (int columnIndex, bool ascending) {
+                      final CorpoSortDirection direction = ascending
+                          ? CorpoSortDirection.ascending
+                          : CorpoSortDirection.descending;
+                      widget.onSort!(column.key, direction);
+                    }
+                  : null,
+            ),
+          )
+          .toList();
 
   /// Builds data row definitions.
-  List<DataRow> _buildDataRows(bool isDark) =>
+  List<DataRow> _buildDataRows(bool isDark, CorpoDesignTokens tokens) =>
       widget.rows.map((CorpoDataRow<T> row) {
         final bool isSelected = widget.selectedRows.contains(row.data);
 
@@ -367,7 +374,7 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
 
             return DataCell(
               column.cellBuilder?.call(context, row.data) ??
-                  _buildDefaultCell(cellValue, isDark),
+                  _buildDefaultCell(cellValue, isDark, tokens),
               onTap: row.onTap ?? () => widget.onRowTap?.call(row.data),
             );
           }).toList(),
@@ -381,7 +388,11 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
       }).toList();
 
   /// Builds a default cell widget.
-  Widget _buildDefaultCell(dynamic value, bool isDark) {
+  Widget _buildDefaultCell(
+    dynamic value,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     String displayText;
 
     if (value == null) {
@@ -394,7 +405,7 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
 
     return Text(
       displayText,
-      style: _getDataStyle(isDark),
+      style: _getDataStyle(isDark, tokens),
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -430,14 +441,18 @@ class _CorpoDataTableState<T> extends State<CorpoDataTable<T>> {
   }
 
   /// Gets the heading text style.
-  TextStyle _getHeadingStyle(bool isDark) =>
-      CorpoTypography.labelMedium.copyWith(
-        fontWeight: CorpoFontWeight.semiBold,
-        color: isDark ? CorpoColors.neutral300 : CorpoColors.neutral700,
+  TextStyle _getHeadingStyle(bool isDark, CorpoDesignTokens tokens) =>
+      TextStyle(
+        fontSize: tokens.baseFontSize,
+        fontFamily: tokens.fontFamily,
+        fontWeight: FontWeight.w600, // semiBold equivalent
+        color: isDark ? tokens.textSecondary : tokens.textPrimary,
       );
 
   /// Gets the data text style.
-  TextStyle _getDataStyle(bool isDark) => CorpoTypography.bodyMedium.copyWith(
-    color: isDark ? CorpoColors.neutral200 : CorpoColors.neutral800,
+  TextStyle _getDataStyle(bool isDark, CorpoDesignTokens tokens) => TextStyle(
+    fontSize: tokens.baseFontSize,
+    fontFamily: tokens.fontFamily,
+    color: isDark ? tokens.textSecondary : tokens.textPrimary,
   );
 }

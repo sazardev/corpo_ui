@@ -33,9 +33,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// Badge variant types for different semantic meanings.
 ///
@@ -179,29 +177,38 @@ class CorpoBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     // Build notification badge if child is provided
     if (child != null) {
-      return _buildNotificationBadge(isDark);
+      return _buildNotificationBadge(isDark, tokens);
     }
 
     // Build regular badge
-    return _buildBadge(isDark);
+    return _buildBadge(isDark, tokens);
   }
 
-  /// Builds a notification badge positioned over a child widget.
-  Widget _buildNotificationBadge(bool isDark) => Stack(
-    clipBehavior: Clip.none,
-    children: <Widget>[
-      child!,
-      Positioned(top: -8, right: -8, child: _buildBadge(isDark)),
-    ],
-  );
+  /// Determines if badge should be shown for notification badges.
+  bool _shouldShowBadge() {
+    return count != null && count! > 0;
+  }
+
+  /// Builds a notification badge with count indicator.
+  Widget _buildNotificationBadge(bool isDark, CorpoDesignTokens tokens) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child!,
+        if (_shouldShowBadge())
+          Positioned(top: -8, right: -8, child: _buildBadge(isDark, tokens)),
+      ],
+    );
+  }
 
   /// Builds the main badge widget.
-  Widget _buildBadge(bool isDark) {
+  Widget _buildBadge(bool isDark, CorpoDesignTokens tokens) {
     final String displayText = _getDisplayText();
     final bool isEmpty = displayText.isEmpty && style != CorpoBadgeStyle.dot;
 
@@ -209,12 +216,12 @@ class CorpoBadge extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final EdgeInsets padding = _getPadding();
-    final BorderRadius borderRadius = _getBorderRadius();
-    final Color backgroundColor = _getBackgroundColor(isDark);
-    final Color textColor = _getTextColor(isDark);
-    final Color borderColor = _getBorderColor(isDark);
-    final TextStyle textStyle = _getTextStyle();
+    final EdgeInsets padding = _getPadding(tokens);
+    final BorderRadius borderRadius = _getBorderRadius(tokens);
+    final Color backgroundColor = _getBackgroundColor(isDark, tokens);
+    final Color textColor = _getTextColor(isDark, tokens);
+    final Color borderColor = _getBorderColor(isDark, tokens);
+    final TextStyle textStyle = _getTextStyle(tokens);
     final double minSize = _getMinSize();
 
     Widget badgeContent;
@@ -237,9 +244,9 @@ class CorpoBadge extends StatelessWidget {
       final List<Widget> children = <Widget>[];
 
       if (icon != null) {
-        children.add(Icon(icon, size: _getIconSize(), color: textColor));
+        children.add(Icon(icon, size: _getIconSize(tokens), color: textColor));
         if (displayText.isNotEmpty) {
-          children.add(const SizedBox(width: CorpoSpacing.extraSmall));
+          children.add(SizedBox(width: tokens.spacing1x));
         }
       }
 
@@ -286,39 +293,36 @@ class CorpoBadge extends StatelessWidget {
   }
 
   /// Gets the padding based on size and style.
-  EdgeInsets _getPadding() {
+  EdgeInsets _getPadding(CorpoDesignTokens tokens) {
     if (style == CorpoBadgeStyle.dot) {
       return EdgeInsets.zero;
     }
 
     switch (size) {
       case CorpoBadgeSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.extraSmall,
-          vertical: 2,
-        );
+        return EdgeInsets.symmetric(horizontal: tokens.spacing1x, vertical: 2);
       case CorpoBadgeSize.medium:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.small,
-          vertical: CorpoSpacing.extraSmall,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing2x,
+          vertical: tokens.spacing1x,
         );
       case CorpoBadgeSize.large:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.small,
-          vertical: CorpoSpacing.extraSmall + 2,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing2x,
+          vertical: tokens.spacing1x + 2,
         );
     }
   }
 
   /// Gets the border radius based on size.
-  BorderRadius _getBorderRadius() {
+  BorderRadius _getBorderRadius(CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoBadgeSize.small:
-        return BorderRadius.circular(CorpoSpacing.extraSmall);
+        return BorderRadius.circular(tokens.spacing1x);
       case CorpoBadgeSize.medium:
-        return BorderRadius.circular(CorpoSpacing.extraSmall + 2);
+        return BorderRadius.circular(tokens.spacing1x + 2);
       case CorpoBadgeSize.large:
-        return BorderRadius.circular(CorpoSpacing.small);
+        return BorderRadius.circular(tokens.spacing2x);
     }
   }
 
@@ -335,39 +339,51 @@ class CorpoBadge extends StatelessWidget {
   }
 
   /// Gets the icon size based on badge size.
-  double _getIconSize() {
+  double _getIconSize(CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoBadgeSize.small:
-        return 12;
+        return tokens.fontSizeSmall;
       case CorpoBadgeSize.medium:
-        return 14;
+        return tokens.baseFontSize;
       case CorpoBadgeSize.large:
-        return 16;
+        return tokens.fontSizeLarge;
     }
   }
 
   /// Gets the text style based on size.
-  TextStyle _getTextStyle() {
+  TextStyle _getTextStyle(CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoBadgeSize.small:
-        return CorpoTypography.labelSmall;
+        return TextStyle(
+          fontSize: tokens.fontSizeSmall,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoBadgeSize.medium:
-        return CorpoTypography.labelMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
       case CorpoBadgeSize.large:
-        return CorpoTypography.labelLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w500,
+        );
     }
   }
 
   /// Gets the background color based on variant and style.
-  Color _getBackgroundColor(bool isDark) {
+  Color _getBackgroundColor(bool isDark, CorpoDesignTokens tokens) {
     switch (style) {
       case CorpoBadgeStyle.filled:
       case CorpoBadgeStyle.dot:
-        return _getVariantColor(variant, isDark);
+        return _getVariantColor(variant, isDark, tokens);
       case CorpoBadgeStyle.outlined:
         return Colors.transparent;
       case CorpoBadgeStyle.subtle:
-        final Color baseColor = _getVariantColor(variant, isDark);
+        final Color baseColor = _getVariantColor(variant, isDark, tokens);
         return Color.fromARGB(
           (0.1 * 255).round(),
           (baseColor.r * 255.0).round() & 0xff,
@@ -378,39 +394,44 @@ class CorpoBadge extends StatelessWidget {
   }
 
   /// Gets the text color based on variant and style.
-  Color _getTextColor(bool isDark) {
+  Color _getTextColor(bool isDark, CorpoDesignTokens tokens) {
     switch (style) {
       case CorpoBadgeStyle.filled:
       case CorpoBadgeStyle.dot:
         return _isLightVariant(variant)
-            ? CorpoColors.neutral800
-            : CorpoColors.neutralWhite;
+            ? tokens.textPrimary
+            : tokens.surfaceColor;
       case CorpoBadgeStyle.outlined:
       case CorpoBadgeStyle.subtle:
-        return _getVariantColor(variant, isDark);
+        return _getVariantColor(variant, isDark, tokens);
     }
   }
 
   /// Gets the border color for outlined badges.
-  Color _getBorderColor(bool isDark) => _getVariantColor(variant, isDark);
+  Color _getBorderColor(bool isDark, CorpoDesignTokens tokens) =>
+      _getVariantColor(variant, isDark, tokens);
 
   /// Gets the color for a specific variant.
-  Color _getVariantColor(CorpoBadgeVariant variant, bool isDark) {
+  Color _getVariantColor(
+    CorpoBadgeVariant variant,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     switch (variant) {
       case CorpoBadgeVariant.neutral:
-        return isDark ? CorpoColors.neutral600 : CorpoColors.neutral500;
+        return isDark ? tokens.textSecondary : tokens.textPrimary;
       case CorpoBadgeVariant.primary:
-        return CorpoColors.primary500;
+        return tokens.primaryColor;
       case CorpoBadgeVariant.secondary:
-        return isDark ? CorpoColors.neutral500 : CorpoColors.neutral600;
+        return isDark ? tokens.textSecondary : tokens.textPrimary;
       case CorpoBadgeVariant.success:
-        return CorpoColors.success;
+        return tokens.successColor;
       case CorpoBadgeVariant.warning:
-        return CorpoColors.warning;
+        return tokens.warningColor;
       case CorpoBadgeVariant.error:
-        return CorpoColors.error;
+        return tokens.errorColor;
       case CorpoBadgeVariant.info:
-        return CorpoColors.info;
+        return tokens.infoColor;
     }
   }
 

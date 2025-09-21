@@ -13,7 +13,7 @@
 /// CorpoSpinner()
 ///
 /// CorpoSpinner.large(
-///   color: CorpoColors.primary500,
+///   color: CorpoDesignTokens().primaryColor,
 /// )
 ///
 /// CorpoSpinner.overlay(

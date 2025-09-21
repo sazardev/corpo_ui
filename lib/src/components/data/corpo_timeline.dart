@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the alignment of timeline items.
 enum CorpoTimelineAlignment {
@@ -139,6 +139,7 @@ class CorpoTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
@@ -146,7 +147,7 @@ class CorpoTimeline extends StatelessWidget {
     final Color effectiveLineColor =
         lineColor ?? colorScheme.outline.withValues(alpha: 0.3);
 
-    final EdgeInsetsGeometry itemPadding = _getItemPadding();
+    final EdgeInsetsGeometry itemPadding = _getItemPadding(tokens);
 
     return Container(
       color: backgroundColor,
@@ -189,6 +190,7 @@ class CorpoTimeline extends StatelessWidget {
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
   ) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     switch (itemAlignment) {
       case CorpoTimelineAlignment.left:
         return _buildLeftAlignedItem(
@@ -199,6 +201,7 @@ class CorpoTimeline extends StatelessWidget {
           indicatorColor,
           lineColor,
           itemPadding,
+          tokens,
         );
       case CorpoTimelineAlignment.right:
         return _buildRightAlignedItem(
@@ -209,6 +212,7 @@ class CorpoTimeline extends StatelessWidget {
           indicatorColor,
           lineColor,
           itemPadding,
+          tokens,
         );
       case CorpoTimelineAlignment.alternating:
         final bool isEven = index % 2 == 0;
@@ -221,6 +225,7 @@ class CorpoTimeline extends StatelessWidget {
                 indicatorColor,
                 lineColor,
                 itemPadding,
+                tokens,
               )
             : _buildRightAlignedItem(
                 context,
@@ -230,6 +235,7 @@ class CorpoTimeline extends StatelessWidget {
                 indicatorColor,
                 lineColor,
                 itemPadding,
+                tokens,
               );
       case CorpoTimelineAlignment.center:
         return _buildCenterAlignedItem(
@@ -240,6 +246,7 @@ class CorpoTimeline extends StatelessWidget {
           indicatorColor,
           lineColor,
           itemPadding,
+          tokens,
         );
     }
   }
@@ -252,6 +259,7 @@ class CorpoTimeline extends StatelessWidget {
     Color indicatorColor,
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
+    CorpoDesignTokens tokens,
   ) => IntrinsicHeight(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -264,11 +272,11 @@ class CorpoTimeline extends StatelessWidget {
           indicatorColor,
           lineColor,
         ),
-        const SizedBox(width: CorpoSpacing.medium),
+        SizedBox(width: tokens.spacing4x),
         Expanded(
           child: Padding(
             padding: itemPadding,
-            child: _buildContentCard(context, item.content),
+            child: _buildContentCard(context, item.content, tokens),
           ),
         ),
       ],
@@ -283,6 +291,7 @@ class CorpoTimeline extends StatelessWidget {
     Color indicatorColor,
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
+    CorpoDesignTokens tokens,
   ) => IntrinsicHeight(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -290,10 +299,10 @@ class CorpoTimeline extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: itemPadding,
-            child: _buildContentCard(context, item.content),
+            child: _buildContentCard(context, item.content, tokens),
           ),
         ),
-        const SizedBox(width: CorpoSpacing.medium),
+        SizedBox(width: tokens.spacing4x),
         _buildIndicatorColumn(
           context,
           item,
@@ -314,6 +323,7 @@ class CorpoTimeline extends StatelessWidget {
     Color indicatorColor,
     Color lineColor,
     EdgeInsetsGeometry itemPadding,
+    CorpoDesignTokens tokens,
   ) => IntrinsicHeight(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -322,10 +332,10 @@ class CorpoTimeline extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: itemPadding,
-              child: _buildContentCard(context, item.oppositeContent!),
+              child: _buildContentCard(context, item.oppositeContent!, tokens),
             ),
           ),
-          const SizedBox(width: CorpoSpacing.small),
+          SizedBox(width: tokens.spacing2x),
         ] else
           const Spacer(),
         _buildIndicatorColumn(
@@ -336,11 +346,11 @@ class CorpoTimeline extends StatelessWidget {
           indicatorColor,
           lineColor,
         ),
-        const SizedBox(width: CorpoSpacing.small),
+        SizedBox(width: tokens.spacing2x),
         Expanded(
           child: Padding(
             padding: itemPadding,
-            child: _buildContentCard(context, item.content),
+            child: _buildContentCard(context, item.content, tokens),
           ),
         ),
       ],
@@ -404,46 +414,47 @@ class CorpoTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildContentCard(BuildContext context, Widget content) =>
-      switch (variant) {
-        CorpoTimelineVariant.card => Card(
-          margin: EdgeInsets.zero,
-          child: Padding(padding: _getContentPadding(), child: content),
+  Widget _buildContentCard(
+    BuildContext context,
+    Widget content,
+    CorpoDesignTokens tokens,
+  ) => switch (variant) {
+    CorpoTimelineVariant.card => Card(
+      margin: EdgeInsets.zero,
+      child: Padding(padding: _getContentPadding(tokens), child: content),
+    ),
+    CorpoTimelineVariant.outlined => Container(
+      padding: _getContentPadding(tokens),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
         ),
-        CorpoTimelineVariant.outlined => Container(
-          padding: _getContentPadding(),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(
-                context,
-              ).colorScheme.outline.withValues(alpha: 0.3),
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: content,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: content,
+    ),
+    _ => Padding(padding: _getContentPadding(tokens), child: content),
+  };
+
+  EdgeInsetsGeometry _getItemPadding(CorpoDesignTokens tokens) =>
+      switch (density) {
+        CorpoTimelineDensity.compact => EdgeInsets.symmetric(
+          vertical: tokens.spacing1x,
         ),
-        _ => Padding(padding: _getContentPadding(), child: content),
+        CorpoTimelineDensity.comfortable => EdgeInsets.symmetric(
+          vertical: tokens.spacing6x,
+        ),
+        CorpoTimelineDensity.standard => EdgeInsets.symmetric(
+          vertical: tokens.spacing2x,
+        ),
       };
 
-  EdgeInsetsGeometry _getItemPadding() => switch (density) {
-    CorpoTimelineDensity.compact => const EdgeInsets.symmetric(
-      vertical: CorpoSpacing.extraSmall,
-    ),
-    CorpoTimelineDensity.comfortable => const EdgeInsets.symmetric(
-      vertical: CorpoSpacing.large,
-    ),
-    CorpoTimelineDensity.standard => const EdgeInsets.symmetric(
-      vertical: CorpoSpacing.small,
-    ),
-  };
-
-  EdgeInsetsGeometry _getContentPadding() => switch (density) {
-    CorpoTimelineDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
-    CorpoTimelineDensity.comfortable => const EdgeInsets.all(
-      CorpoSpacing.large,
-    ),
-    CorpoTimelineDensity.standard => const EdgeInsets.all(CorpoSpacing.medium),
-  };
+  EdgeInsetsGeometry _getContentPadding(CorpoDesignTokens tokens) =>
+      switch (density) {
+        CorpoTimelineDensity.compact => EdgeInsets.all(tokens.spacing2x),
+        CorpoTimelineDensity.comfortable => EdgeInsets.all(tokens.spacing6x),
+        CorpoTimelineDensity.standard => EdgeInsets.all(tokens.spacing4x),
+      };
 }
 
 /// A builder widget for creating timeline content with consistent styling.
@@ -494,6 +505,7 @@ class CorpoTimelineContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final ColorScheme colorScheme = theme.colorScheme;
@@ -516,13 +528,13 @@ class CorpoTimelineContent extends StatelessWidget {
               ),
             ),
             if (trailing != null) ...<Widget>[
-              const SizedBox(width: CorpoSpacing.small),
+              SizedBox(width: tokens.spacing2x),
               trailing!,
             ],
           ],
         ),
         if (subtitle != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.extraSmall),
+          SizedBox(height: tokens.spacing1x),
           Text(
             subtitle!,
             style:
@@ -534,7 +546,7 @@ class CorpoTimelineContent extends StatelessWidget {
           ),
         ],
         if (description != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
           Text(
             description!,
             style:
@@ -545,7 +557,7 @@ class CorpoTimelineContent extends StatelessWidget {
           ),
         ],
         if (timestamp != null) ...<Widget>[
-          const SizedBox(height: CorpoSpacing.small),
+          SizedBox(height: tokens.spacing2x),
           Text(
             timestamp!,
             style:

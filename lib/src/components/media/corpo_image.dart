@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
+import '../../design_tokens.dart';
+
 /// Defines how images should be fitted within their container.
 enum CorpoImageFit {
   /// Scale the image to fill the container, maintaining aspect ratio
@@ -477,11 +479,14 @@ class _CorpoImageState extends State<CorpoImage>
     CorpoImageFit.scaleDown => BoxFit.scaleDown,
   };
 
-  BorderRadius? _getDefaultBorderRadius() => switch (widget.shape) {
-    CorpoImageShape.rounded => BorderRadius.circular(8),
-    CorpoImageShape.rectangle => null,
-    CorpoImageShape.circle => null,
-  };
+  BorderRadius? _getDefaultBorderRadius() {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    return switch (widget.shape) {
+      CorpoImageShape.rounded => BorderRadius.circular(tokens.borderRadius),
+      CorpoImageShape.rectangle => null,
+      CorpoImageShape.circle => null,
+    };
+  }
 
   Widget? _handleFrameBuilder(
     BuildContext context,

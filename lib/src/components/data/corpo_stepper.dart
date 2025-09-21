@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the variant styles for [CorpoStepper].
 enum CorpoStepperVariant {
@@ -99,7 +99,7 @@ class CorpoStepper extends StatefulWidget {
     this.controlsBuilder,
     this.physics,
     this.margin,
-    this.elevation = 0.0,
+    this.elevation = 2.0,
     super.key,
   });
 
@@ -147,6 +147,7 @@ class CorpoStepper extends StatefulWidget {
 class _CorpoStepperState extends State<CorpoStepper> {
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
@@ -160,7 +161,7 @@ class _CorpoStepperState extends State<CorpoStepper> {
         title: step.title,
         content: Container(
           width: double.infinity,
-          padding: _getContentPadding(),
+          padding: _getContentPadding(tokens),
           child: step.content,
         ),
         subtitle: step.subtitle,
@@ -190,7 +191,7 @@ class _CorpoStepperState extends State<CorpoStepper> {
         onStepCancel: widget.onStepCancel,
         controlsBuilder: widget.controlsBuilder ?? _buildDefaultControls,
         physics: widget.physics,
-        margin: widget.margin ?? _getDefaultMargin(),
+        margin: widget.margin ?? _getDefaultMargin(tokens),
         elevation: widget.elevation,
       ),
     );
@@ -198,19 +199,19 @@ class _CorpoStepperState extends State<CorpoStepper> {
     return stepper;
   }
 
-  EdgeInsetsGeometry _getContentPadding() => switch (widget.density) {
-    CorpoStepperDensity.compact => const EdgeInsets.all(CorpoSpacing.small),
-    CorpoStepperDensity.comfortable => const EdgeInsets.all(CorpoSpacing.large),
-    CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.medium),
-  };
+  EdgeInsetsGeometry _getContentPadding(CorpoDesignTokens tokens) =>
+      switch (widget.density) {
+        CorpoStepperDensity.compact => EdgeInsets.all(tokens.spacing2x),
+        CorpoStepperDensity.comfortable => EdgeInsets.all(tokens.spacing6x),
+        CorpoStepperDensity.standard => EdgeInsets.all(tokens.spacing4x),
+      };
 
-  EdgeInsetsGeometry _getDefaultMargin() => switch (widget.density) {
-    CorpoStepperDensity.compact => EdgeInsets.zero,
-    CorpoStepperDensity.comfortable => const EdgeInsets.all(
-      CorpoSpacing.medium,
-    ),
-    CorpoStepperDensity.standard => const EdgeInsets.all(CorpoSpacing.small),
-  };
+  EdgeInsetsGeometry _getDefaultMargin(CorpoDesignTokens tokens) =>
+      switch (widget.density) {
+        CorpoStepperDensity.compact => EdgeInsets.zero,
+        CorpoStepperDensity.comfortable => EdgeInsets.all(tokens.spacing4x),
+        CorpoStepperDensity.standard => EdgeInsets.all(tokens.spacing2x),
+      };
 
   StepState _mapStepState(CorpoStepState state, int index) => switch (state) {
     CorpoStepState.disabled => StepState.disabled,
@@ -228,6 +229,7 @@ class _CorpoStepperState extends State<CorpoStepper> {
   }
 
   Widget _buildDefaultControls(BuildContext context, ControlsDetails details) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
@@ -235,7 +237,7 @@ class _CorpoStepperState extends State<CorpoStepper> {
     final bool isFirstStep = details.stepIndex == 0;
 
     return Container(
-      margin: const EdgeInsets.only(top: CorpoSpacing.medium),
+      margin: EdgeInsets.only(top: tokens.spacing4x),
       child: Row(
         children: <Widget>[
           if (widget.onStepContinue != null)
@@ -248,7 +250,7 @@ class _CorpoStepperState extends State<CorpoStepper> {
               child: Text(isLastStep ? 'Finish' : 'Continue'),
             ),
           if (widget.onStepCancel != null) ...<Widget>[
-            const SizedBox(width: CorpoSpacing.small),
+            SizedBox(width: tokens.spacing2x),
             TextButton(
               onPressed: details.onStepCancel,
               style: TextButton.styleFrom(
@@ -291,6 +293,7 @@ class CorpoStepTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final ColorScheme colorScheme = theme.colorScheme;
@@ -306,13 +309,10 @@ class CorpoStepTitle extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (icon != null) ...<Widget>[
-          icon!,
-          const SizedBox(width: CorpoSpacing.small),
-        ],
+        if (icon != null) ...<Widget>[icon!, SizedBox(width: tokens.spacing2x)],
         Flexible(child: Text(text, style: effectiveStyle)),
         if (trailing != null) ...<Widget>[
-          const SizedBox(width: CorpoSpacing.small),
+          SizedBox(width: tokens.spacing2x),
           trailing!,
         ],
       ],
@@ -335,8 +335,11 @@ class CorpoStepContent extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: padding ?? const EdgeInsets.all(CorpoSpacing.medium),
-    child: child,
-  );
+  Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
+    return Padding(
+      padding: padding ?? EdgeInsets.all(tokens.spacing4x),
+      child: child,
+    );
+  }
 }

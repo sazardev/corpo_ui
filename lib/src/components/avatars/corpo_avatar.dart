@@ -18,7 +18,7 @@
 ///
 /// CorpoAvatar.initials(
 ///   'Jane Smith',
-///   backgroundColor: CorpoColors.primary500,
+///   backgroundColor: CorpoDesignTokens().primaryColor,
 /// )
 ///
 /// CorpoAvatar.withStatus(

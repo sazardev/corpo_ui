@@ -14,7 +14,7 @@
 /// CorpoIcon(
 ///   Icons.person,
 ///   size: CorpoIconSize.medium,
-///   color: CorpoColors.primary500,
+///   color: CorpoDesignTokens().primaryColor,
 /// )
 ///
 /// CorpoIcon.semantic(
@@ -31,8 +31,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Icon size variants for different use cases.
 ///
@@ -253,6 +252,7 @@ class CorpoIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
@@ -260,10 +260,10 @@ class CorpoIcon extends StatelessWidget {
     final IconData effectiveIconData = _getEffectiveIconData();
 
     // Calculate icon size in pixels
-    final double iconSize = _getIconSizeInPixels();
+    final double iconSize = _getIconSizeInPixels(tokens);
 
     // Determine effective color
-    final Color effectiveColor = _getEffectiveColor(theme, isDark);
+    final Color effectiveColor = _getEffectiveColor(theme, isDark, tokens);
 
     // Build the icon widget
     final Widget iconWidget = Icon(
@@ -277,9 +277,9 @@ class CorpoIcon extends StatelessWidget {
     if (onTap != null) {
       return InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(CorpoSpacing.extraSmall),
+        borderRadius: BorderRadius.circular(tokens.spacing1x),
         child: Padding(
-          padding: const EdgeInsets.all(CorpoSpacing.extraSmall),
+          padding: EdgeInsets.all(tokens.spacing1x),
           child: iconWidget,
         ),
       );
@@ -388,26 +388,30 @@ class CorpoIcon extends StatelessWidget {
     }
   }
 
-  /// Converts size enum to pixel value.
-  double _getIconSizeInPixels() {
+  /// Converts size enum to pixel value using design tokens.
+  double _getIconSizeInPixels(CorpoDesignTokens tokens) {
     switch (size) {
       case CorpoIconSize.extraSmall:
-        return 12;
+        return tokens.spacing3x; // 12px
       case CorpoIconSize.small:
-        return 16;
+        return tokens.spacing4x; // 16px
       case CorpoIconSize.medium:
-        return 20;
+        return tokens.spacing4x * 1.25; // 20px (16 * 1.25)
       case CorpoIconSize.large:
-        return 24;
+        return tokens.spacing6x; // 24px
       case CorpoIconSize.extraLarge:
-        return 32;
+        return tokens.spacing8x; // 32px
       case CorpoIconSize.xxLarge:
-        return 48;
+        return tokens.spacing12x; // 48px
     }
   }
 
-  /// Determines the effective color based on context.
-  Color _getEffectiveColor(ThemeData theme, bool isDark) {
+  /// Determines the effective color based on context using design tokens.
+  Color _getEffectiveColor(
+    ThemeData theme,
+    bool isDark,
+    CorpoDesignTokens tokens,
+  ) {
     if (color != null) {
       return color!;
     }
@@ -416,13 +420,13 @@ class CorpoIcon extends StatelessWidget {
     if (semanticIcon != null) {
       switch (semanticIcon!) {
         case CorpoSemanticIcon.success:
-          return CorpoColors.success;
+          return tokens.successColor;
         case CorpoSemanticIcon.warning:
-          return CorpoColors.warning;
+          return tokens.warningColor;
         case CorpoSemanticIcon.error:
-          return CorpoColors.error;
+          return tokens.errorColor;
         case CorpoSemanticIcon.info:
-          return CorpoColors.info;
+          return tokens.infoColor;
         default:
           break;
       }
@@ -430,12 +434,12 @@ class CorpoIcon extends StatelessWidget {
 
     // Use primary color for action icons
     if (actionIcon != null) {
-      return CorpoColors.primary500;
+      return tokens.primaryColor;
     }
 
-    // Default to theme icon color
+    // Default to theme icon color or design tokens
     return theme.iconTheme.color ??
-        (isDark ? CorpoColors.neutral200 : CorpoColors.neutral700);
+        (isDark ? tokens.textSecondary : tokens.textPrimary);
   }
 
   /// Gets default semantic label for accessibility.

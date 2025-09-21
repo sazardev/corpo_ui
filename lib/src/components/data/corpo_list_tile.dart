@@ -21,7 +21,7 @@
 /// CorpoListTile.action(
 ///   title: 'Delete Account',
 ///   subtitle: 'This action cannot be undone',
-///   leading: Icon(Icons.delete, color: CorpoColors.error),
+///   leading: Icon(Icons.delete, color: Colors.red),
 ///   destructive: true,
 ///   onTap: () => confirmDelete(),
 /// )
@@ -30,9 +30,7 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/spacing.dart';
-import '../../constants/typography.dart';
+import '../../design_tokens.dart';
 
 /// List tile variants for different use cases.
 enum CorpoListTileVariant {
@@ -165,23 +163,24 @@ class CorpoListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
     final EdgeInsetsGeometry effectivePadding =
-        contentPadding ?? _getDefaultPadding();
-    final Color? backgroundColor = _getBackgroundColor(isDark);
-    final Color titleColor = _getTitleColor(isDark);
-    final Color subtitleColor = _getSubtitleColor(isDark);
+        contentPadding ?? _getDefaultPadding(tokens);
+    final Color? backgroundColor = _getBackgroundColor(isDark, tokens);
+    final Color titleColor = _getTitleColor(isDark, tokens);
+    final Color subtitleColor = _getSubtitleColor(isDark, tokens);
 
     Widget tile = ListTile(
       title: DefaultTextStyle(
-        style: _getTitleStyle().copyWith(color: titleColor),
+        style: _getTitleStyle(tokens).copyWith(color: titleColor),
         child: title,
       ),
       subtitle: subtitle != null
           ? DefaultTextStyle(
-              style: _getSubtitleStyle().copyWith(color: subtitleColor),
+              style: _getSubtitleStyle(tokens).copyWith(color: subtitleColor),
               child: subtitle!,
             )
           : null,
@@ -194,7 +193,7 @@ class CorpoListTile extends StatelessWidget {
       dense: dense,
       contentPadding: effectivePadding,
       tileColor: backgroundColor,
-      selectedTileColor: _getSelectedColor(isDark),
+      selectedTileColor: _getSelectedColor(isDark, tokens),
       mouseCursor: enabled
           ? SystemMouseCursors.click
           : SystemMouseCursors.basic,
@@ -208,7 +207,9 @@ class CorpoListTile extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 1,
-            color: isDark ? CorpoColors.neutral700 : CorpoColors.neutral200,
+            color: isDark
+                ? tokens.surfaceColor.withOpacity(0.15)
+                : tokens.surfaceColor.withOpacity(0.5),
           ),
         ],
       );
@@ -218,35 +219,39 @@ class CorpoListTile extends StatelessWidget {
   }
 
   /// Gets the default padding based on density.
-  EdgeInsetsGeometry _getDefaultPadding() {
+  EdgeInsetsGeometry _getDefaultPadding(CorpoDesignTokens tokens) {
     switch (density) {
       case CorpoListTileDensity.compact:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.medium,
-          vertical: CorpoSpacing.extraSmall,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing1x,
         );
       case CorpoListTileDensity.comfortable:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.large,
-          vertical: CorpoSpacing.medium,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing6x,
+          vertical: tokens.spacing4x,
         );
       case CorpoListTileDensity.standard:
-        return const EdgeInsets.symmetric(
-          horizontal: CorpoSpacing.medium,
-          vertical: CorpoSpacing.small,
+        return EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing2x,
         );
     }
   }
 
   /// Gets the background color based on variant and theme.
-  Color? _getBackgroundColor(bool isDark) {
+  Color? _getBackgroundColor(bool isDark, CorpoDesignTokens tokens) {
     if (!enabled) {
-      return isDark ? CorpoColors.neutral800 : CorpoColors.neutral100;
+      return isDark
+          ? tokens.surfaceColor.withOpacity(0.1)
+          : tokens.surfaceColor;
     }
 
     switch (variant) {
       case CorpoListTileVariant.emphasized:
-        return isDark ? CorpoColors.neutral700 : CorpoColors.neutral50;
+        return isDark
+            ? tokens.surfaceColor.withOpacity(0.15)
+            : tokens.surfaceColor.withOpacity(0.5);
       case CorpoListTileVariant.action:
         return null; // Use default
       case CorpoListTileVariant.compact:
@@ -256,46 +261,60 @@ class CorpoListTile extends StatelessWidget {
   }
 
   /// Gets the selected tile color.
-  Color _getSelectedColor(bool isDark) =>
-      isDark ? CorpoColors.primary800 : CorpoColors.primary100;
+  Color _getSelectedColor(bool isDark, CorpoDesignTokens tokens) => isDark
+      ? tokens.primaryColor.withOpacity(0.3)
+      : tokens.primaryColor.withOpacity(0.1);
 
   /// Gets the title color based on state and theme.
-  Color _getTitleColor(bool isDark) {
+  Color _getTitleColor(bool isDark, CorpoDesignTokens tokens) {
     if (!enabled) {
-      return isDark ? CorpoColors.neutral500 : CorpoColors.neutral400;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.5)
+          : tokens.textSecondary;
     }
 
     if (destructive) {
-      return CorpoColors.error;
+      return tokens.errorColor;
     }
 
-    return isDark ? CorpoColors.neutral100 : CorpoColors.neutral900;
+    return isDark ? tokens.textPrimary : tokens.textPrimary;
   }
 
   /// Gets the subtitle color based on state and theme.
-  Color _getSubtitleColor(bool isDark) {
+  Color _getSubtitleColor(bool isDark, CorpoDesignTokens tokens) {
     if (!enabled) {
-      return isDark ? CorpoColors.neutral600 : CorpoColors.neutral300;
+      return isDark
+          ? tokens.textSecondary.withOpacity(0.3)
+          : tokens.textSecondary.withOpacity(0.7);
     }
 
-    return isDark ? CorpoColors.neutral300 : CorpoColors.neutral600;
+    return tokens.textSecondary;
   }
 
   /// Gets the title text style based on variant.
-  TextStyle _getTitleStyle() {
+  TextStyle _getTitleStyle(CorpoDesignTokens tokens) {
     switch (variant) {
       case CorpoListTileVariant.emphasized:
-        return CorpoTypography.bodyLarge.copyWith(
-          fontWeight: CorpoFontWeight.semiBold,
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+          fontWeight: FontWeight.w600, // semiBold equivalent
         );
       case CorpoListTileVariant.compact:
-        return CorpoTypography.bodyMedium;
+        return TextStyle(
+          fontSize: tokens.baseFontSize,
+          fontFamily: tokens.fontFamily,
+        );
       case CorpoListTileVariant.action:
       case CorpoListTileVariant.standard:
-        return CorpoTypography.bodyLarge;
+        return TextStyle(
+          fontSize: tokens.fontSizeLarge,
+          fontFamily: tokens.fontFamily,
+        );
     }
   }
 
   /// Gets the subtitle text style.
-  TextStyle _getSubtitleStyle() => CorpoTypography.bodySmall;
+  TextStyle _getSubtitleStyle(CorpoDesignTokens tokens) =>
+      TextStyle(fontSize: tokens.fontSizeSmall, fontFamily: tokens.fontFamily);
 }

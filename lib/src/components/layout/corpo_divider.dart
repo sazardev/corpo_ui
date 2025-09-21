@@ -23,7 +23,7 @@
 /// )
 ///
 /// CorpoDivider.custom(
-///   color: CorpoColors.primary200,
+///   color: CorpoDesignTokens().primaryColor,
 ///   thickness: 2,
 ///   indent: 16,
 /// )

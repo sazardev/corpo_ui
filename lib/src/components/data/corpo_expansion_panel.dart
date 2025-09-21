@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/spacing.dart';
+import '../../design_tokens.dart';
 
 /// Defines the variant styles for [CorpoExpansionPanel].
 enum CorpoExpansionPanelVariant {
@@ -158,20 +158,21 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
     widget.expansionCallback?.call(index, isExpanded);
   }
 
-  EdgeInsetsGeometry _getPadding() => switch (widget.density) {
-    CorpoExpansionPanelDensity.compact => const EdgeInsets.symmetric(
-      horizontal: CorpoSpacing.small,
-      vertical: CorpoSpacing.extraSmall,
-    ),
-    CorpoExpansionPanelDensity.comfortable => const EdgeInsets.symmetric(
-      horizontal: CorpoSpacing.large,
-      vertical: CorpoSpacing.medium,
-    ),
-    CorpoExpansionPanelDensity.standard => const EdgeInsets.symmetric(
-      horizontal: CorpoSpacing.medium,
-      vertical: CorpoSpacing.small,
-    ),
-  };
+  EdgeInsetsGeometry _getPadding(CorpoDesignTokens tokens) =>
+      switch (widget.density) {
+        CorpoExpansionPanelDensity.compact => EdgeInsets.symmetric(
+          horizontal: tokens.spacing2x,
+          vertical: tokens.spacing1x,
+        ),
+        CorpoExpansionPanelDensity.comfortable => EdgeInsets.symmetric(
+          horizontal: tokens.spacing6x,
+          vertical: tokens.spacing4x,
+        ),
+        CorpoExpansionPanelDensity.standard => EdgeInsets.symmetric(
+          horizontal: tokens.spacing4x,
+          vertical: tokens.spacing2x,
+        ),
+      };
 
   double _getElevation() {
     if (widget.elevation != null) return widget.elevation!;
@@ -183,13 +184,14 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
     final Color dividerColor =
         widget.dividerColor ?? colorScheme.outline.withValues(alpha: 0.2);
 
-    final EdgeInsetsGeometry padding = _getPadding();
+    final EdgeInsetsGeometry padding = _getPadding(tokens);
     final double elevation = _getElevation();
 
     final List<ExpansionPanel> panels = widget.children.asMap().entries.map((
@@ -225,9 +227,9 @@ class _CorpoExpansionPanelState extends State<CorpoExpansionPanel> {
       dividerColor: dividerColor,
       expandedHeaderPadding:
           widget.expandedHeaderPadding as EdgeInsets? ??
-          const EdgeInsets.symmetric(
-            horizontal: CorpoSpacing.medium,
-            vertical: CorpoSpacing.small,
+          EdgeInsets.symmetric(
+            horizontal: tokens.spacing4x,
+            vertical: tokens.spacing2x,
           ),
       children: panels,
     );
@@ -303,6 +305,7 @@ class CorpoExpansionPanelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CorpoDesignTokens tokens = CorpoDesignTokens();
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
     final ColorScheme colorScheme = theme.colorScheme;
@@ -326,7 +329,7 @@ class CorpoExpansionPanelHeader extends StatelessWidget {
       children: <Widget>[
         if (leading != null) ...<Widget>[
           leading!,
-          const SizedBox(width: CorpoSpacing.small),
+          SizedBox(width: tokens.spacing2x),
         ],
         Expanded(
           child: Column(
@@ -335,14 +338,14 @@ class CorpoExpansionPanelHeader extends StatelessWidget {
             children: <Widget>[
               Text(title, style: effectiveTitleStyle),
               if (subtitle != null) ...<Widget>[
-                const SizedBox(height: CorpoSpacing.extraSmall),
+                SizedBox(height: tokens.spacing1x),
                 Text(subtitle!, style: effectiveSubtitleStyle),
               ],
             ],
           ),
         ),
         if (trailing != null) ...<Widget>[
-          const SizedBox(width: CorpoSpacing.small),
+          SizedBox(width: tokens.spacing2x),
           trailing!,
         ],
       ],
