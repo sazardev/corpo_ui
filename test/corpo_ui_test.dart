@@ -4,26 +4,98 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Corpo UI Foundation Tests', () {
-    test('CorpoSpacing constants are defined correctly', () {
-      expect(CorpoSpacing.none, equals(0.0));
-      expect(CorpoSpacing.extraSmall, equals(4.0));
-      expect(CorpoSpacing.small, equals(8.0));
-      expect(CorpoSpacing.medium, equals(16.0));
-      expect(CorpoSpacing.large, equals(24.0));
-      expect(CorpoSpacing.extraLarge, equals(32.0));
-      expect(CorpoSpacing.xxLarge, equals(48.0));
-      expect(CorpoSpacing.xxxLarge, equals(64.0));
+    group('✅ NEW: Design Tokens (ShadCN-style)', () {
+      test('CorpoDesignTokens provides default values', () {
+        final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+        // Colors
+        expect(tokens.primaryColor, isA<Color>());
+        expect(tokens.secondaryColor, isA<Color>());
+        expect(tokens.surfaceColor, isA<Color>());
+        expect(tokens.textPrimary, isA<Color>());
+        expect(tokens.textSecondary, isA<Color>());
+        expect(tokens.errorColor, isA<Color>());
+        expect(tokens.successColor, isA<Color>());
+        expect(tokens.warningColor, isA<Color>());
+        expect(tokens.infoColor, isA<Color>());
+
+        // Spacing
+        expect(tokens.baseSpacing, equals(4.0));
+        expect(tokens.spacing1x, equals(4.0));
+        expect(tokens.spacing2x, equals(8.0));
+        expect(tokens.spacing4x, equals(16.0));
+        expect(tokens.spacing6x, equals(24.0));
+        expect(tokens.spacing8x, equals(32.0));
+
+        // Typography
+        expect(
+          tokens.baseFontSize,
+          equals(14.0),
+        ); // Updated to match actual default
+        expect(tokens.fontFamily, equals('Inter'));
+        expect(tokens.fontSizeSmall, equals(12.0));
+        expect(tokens.fontSizeLarge, equals(16.0));
+        expect(tokens.fontSizeXLarge, equals(20.0));
+
+        // Border radius
+        expect(tokens.borderRadius, equals(8.0));
+        expect(tokens.borderRadiusSmall, equals(4.0));
+        expect(tokens.borderRadiusLarge, equals(16.0));
+      });
+
+      test('CorpoDesignTokens.configure() changes values globally', () {
+        final CorpoDesignTokens tokens = CorpoDesignTokens();
+        final Color originalPrimary = tokens.primaryColor;
+
+        // Configure with new values
+        CorpoDesignTokens.configure(primaryColor: Colors.purple);
+
+        expect(tokens.primaryColor, equals(Colors.purple));
+        expect(tokens.primaryColor, isNot(equals(originalPrimary)));
+
+        // Note: Reset manually for next test
+        CorpoDesignTokens.configure(primaryColor: originalPrimary);
+      });
+
+      test('CorpoDesignTokens provides accessible text colors', () {
+        final CorpoDesignTokens tokens = CorpoDesignTokens();
+
+        // Test contrast function
+        final Color textOnPrimary = tokens.getTextColorFor(tokens.primaryColor);
+        expect(textOnPrimary, isA<Color>());
+
+        final Color textOnLight = tokens.getTextColorFor(Colors.white);
+        final Color textOnDark = tokens.getTextColorFor(Colors.black);
+
+        expect(
+          textOnLight,
+          isNot(equals(textOnDark)),
+        ); // Should be different for contrast
+      });
     });
 
-    test('CorpoColors constants are defined correctly', () {
-      expect(CorpoColors.primary500, equals(const Color(0xFF3182CE)));
-      expect(CorpoColors.neutralWhite, equals(const Color(0xFFFFFFFF)));
-      expect(CorpoColors.neutralBlack, equals(const Color(0xFF000000)));
-      expect(CorpoColors.success, equals(const Color(0xFF10B981)));
-      expect(CorpoColors.warning, equals(const Color(0xFFF59E0B)));
-      expect(CorpoColors.error, equals(const Color(0xFFEF4444)));
-      expect(CorpoColors.info, equals(const Color(0xFF3B82F6)));
-    });
+    group('⚠️ DEPRECATED: Legacy Constants (will be removed in v0.3.0)', () {
+      test('CorpoSpacing constants are defined correctly', () {
+        expect(CorpoSpacing.none, equals(0.0));
+        expect(CorpoSpacing.extraSmall, equals(4.0));
+        expect(CorpoSpacing.small, equals(8.0));
+        expect(CorpoSpacing.medium, equals(16.0));
+        expect(CorpoSpacing.large, equals(24.0));
+        expect(CorpoSpacing.extraLarge, equals(32.0));
+        expect(CorpoSpacing.xxLarge, equals(48.0));
+        expect(CorpoSpacing.xxxLarge, equals(64.0));
+      });
+
+      test('CorpoColors constants are defined correctly', () {
+        expect(CorpoColors.primary500, equals(const Color(0xFF3182CE)));
+        expect(CorpoColors.neutralWhite, equals(const Color(0xFFFFFFFF)));
+        expect(CorpoColors.neutralBlack, equals(const Color(0xFF000000)));
+        expect(CorpoColors.success, equals(const Color(0xFF10B981)));
+        expect(CorpoColors.warning, equals(const Color(0xFFF59E0B)));
+        expect(CorpoColors.error, equals(const Color(0xFFEF4444)));
+        expect(CorpoColors.info, equals(const Color(0xFF3B82F6)));
+      });
+    }); // End of DEPRECATED group
 
     test('CorpoFontSize constants are defined correctly', () {
       expect(CorpoFontSize.extraSmall, equals(12.0));

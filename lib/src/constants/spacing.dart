@@ -1,27 +1,49 @@
 /// Spacing constants for consistent layout spacing throughout the design
 /// system.
 ///
-/// This file defines the spacing scale used in Corpo UI, based on a 4px grid
-/// system that provides consistent and harmonious spacing across all components.
+/// ⚠️ **DEPRECATED**: This file is deprecated as of v0.2.0
 ///
-/// The spacing system follows a logical progression that enables predictable
-/// and maintainable layouts while ensuring visual hierarchy and rhythm.
+/// **Migration Guide:**
+/// Replace `CorpoSpacing.*` with `CorpoDesignTokens().spacing*`
 ///
-/// Example usage:
+/// **Old way:**
 /// ```dart
 /// Container(
 ///   padding: EdgeInsets.all(CorpoSpacing.medium),
 ///   margin: EdgeInsets.only(bottom: CorpoSpacing.large),
 /// )
 /// ```
+///
+/// **New way (ShadCN style):**
+/// ```dart
+/// final tokens = CorpoDesignTokens();
+/// Container(
+///   padding: EdgeInsets.all(tokens.spacing4x),  // CorpoSpacing.medium = 16px = spacing4x
+///   margin: EdgeInsets.only(bottom: tokens.spacing6x), // CorpoSpacing.large = 24px = spacing6x
+/// )
+/// ```
+///
+/// **Migration mappings:**
+/// - `CorpoSpacing.extraSmall` (4px) → `tokens.spacing1x`
+/// - `CorpoSpacing.small` (8px) → `tokens.spacing2x`
+/// - `CorpoSpacing.medium` (16px) → `tokens.spacing4x`
+/// - `CorpoSpacing.large` (24px) → `tokens.spacing6x`
+/// - `CorpoSpacing.extraLarge` (32px) → `tokens.spacing8x`
+///
+/// This file will be removed in v0.3.0
 library;
 
 import 'package:flutter/widgets.dart';
 
 /// Spacing constants based on a 4px grid system.
 ///
+/// ⚠️ **DEPRECATED**: Use `CorpoDesignTokens().spacing*` instead
+///
 /// All spacing values are multiples of 4 to ensure consistent
 /// alignment and visual rhythm throughout the application.
+@Deprecated(
+  'Use CorpoDesignTokens().spacing* instead. Will be removed in v0.3.0',
+)
 abstract final class CorpoSpacing {
   /// No spacing (0px)
   static const double none = 0;

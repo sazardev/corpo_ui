@@ -90,12 +90,19 @@ export 'src/components/typography/corpo_code.dart';
 export 'src/components/typography/corpo_heading.dart';
 export 'src/components/typography/corpo_label.dart';
 export 'src/components/typography/corpo_text.dart';
-// Design Tokens
-export 'src/constants/colors.dart';
-export 'src/constants/spacing.dart';
-export 'src/constants/typography.dart';
-// Design Tokens - ShadCN-style configuration system
+
+// ⚠️ DEPRECATED: Legacy constants - Use CorpoDesignTokens() instead
+// These exports are deprecated as of v0.2.0 and will be removed in v0.3.0
+// Migration: Replace CorpoColors.*, CorpoSpacing.*, CorpoTypography.*
+// with CorpoDesignTokens() properties for ShadCN-style theming
+export 'src/constants/colors.dart'; // → Use tokens.primaryColor, tokens.surfaceColor, etc.
+export 'src/constants/spacing.dart'; // → Use tokens.spacing1x, tokens.spacing2x, etc.
+export 'src/constants/typography.dart'; // → Use tokens.baseFontSize, tokens.fontFamily, etc.
+
+// ✅ NEW: Design Tokens - ShadCN-style configuration system
+// This is the ONLY file you need to change themes across your entire app!
 export 'src/design_tokens.dart';
+
 // Responsive System (Phase 5.2)
 export 'src/responsive/adaptive_components.dart';
 export 'src/responsive/layout_grid.dart';

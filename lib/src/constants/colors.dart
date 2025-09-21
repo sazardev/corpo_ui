@@ -1,16 +1,11 @@
 /// Color constants for the Corpo UI design system.
 ///
-/// This file defines the semantic color system used throughout Corpo UI,
-/// focusing on corporate application design principles with professional,
-/// accessible, and consistent color choices.
+/// ⚠️ **DEPRECATED**: This file is deprecated as of v0.2.0
 ///
-/// The color system is organized into semantic categories:
-/// - Primary: Main brand colors for primary actions and emphasis
-/// - Secondary: Supporting colors for secondary actions
-/// - Neutral: Grayscale colors for text, borders, and backgrounds
-/// - Semantic: Colors that convey meaning (success, warning, error, info)
+/// **Migration Guide:**
+/// Replace `CorpoColors.*` with `CorpoDesignTokens().*`
 ///
-/// Example usage:
+/// **Old way:**
 /// ```dart
 /// Container(
 ///   color: CorpoColors.primary500,
@@ -20,14 +15,39 @@
 ///   ),
 /// )
 /// ```
+///
+/// **New way (ShadCN style):**
+/// ```dart
+/// final tokens = CorpoDesignTokens();
+/// Container(
+///   color: tokens.primaryColor,
+///   child: Text(
+///     'Primary Button',
+///     style: TextStyle(color: tokens.surfaceColor),
+///   ),
+/// )
+/// ```
+///
+/// **Benefits of migration:**
+/// - 🎨 Change one file, transform your entire app (ShadCN philosophy)
+/// - 🚀 Instant theme switching with `CorpoDesignTokens.configure()`
+/// - 🔧 Centralized control via `lib/src/design_tokens.dart`
+/// - ✨ No more hardcoded values scattered across components
+///
+/// This file will be removed in v0.3.0
 library;
 
 import 'package:flutter/painting.dart';
 
 /// Primary color palette for the corporate design system.
 ///
+/// ⚠️ **DEPRECATED**: Use `CorpoDesignTokens().primaryColor` instead
+///
 /// Based on a professional blue tone that conveys trust, stability,
 /// and professionalism while maintaining good accessibility.
+@Deprecated(
+  'Use CorpoDesignTokens().primaryColor instead. Will be removed in v0.3.0',
+)
 abstract final class CorpoColors {
   // Primary Color Scale (Corporate Blue)
   /// Primary 50 - Lightest primary color

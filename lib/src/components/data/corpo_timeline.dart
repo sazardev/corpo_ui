@@ -129,6 +129,9 @@ class CorpoTimeline extends StatelessWidget {
   final Color? backgroundColor;
 
   /// Whether the timeline should shrink-wrap its content.
+  ///
+  /// Set to `true` when using timeline inside a Column or other
+  /// unbounded height containers to prevent layout errors.
   final bool shrinkWrap;
 
   /// Scroll physics for the timeline.

@@ -308,6 +308,8 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 ),
                 CorpoSpacer.medium(),
                 CorpoTimeline(
+                  shrinkWrap:
+                      true, // ✅ CRITICAL: Fix unbounded height in Column
                   items: [
                     CorpoTimelineItem(
                       content: Column(
@@ -609,7 +611,6 @@ class _DemoHomePageState extends State<DemoHomePage> {
             color: tokens.textSecondary,
           ),
           CorpoSpacer.large(),
-
           CorpoCard(
             padding: CorpoCardPadding.large,
             child: Column(
@@ -732,7 +733,6 @@ class _DemoHomePageState extends State<DemoHomePage> {
             color: tokens.textSecondary,
           ),
           CorpoSpacer.large(),
-
           CorpoCard(
             padding: CorpoCardPadding.large,
             child: Column(
@@ -791,8 +791,8 @@ class _DemoHomePageState extends State<DemoHomePage> {
                               variant: member['status'] == 'Active'
                                   ? CorpoBadgeVariant.success
                                   : member['status'] == 'Away'
-                                  ? CorpoBadgeVariant.warning
-                                  : CorpoBadgeVariant.neutral,
+                                      ? CorpoBadgeVariant.warning
+                                      : CorpoBadgeVariant.neutral,
                               size: CorpoBadgeSize.small,
                             ),
                             CorpoSpacer.small(),
@@ -918,7 +918,6 @@ class _DemoHomePageState extends State<DemoHomePage> {
               children: [
                 CorpoHeading('Notifications', level: CorpoHeadingLevel.h2),
                 CorpoSpacer.large(),
-
                 CorpoListTile(
                   leading: CorpoIcon(
                     Icons.notifications,

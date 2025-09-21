@@ -1,18 +1,11 @@
 /// Typography constants for the Corpo UI design system.
 ///
-/// This file defines the typography scale, font weights, and text styles
-/// used throughout Corpo UI. The typography system is designed for
-/// corporate applications with focus on readability, hierarchy, and
-/// professional appearance across all platforms.
+/// ⚠️ **DEPRECATED**: This file is deprecated as of v0.2.0
 ///
-/// The typography system includes:
-/// - Font sizes following a modular scale
-/// - Font weights for different emphasis levels
-/// - Line heights optimized for readability
-/// - Letter spacing for improved legibility
-/// - Predefined text styles for common use cases
+/// **Migration Guide:**
+/// Replace `CorpoTypography.*` with `TextStyle()` using `CorpoDesignTokens()`
 ///
-/// Example usage:
+/// **Old way:**
 /// ```dart
 /// Text(
 ///   'Heading',
@@ -24,6 +17,35 @@
 ///   style: CorpoTypography.bodyMedium,
 /// )
 /// ```
+///
+/// **New way (ShadCN style):**
+/// ```dart
+/// final tokens = CorpoDesignTokens();
+/// Text(
+///   'Heading',
+///   style: TextStyle(
+///     fontSize: tokens.fontSizeLarge,
+///     fontFamily: tokens.fontFamily,
+///     fontWeight: FontWeight.bold,
+///   ),
+/// )
+///
+/// Text(
+///   'Body text',
+///   style: TextStyle(
+///     fontSize: tokens.baseFontSize,
+///     fontFamily: tokens.fontFamily,
+///   ),
+/// )
+/// ```
+///
+/// **Or use CorpoText for convenience:**
+/// ```dart
+/// CorpoText('Heading', variant: CorpoTextVariant.headingLarge)
+/// CorpoText('Body text', variant: CorpoTextVariant.bodyMedium)
+/// ```
+///
+/// This file will be removed in v0.3.0
 library;
 
 import 'package:flutter/painting.dart';
